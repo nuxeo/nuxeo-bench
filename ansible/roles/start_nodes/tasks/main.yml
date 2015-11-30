@@ -1,0 +1,8 @@
+---
+- include: dynamic.yml
+  when: type in ["es", "nuxeo"]
+- include: db.yml
+  when: type == "db"
+- include: mongodb.yml
+  when: type == "mongodb"
+

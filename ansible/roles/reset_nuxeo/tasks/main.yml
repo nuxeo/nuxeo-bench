@@ -1,0 +1,287 @@
+---
+#- name: ubuntu user authorized keys
+#  authorized_key: user=ubuntu key='{{lookup("pipe", "cat /opt/build/hudson/authorized_keys/id_*.pub" )}}'
+
+- name: Upload distribution and settings
+  synchronize:
+    src: ../deploy
+    dest: /
+    delete: yes
+
+# Ensure instance is clean
+- name: Check for nuxeoctl wrapper
+  stat: path=/usr/bin/nuxeoctl
+  register: nuxeoctl
+- name: Stop nuxeo
+  shell: nuxeoctl stop
+  when: nuxeoctl.stat.exists
+  failed_when: False
+- name: Kill leftover soffice
+  shell: killall soffice.bin
+  failed_when: False
+- name: Delete /opt/nuxeo
+  file: path=/opt/nuxeo state=absent
+
+# Prepare EBS volume
+- name: Check if EBS volume is mounted
+  shell: cat /proc/mounts | grep /dev/xvdf
+  changed_when: False
+  failed_when: False
+  register: mounted
+- name: Format EBS volume
+  shell: mkfs.ext4 /dev/xvdf
+  when: mounted.stdout == ""
+- name: Mount EBS volume
+  mount: src=/dev/xvdf name=/opt fstype=ext4 state=mounted
+
+# Extract distribution and setup dirs
+- name: nuxeo user
+  user:
+    name: nuxeo
+    shell: /bin/bash
+    home: /opt/nuxeo
+    createhome: yes
+    state: present
+- name: Create temporary dir for unzip
+  file: path=/opt/nuxeo/ansible_tmp state=directory owner=nuxeo group=nuxeo
+- name: Unzip distribution
+  shell: unzip -q -d /opt/nuxeo/ansible_tmp /deploy/nuxeo-distribution.zip
+  become_user: nuxeo
+- name: Find out distribution directory
+  shell: ls /opt/nuxeo/ansible_tmp/
+  register: distrib_dir
+- name: Move distribution to final location
+  shell: mv /opt/nuxeo/ansible_tmp/{{distrib_dir.stdout}} /opt/nuxeo/server
+  become_user: nuxeo
+- name: Remove temporary dir
+  file: path=/opt/nuxeo/ansible_tmp state=absent
+- name: Check for JDBC libs
+  stat: path=/deploy/jdbc-libs
+  register: jdbclibs
+- name: Install JDBC libs
+  shell: cp /deploy/jdbc-libs/* /opt/nuxeo/server/lib/
+  become_user: nuxeo
+  when: jdbclibs.stat.exists
+- name: Create config dir
+  file: path=/opt/nuxeo/conf state=directory owner=nuxeo group=nuxeo mode=0755
+- name: Create data dir
+  file: path=/opt/nuxeo/data state=directory owner=nuxeo group=nuxeo mode=0755
+- name: Create log dir
+  file: path=/opt/nuxeo/logs state=directory owner=nuxeo group=nuxeo mode=0755
+- name: Create tmp dir
+  file: path=/opt/nuxeo/tmp state=directory owner=nuxeo group=nuxeo mode=0755
+- name: Move config file
+  shell: mv /opt/nuxeo/server/bin/nuxeo.conf /opt/nuxeo/conf/nuxeo.conf
+  become_user: nuxeo
+- name: Make nuxeoctl executable
+  file: path=/opt/nuxeo/server/bin/nuxeoctl mode=0755
+- name: Check for instance.clid
+  stat: path=/deploy/instance.clid
+  register: instanceclid
+- name: Install instance.clid
+  shell: cp /deploy/instance.clid /opt/nuxeo/data/
+  when: instanceclid.stat.exists
+
+# Add fixed paths
+- name: Config - nuxeo.data.dir
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.data\.dir\s*='
+    line: "nuxeo.data.dir=/opt/nuxeo/data"
+- name: Config - nuxeo.tmp.dir
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.tmp\.dir\s*='
+    line: "nuxeo.tmp.dir=/opt/nuxeo/tmp"
+- name: Config - nuxeo.log.dir
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.log\.dir\s*='
+    line: "nuxeo.log.dir=/opt/nuxeo/logs"
+# Add database config
+- name: Config - templates
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.templates\s*='
+    line: "nuxeo.templates={{dbparams[dbprofile]['template'] + (',mongodb' if mongo else '') + ',perf'}}"
+- name: Config - nuxeo.db.host
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.db\.host\s*='
+    line: "nuxeo.db.host={{db_hosts[0]}}"
+- name: Config - nuxeo.db.port
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.db\.port\s*='
+    line: "nuxeo.db.port={{dbparams[dbprofile]['port']}}"
+- name: Config - nuxeo.db.name
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.db\.name\s*='
+    line: "nuxeo.db.name={{dbparams[dbprofile]['name']}}"
+- name: Config - nuxeo.db.user
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.db\.user\s*='
+    line: "nuxeo.db.user={{dbparams[dbprofile]['user']}}"
+- name: Config - nuxeo.db.password
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.db\.password\s*='
+    line: "nuxeo.db.password={{dbparams[dbprofile]['pass']}}"
+# Add mongodb config
+- name: Config - nuxeo.mongodb.server
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.mongodb\.server\s*='
+    line: "nuxeo.mongodb.server={{mongodb_hosts[0]}}"
+  when: mongo
+- name: Config - nuxeo.mongodb.dbname
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.mongodb\.dbname\s*='
+    line: "nuxeo.mongodb.dbname=bench"
+  when: mongo
+# Add redis config
+- name: Config - nuxeo.redis.enabled
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.redis\.enabled\s*='
+    line: "nuxeo.redis.enabled=true"
+- name: Config - nuxeo.redis.host
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.redis\.host\s*='
+    line: "nuxeo.redis.host={{redis_host}}"
+# Add ES config
+- name: Config - elasticsearch.clusterName
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?elasticsearch\.clusterName\s*='
+    line: "elasticsearch.clusterName=nuxeo"
+- name: Config - elasticsearch.indexNumberOfShards
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?elasticsearch\.indexNumberOfShards\s*='
+    line: "elasticsearch.indexNumberOfShards=5"
+- name: Config - elasticsearch.indexNumberOfReplicas
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?elasticsearch\.indexNumberOfReplicas\s*='
+    line: "elasticsearch.indexNumberOfReplicas=1"
+- name: Config - elasticsearch.indexName
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?elasticsearch\.indexName\s*='
+    line: "elasticsearch.indexName=nuxeo"
+- name: Config - elasticsearch.addressList
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?elasticsearch\.addressList\s*='
+    line: "elasticsearch.addressList={{ es_hosts | map('regex_replace', '^(.*)$', '\\\\1:9300') | join(',') }}"
+# Add clustering config
+- name: Config - repository.clustering.enabled
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?repository\.clustering\.enabled\s*='
+    line: "repository.clustering.enabled=true"
+# Add nuxeoctl wrapper
+- name: nuxeoctl wrapper
+  copy: src=nuxeoctl dest=/usr/bin/nuxeoctl mode=0755
+# Add S3 config
+- name: Config - nuxeo.s3storage.region
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.s3storage\.region\s*='
+    line: "nuxeo.s3storage.region={{aws_region}}"
+- name: Config - nuxeo.s3storage.bucket
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.s3storage\.bucket\s*='
+    line: "nuxeo.s3storage.bucket={{bucket}}"
+- name: Config - nuxeo.s3storage.cachesize
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.s3storage\.cachesize\s*='
+    line: "nuxeo.s3storage.cachesize=100MB"
+- name: Install S3 package
+  shell: nuxeoctl --relax=false --accept=true mp-install amazon-s3-online-storage
+# wizard
+- name: Config - nuxeo.wizard.done
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.wizard\.done\s*='
+    line: "nuxeo.wizard.done=true"
+# Java heap size (about 80% of total memory)
+- name: Calculate heap size
+  shell: echo $(( $(grep MemTotal /proc/meminfo | awk '{print $2}') / 128 / 10 ))
+  register: heapsize
+- name: Config - heap size
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: 'JAVA_OPTS\s*=(.*)-Xms[^m]+m(.*)-Xmx[^m]+m(.*)'
+    line: 'JAVA_OPTS=\1-Xms{{heapsize.stdout.strip()}}m\2-Xmx{{heapsize.stdout.strip()}}m\3'
+    backrefs: yes
+
+# Add distribution packages
+- name: Add distribution packages
+  shell: nuxeoctl mp-init
+
+# Add custom bundles
+- name: Check for custom bundles
+  stat: path=/deploy/bundles
+  register: custombundles
+- name: Copy custom bundles
+  shell: cp -a /deploy/bundles/* /opt/nuxeo/server/nxserver/bundles/
+  when: custombundles.stat.exists
+  failed_when: False
+
+# Add custom templates
+- name: Check for custom templates
+  stat: path=/deploy/templates
+  register: customtpl
+- name: List custom templates
+  command: ls -1 /deploy/templates
+  when: customtpl.stat.exists
+  register: tpllist
+- name: Copy custom templates
+  shell: cp -a /deploy/templates/{{item}} /opt/nuxeo/server/templates/
+  with_items: tpllist.stdout.strip().split('\n')
+  when: customtpl.stat.exists and tpllist.stdout.strip() != ''
+- name: Add custom templaets to nuxeo.conf
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: 'nuxeo\.templates\s*=(.*)'
+    line: 'nuxeo.templates=\1,{{item}}'
+    backrefs: yes
+  with_items: tpllist.stdout.strip().split('\n')
+  when: customtpl.stat.exists and tpllist.stdout.strip() != ''
+
+# Add custom packages
+- name: Check for custom packages to add
+  stat: path=/deploy/mp-add
+  register: custompkg
+- name: List custom packages
+  command: ls -1 /deploy/mp-add
+  register: pkgaddlist
+  when: custompkg.stat.exists
+- name: Add custom packages
+  command: nuxeoctl mp-add /deploy/mp-add/{{item}}
+  with_items: pkgaddlist.stdout.strip().split('\n')
+  when: custompkg.stat.exists and pkgaddlist.stdout.strip() != ''
+
+# Install custom packages list
+- name: Check for custom packages to install
+  stat: path=/deploy/mp-list
+  register: installpkg
+- name: Install custom packages
+  shell: nuxeoctl --accept=true --relax=false mp-install $(cat /deploy/mp-list | tr '\n' ' ')
+  when: installpkg.stat.exists
+
+# Add custom config
+- name: Check for custom configuration
+  stat: path=/deploy/conf
+  register: customconf
+- name: Install custom configuration
+  shell: cat /deploy/conf >> /opt/nuxeo/conf/nuxeo.conf
+  when: customconf.stat.exists

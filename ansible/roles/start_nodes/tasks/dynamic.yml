@@ -1,0 +1,83 @@
+---
+- name: List stopped instances
+  shell: aws ec2 describe-instances --filters "Name=tag:bench,Values={{bench}}" "Name=tag:bench_role,Values={{type}}" "Name=instance-state-name,Values=stopped" --region={{aws_region}} --no-paginate --query "Reservations[*].Instances[*].InstanceId" | grep "i-" | tr -d '" ,' | sed 'N;s/\n/,/'
+  changed_when: False
+  register: stopped_instances
+- name: Start stopped instances
+  ec2:
+    region: "{{aws_region}}"
+    instance_ids: "{{stopped_instances.stdout}}"
+    instance_tags:
+      bench: "{{bench}}"
+      bench_role: "{{type}}"
+    state: "running"
+    wait: yes
+  when: stopped_instances.stdout != ""
+  register: started_instances
+- name: Register empty list for started instances
+  set_fact:
+    started_instances: {"instances": []}
+  when: stopped_instances.stdout == ""
+- name: Add started instances to group
+  add_host: hostname={{item.public_ip}} groupname={{type}}
+  with_items: started_instances.instances
+
+- name: Create/destroy instances
+  ec2:
+    region: "{{aws_region}}"
+    key_name: "{{keypair}}"
+    instance_type: "{{types[type]}}"
+    image: "{{amis[type]}}"
+    vpc_subnet_id: "{{subnet_id}}"
+    group: "{{security_group}}"
+    instance_profile_name: "{{instance_profile}}"
+    assign_public_ip: yes
+    instance_tags:
+      Name: bench-{{bench}}-{{type}}
+      bench: "{{bench}}"
+      bench_role: "{{type}}"
+    exact_count: "{{counts[type]}}"
+    count_tag:
+      bench: "{{bench}}"
+      bench_role: "{{type}}"
+    volumes:
+    - device_name: /dev/xvdf
+      device_type: gp2
+      volume_type: gp2
+      volume_size: "{{volsizes[type]}}"
+      delete_on_termination: true
+    wait: yes
+  register: created_instances
+- name: List new volumes
+  ec2_vol:
+    region: "{{aws_region}}"
+    instance: "{{item.id}}"
+    state: list
+  with_items: created_instances.instances
+  when: created_instances.changed
+  register: created_volumes
+- name: Register empty list for new volumes
+  set_fact:
+    created_volumes: {"results": []}
+  when: not created_instances.changed
+- name: Tag new volumes
+  ec2_tag:
+    region: "{{aws_region}}"
+    resource: "{{item.1.id}}"
+    state: present
+    tags:
+      Name: bench-{{bench}}-{{type}}
+      bench: "{{bench}}"
+      bench_role: "{{type}}"
+  with_subelements:
+    - created_volumes.results
+    - volumes
+- name: Add new instances to group
+  add_host: hostname={{item.public_ip}} groupname={{type}}
+  with_items: created_instances.instances
+  when: created_instances.changed
+
+- name: Wait for SSH to be available on all instances
+  wait_for: host={{item.public_ip}} port=22 delay=10 timeout=320 state=started
+  with_items: started_instances.instances + created_instances.instances
+

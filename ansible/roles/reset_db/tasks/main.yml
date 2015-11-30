@@ -1,0 +1,32 @@
+---
+#- name: Create temporary dir for unzip
+#  file: path=ansible_tmp state=directory
+#- name: Unzip distribution
+#  shell: unzip -q -d ansible_tmp ../deploy/nuxeo-distribution.zip
+#- name: Find out distribution directory
+#  shell: ls ansible_tmp/
+#  register: distrib_dir
+#- name: Extract Quartz SQL setup file
+#  copy:
+#    src: ansible_tmp/{{distrib_dir.stdout}}/{{quartz_sql[dbprofile]}}
+#    dest: dbsetup/create-quartz-tables.sql
+#- name: Remove temporary directory
+#  file: path=ansible_tmp state=absent
+- name: Execute database setup
+  shell: mvn clean initialize -P{{dbprofile}}
+  args:
+    chdir: dbsetup
+  environment:
+    NX_DB_HOST: groups["db"][0]
+    NX_DB_PORT: dbparams[dbprofile]["port"]
+    NX_DB_ADMINNAME: dbparams[dbprofile]["adminname"]
+    NX_DB_ADMINUSER: dbparams[dbprofile]["adminuser"]
+    NX_DB_ADMINPASS: dbparams[dbprofile]["adminpass"]
+    NX_DB_NAME: dbparams[dbprofile]["name"]
+    NX_DB_USER: dbparams[dbprofile]["user"]
+    NX_DB_PASS: dbparams[dbprofile]["pass"]
+#- name: Cleanup - delete sql file
+#  file: path=dbsetup/create-quartz-tables.sql state=absent
+- name: Cleanup - delete target dir
+  file: path=dbsetup/target state=absent
+

@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.nuxeo</groupId>
+    <artifactId>nuxeo-ecm</artifactId>
+    <version>8.1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>test-db-setup</artifactId>
+  <name>Test DB setup</name>
+  <description>Initializes databases for Nuxeo tests</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.nuxeo.build</groupId>
+        <artifactId>ant-assembly-maven-plugin</artifactId>
+        <configuration>
+          <buildFile>${basedir}/dbsetup.xml</buildFile>
+        </configuration>
+        <executions>
+          <execution>
+            <id>setup</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <configuration>
+              <targets>
+                <target>create-quartz-tables</target>
+              </targets>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>pgsql</id>
+    </profile>
+    <profile>
+      <id>mssql</id>
+    </profile>
+    <profile>
+      <id>oracle10g</id>
+    </profile>
+    <profile>
+      <id>oracle11g</id>
+    </profile>
+    <profile>
+      <id>oracle12c</id>
+    </profile>
+    <profile>
+      <id>mysql</id>
+    </profile>
+  </profiles>
+
+</project>

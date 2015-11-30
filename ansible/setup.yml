@@ -1,0 +1,61 @@
+---
+- hosts: nuxeo
+  gather_facts: no
+  user: ubuntu
+  become: yes
+  tasks:
+  # Stop it's up - we don't want it connected
+  # to other resources when we reset those
+  - name: Check for nuxeoctl wrapper
+    stat: path=/usr/bin/nuxeoctl
+    register: nuxeoctl
+  - name: Stop nuxeo
+    shell: nuxeoctl stop
+    when: nuxeoctl.stat.exists
+    failed_when: False
+
+- hosts: localhost
+  gather_facts: no
+  become: no
+  roles:
+  - reset_s3
+  - reset_db
+
+- hosts: mongodb
+  gather_facts: no
+  user: ubuntu
+  become: yes
+  roles:
+  - reset_mongodb
+
+- hosts: es
+  gather_facts: no
+  user: admin
+  become: yes
+  roles:
+  - java8
+  - reset_es
+
+- hosts: nuxeo
+  gather_facts: no
+  user: ubuntu
+  become: yes
+  roles:
+  - reset_redis
+  - reset_nuxeo
+
+- hosts: nuxeo
+  gather_facts: no
+  user: ubuntu
+  become: yes
+  serial: 1
+  roles:
+  - start_nuxeo
+
+- hosts: localhost
+  gather_facts: no
+  become: no
+  tasks:
+  - name: Wait for all instances to be in service in the ELB
+    shell: while [ $(aws elb describe-instance-health --load-balancer-name {{elb_name}} --region {{aws_region}} | grep InService | wc -l) -lt {{groups["nuxeo"]|length}} ]; do sleep 10; done
+

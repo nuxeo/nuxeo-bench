@@ -1,0 +1,82 @@
+#!/usr/bin/env python
+
+import boto.ec2
+import json
+import pprint
+import yaml
+
+f = open("group_vars/all/main.yml", "r")
+default = yaml.load(f)
+f.close()
+f = open("group_vars/all/custom.yml", "r")
+custom = yaml.load(f)
+f.close()
+region = default["aws_region"]
+bench = default["bench"]
+dbprofile = custom["dbprofile"]
+
+ec2 = boto.ec2.connect_to_region(region)
+reservations = ec2.get_all_instances(filters={"tag:bench": bench, "tag-key": "bench_role"})
+instances = [i for r in reservations for i in r.instances]
+dbreservations = ec2.get_all_instances(filters={"tag:bench_role": "db", "tag:dbprofile": "*" + dbprofile + "*"})
+dbinstances = [i for r in dbreservations for i in r.instances]
+mongodbreservations = ec2.get_all_instances(filters={"tag:bench_role": "db", "tag:dbprofile": "*mongodb*"})
+mongodbinstances = [i for r in mongodbreservations for i in r.instances]
+
+hostvars = {}
+groups = {}
+
+allinstances = []
+allids = []
+for i in instances + dbinstances + mongodbinstances:
+    if i.id not in allids:
+        allinstances.append(i)
+        allids.append(i.id)
+
+for i in allinstances:
+    #pprint.pprint (i.__dict__)
+    state = i._state.name
+    if state != "running":
+        continue
+    role = i.tags["bench_role"]
+    address = i.ip_address
+    if role not in groups:
+        groups[role] = {"hosts": []}
+    if role == "db" and i.tags["dbprofile"].find(dbprofile) == -1:
+        pass
+    else:
+        groups[role]["hosts"].append(address)
+    if role == "db" and i.tags["dbprofile"].find("mongodb") != -1:
+        if "mongodb" not in groups:
+            groups["mongodb"] = {"hosts": []}
+        groups["mongodb"]["hosts"].append(address)
+    hvars = {}
+    hvars["id"] = i.id
+    hvars["state"] = state
+    hvars["image_id"] = i.image_id
+    hvars["public_ip"] = address
+    hvars["private_ip"] = i.private_ip_address
+
+    hostvars[address] = hvars
+
+
+inventory = {"_meta": {"hostvars": hostvars}}
+inventory.update(groups)
+
+if "nuxeo" not in inventory:
+    inventory["nuxeo"] = {}
+inventory["nuxeo"]["vars"] = {"db_hosts": [], "es_hosts": [], "mongodb_hosts": []}
+if "db" in groups:
+    for i in groups["db"]["hosts"]:
+        inventory["nuxeo"]["vars"]["db_hosts"].append(hostvars[i]["private_ip"])
+if "es" in groups:
+    for i in groups["es"]["hosts"]:
+        inventory["nuxeo"]["vars"]["es_hosts"].append(hostvars[i]["private_ip"])
+if "mongodb" in groups:
+    for i in groups["mongodb"]["hosts"]:
+        inventory["nuxeo"]["vars"]["mongodb_hosts"].append(hostvars[i]["private_ip"])
+
+#print inventory
+
+print json.dumps(inventory, sort_keys=True, indent=2)
+

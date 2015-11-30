@@ -1,0 +1,114 @@
+---
+#- name: admin user authorized keys
+#  authorized_key: user=admin key='{{lookup("pipe", "cat /opt/build/hudson/authorized_keys/id_*.pub" )}}'
+
+# Install tools
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time=7200
+- name: Upgrade/install tools
+  apt: state=latest name={{item}}
+  with_items:
+  - unzip
+
+# Ensure instance is clean
+- name: Check for ES init script
+  stat: path=/etc/init.d/elasticsearch
+  register: esinit
+- name: Stop ES
+  shell: /etc/init.d/elasticsearch stop
+  when: esinit.stat.exists
+- name: Delete /opt/es
+  file: path=/opt/es state=absent
+
+# Prepare EBS volume
+- name: Check if EBS volume is mounted
+  shell: cat /proc/mounts | grep /dev/xvdf
+  changed_when: False
+  failed_when: False
+  register: mounted
+- name: Format EBS volume
+  shell: mkfs.ext4 /dev/xvdf
+  when: mounted.stdout == ""
+- name: Mount EBS volume
+  mount: src=/dev/xvdf name=/opt fstype=ext4 state=mounted
+
+# Get ES
+- name: Get ES
+  get_url:
+    url: https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-{{es_version}}.zip
+    dest: /tmp/elasticsearch-{{es_version}}.zip
+
+# Extract and setup ES
+- name: es user
+  user:
+    name: es
+    shell: /bin/bash
+    home: /opt/es
+    createhome: yes
+    state: present
+- name: Limits - nofile
+  lineinfile:
+    dest: /etc/security/limits.conf
+    line: "es - nofile 65536"
+- name: Limits - memlock
+  lineinfile:
+    dest: /etc/security/limits.conf
+    line: "es - memlock unlimited"
+- name: Unzip ES
+  shell: unzip -q -d /opt/es /tmp/elasticsearch-{{es_version}}.zip
+  become_user: es
+- name: Add symlink to ES
+  file: path=/opt/es/elasticsearch src=/opt/es/elasticsearch-{{es_version}} state=link
+  become_user: es
+- name: Config - cluster name
+  lineinfile:
+    dest: /opt/es/elasticsearch/config/elasticsearch.yml
+    regexp: '^#?\s*cluster\.name:'
+    line: "cluster.name: {{es_cluster}}"
+- name: Config - aws region
+  lineinfile:
+    dest: /opt/es/elasticsearch/config/elasticsearch.yml
+    regexp: '^#?\s*cloud\.aws\.region:'
+    line: "cloud.aws.region: {{aws_region}}"
+- name: Config - discovery type
+  lineinfile:
+    dest: /opt/es/elasticsearch/config/elasticsearch.yml
+    regexp: '^#?\s*discovery\.type:'
+    line: "discovery.type: ec2"
+- name: Config - discovery groups
+  lineinfile:
+    dest: /opt/es/elasticsearch/config/elasticsearch.yml
+    regexp: '^#?\s*discovery\.ec2\.groups:'
+    line: "discovery.ec2.groups: {{security_group}}"
+- name: Config - auto attributes
+  lineinfile:
+    dest: /opt/es/elasticsearch/config/elasticsearch.yml
+    regexp: '^#?\s*cloud\.node\.auto_attributes:'
+    line: "cloud.node.auto_attributes: true"
+- name: Config - mlockall
+  lineinfile:
+    dest: /opt/es/elasticsearch/config/elasticsearch.yml
+    regexp: '^#?\s*bootstrap\.mlockall:'
+    line: "bootstrap.mlockall: true"
+#- name: Logging - debug
+#  lineinfile:
+#    dest: /opt/es/elasticsearch/config/logging.yml
+#    regexp: '^#?\s*es\.logger\.level:'
+#    line: "es.logger.level: DEBUG"
+- name: EC2 plugin install
+  shell: /opt/es/elasticsearch/bin/plugin -install org.elasticsearch/elasticsearch-cloud-aws/{{ec2_plugin_version}}
+  become_user: es
+- name: Init script
+  copy:
+    src: es_init.sh
+    dest: /etc/init.d/elasticsearch
+    mode: 0755
+  register: es_init
+- name: Reload systemd
+  shell: systemctl daemon-reload
+  when: es_init.changed
+
+# Start ES
+- name: Start ES
+  shell: /etc/init.d/elasticsearch start
+

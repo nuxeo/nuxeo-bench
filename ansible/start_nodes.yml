@@ -1,0 +1,59 @@
+---
+- hosts: localhost
+  gather_facts: no
+  sudo: no
+  roles:
+  - {role: start_nodes, type: db}
+  - {role: start_nodes, type: mongodb}
+  - {role: start_nodes, type: es}
+  - {role: start_nodes, type: nuxeo}
+
+- hosts: localhost
+  gather_facts: no
+  sudo: no
+  tasks:
+  # Wait for database
+  - name: Wait for PostgreSQL to be available
+    wait_for: host={{item}} port=5432 delay=5 timeout=320 state=started
+    with_items: groups["db"]
+    when: dbprofile == "pgsql"
+  - name: Wait for MySQL to be available
+    wait_for: host={{item}} port=3306 delay=5 timeout=320 state=started
+    with_items: groups["db"]
+    when: dbprofile == "mysql"
+  - name: Wait for Oracle to be available
+    wait_for: host={{item}} port=1521 delay=5 timeout=320 state=started
+    with_items: groups["db"]
+    when: dbprofile == "oracle12c"
+  - name: Wait for SQL Server to be available
+    wait_for: host={{item}} port=1433 delay=5 timeout=320 state=started
+    with_items: groups["db"]
+    when: dbprofile == "mssql"
+
+- hosts: localhost
+  gather_facts: no
+  sudo: no
+  tasks:
+  - name: List instances registered with ELB
+    shell: aws elb describe-load-balancers --load-balancer-name bench-elb --region={{aws_region}} --query "LoadBalancerDescriptions[0].Instances[*].InstanceId" | grep "i-" | tr -d '" ,'
+    register: registered_instances
+  - name: Get nuxeo instances IDs
+    shell: aws ec2 describe-instances --filters "Name=tag:bench,Values={{bench}}" "Name=tag:bench_role,Values=nuxeo" "Name=instance-state-name,Values=running" --region={{aws_region}} --no-paginate --query "Reservations[*].Instances[*].InstanceId" | grep "i-" | tr -d '" ,'
+    register: nuxeo_instances
+  - name: Remove obsolete Nuxeo instances from ELB
+    ec2_elb:
+      ec2_elbs: "{{elb_name}}"
+      instance_id: "{{item}}"
+      region: "{{aws_region}}"
+      state: absent
+      wait: no
+    with_items: registered_instances.stdout.split("\n") | difference(nuxeo_instances.stdout.split("\n"))
+  - name: Add new Nuxeo instances to ELB
+    ec2_elb:
+      ec2_elbs: "{{elb_name}}"
+      instance_id: "{{item}}"
+      region: "{{aws_region}}"
+      state: present
+      wait: no
+    with_items: nuxeo_instances.stdout.split("\n") | difference(registered_instances.stdout.split("\n"))
+

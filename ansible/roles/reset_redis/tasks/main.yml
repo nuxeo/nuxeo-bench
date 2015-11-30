@@ -1,0 +1,5 @@
+---
+- name: Flush redis contents
+  shell: redis-cli -h {{redis_host}} flushall
+  run_once: true
+

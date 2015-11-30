@@ -1,0 +1,51 @@
+---
+aws_region: eu-west-1
+elb_name: bench-elb
+redis_host: nuxeo-bench.xsn1jx.0001.euw1.cache.amazonaws.com
+bucket: nuxeo-bench
+bench: test
+counts:
+  nuxeo: 2
+  es: 3
+volsizes:
+  nuxeo: 50
+  es: 250
+
+dbparams:
+  pgsql:
+    port: 5432
+    adminname: template1
+    adminuser: nxadmin
+    adminpass: nuxeo
+    name: bench
+    user: bench
+    pass: bench
+    template: postgresql-quartz-cluster
+  oracle12c:
+    port: 1521
+    adminname: NUXEO
+    adminuser: sys
+    adminpass: nuxeo
+    name: NUXEO
+    user: bench
+    pass: bench
+    template: oracle-quartz-cluster
+  mssql:
+    port: 1433
+    adminname: master
+    adminuser: sa
+    adminpass: nuxeo
+    name: bench
+    user: bench
+    pass: bench
+    template: mssql-quartz-cluster
+  mysql:
+    port: 3306
+    adminname: mysql
+    adminuser: root
+    adminpass: nuxeo
+    name: bench
+    user: bench
+    pass: bench
+    template: mysql
+

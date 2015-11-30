@@ -1,0 +1,7 @@
+---
+dbprofile: pgsql
+quartz_sql:
+  pgsql: templates/postgresql-quartz-cluster/bin/create-quartz-tables.sql
+  oracle12c: templates/oracle-quartz-cluster/bin/create-quartz-tables.sql
+  mssql: templates/mssql-quartz-cluster/bin/create-quartz-tables.sql
+

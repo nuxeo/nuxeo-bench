@@ -1,0 +1,25 @@
+---
+- name: List stopped mongodb instances
+  shell: aws ec2 describe-instances --filters "Name=tag:bench_role,Values=db" "Name=tag:dbprofile,Values=*mongodb*" "Name=instance-state-name,Values=stopped" --region={{aws_region}} --no-paginate --query "Reservations[*].Instances[*].InstanceId" | grep "i-" | tr -d '" ,' | sed 'N;s/\n/,/'
+  changed_when: False
+  register: stopped_instances
+  when: mongo
+- name: Start stopped mongodb instances
+  ec2:
+    region: "{{aws_region}}"
+    instance_ids: "{{stopped_instances.stdout}}"
+    state: "running"
+    wait: yes
+  when: stopped_instances.stdout != ""
+  register: started_instances
+  when: mongo
+- name: Register empty list for started mongodb instances
+  set_fact:
+    started_instances: {"instances": []}
+  when: stopped_instances.stdout == ""
+  when: mongo
+- name: Add started instances to group
+  add_host: hostname={{item.public_ip}} groupname=mongodb
+  with_items: started_instances.instances
+  when: mongo
+
