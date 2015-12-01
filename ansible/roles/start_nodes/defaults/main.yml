@@ -1,5 +1,5 @@
 ---
-keypair: jenkins
+keypair: Jenkins
 aws_region: eu-west-1
 security_group: jenkins-vpc
 subnet_id: subnet-dbac2a82

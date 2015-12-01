@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 
+import argparse
 import boto.ec2
 import json
+import os
 import pprint
 import yaml
+
+abspath = os.path.abspath(__file__)
+dirname = os.path.dirname(abspath)
+os.chdir(dirname)
 
 f = open("group_vars/all/main.yml", "r")
 default = yaml.load(f)
@@ -14,6 +20,11 @@ f.close()
 region = default["aws_region"]
 bench = default["bench"]
 dbprofile = custom["dbprofile"]
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--hosts", help="List the hosts for the specified group")
+parser.add_argument("--list", help="List the whole inventory", action="store_true")
+args = parser.parse_args()
 
 ec2 = boto.ec2.connect_to_region(region)
 reservations = ec2.get_all_instances(filters={"tag:bench": bench, "tag-key": "bench_role"})
@@ -78,5 +89,8 @@ if "mongodb" in groups:
 
 #print inventory
 
-print json.dumps(inventory, sort_keys=True, indent=2)
+if args.hosts:
+    print " ".join(inventory[args.hosts]["hosts"])
+else:
+    print json.dumps(inventory, sort_keys=True, indent=2)
 

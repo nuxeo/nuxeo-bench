@@ -1,3 +1,4 @@
 venv
 deploy
+logs
 ansible/group_vars/all/custom.yml

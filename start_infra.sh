@@ -5,7 +5,7 @@ cd $(dirname $0)
 db="pgsql"
 mongo="false"
 distrib="lastbuild"
-keypair="jenkins"
+keypair="Jenkins"
 
 function help {
     echo "Usage: $0 -P<dbprofile> -m -d<distribution>"
