@@ -11,7 +11,7 @@ mkdir logs
 
 for h in $(ansible/inventory.py --hosts nuxeo); do
     mkdir logs/$h
-    scp ubuntu@$h:/opt/nuxeo/logs/server.log logs/$h/
-    scp ubuntu@$h:/opt/nuxeo/logs/gc.log logs/$h/
-    scp ubuntu@$h:/opt/nuxeo/server/nxserver/perf*.csv logs/$h/
+    scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@$h:/opt/nuxeo/logs/server.log logs/$h/
+    scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@$h:/opt/nuxeo/logs/gc.log logs/$h/
+    scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@$h:/opt/nuxeo/server/nxserver/perf*.csv logs/$h/
 done
