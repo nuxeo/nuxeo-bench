@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd $(dirname $0)
-
+. venv/bin/activate
 
 if [ -d logs ]; then
     rm -rf logs

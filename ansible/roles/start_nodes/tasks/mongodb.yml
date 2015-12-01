@@ -19,7 +19,7 @@
   when: stopped_instances.stdout == ""
   when: mongo
 - name: Add started instances to group
-  add_host: hostname={{item.public_ip}} groupname=mongodb
+  add_host: hostname={{item.private_ip if keypair == "Jenkins" else item.public_ip}} groupname=mongodb
   with_items: started_instances.instances
   when: mongo
 
