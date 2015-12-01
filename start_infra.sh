@@ -62,20 +62,13 @@ while getopts ":P:md:k:h" opt; do
     esac
 done
 
-# Setup virtualenv
-if [ ! -d venv ]; then
-    virtualenv venv
-fi
-. venv/bin/activate
-pip install lxml
-pip install requests
-pip install -r ansible/requirements.txt
-
 # Prepare distribution
 if [ -d deploy ]; then
     rm -rf deploy
 fi
 mkdir deploy
+sudo apt-get update
+sudo apt-get -q -y install python-lxml python-requests
 ./bin/get-nuxeo-distribution -v $distrib -o deploy/nuxeo-distribution.zip
 cp /opt/build/hudson/instance.clid deploy/
 echo "nuxeo-platform-importer" > deploy/mp-list
@@ -85,9 +78,13 @@ echo "---" > ansible/group_vars/all/custom.yml
 echo "dbprofile: $db" >> ansible/group_vars/all/custom.yml
 echo "mongo: $mongo" >> ansible/group_vars/all/custom.yml
 echo "keypair: $keypair" >> ansible/group_vars/all/custom.yml
-#perl -p -i -e "s/^dbprofile:.*$/dbprofile: $db/" ansible/group_vars/all.yml
-#perl -p -i -e "s/^mongo:.*$/mongo: $mongo/" ansible/group_vars/all.yml
-#perl -p -i -e "s/^keypair:.*$/keypair: $keypair/" ansible/group_vars/all.yml
+
+# Setup virtualenv
+if [ ! -d venv ]; then
+    virtualenv venv
+fi
+. venv/bin/activate
+pip install -r ansible/requirements.txt
 
 # Run ansible scripts
 pushd ansible
