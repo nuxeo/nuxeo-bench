@@ -62,6 +62,15 @@ while getopts ":P:md:k:h" opt; do
     esac
 done
 
+# Setup virtualenv
+if [ ! -d venv ]; then
+    virtualenv venv
+fi
+. venv/bin/activate
+pip install lxml
+pip install requests
+pip install -r ansible/requirements.txt
+
 # Prepare distribution
 if [ -d deploy ]; then
     rm -rf deploy
@@ -79,13 +88,6 @@ echo "keypair: $keypair" >> ansible/group_vars/all/custom.yml
 #perl -p -i -e "s/^dbprofile:.*$/dbprofile: $db/" ansible/group_vars/all.yml
 #perl -p -i -e "s/^mongo:.*$/mongo: $mongo/" ansible/group_vars/all.yml
 #perl -p -i -e "s/^keypair:.*$/keypair: $keypair/" ansible/group_vars/all.yml
-
-# Setup virtualenv
-if [ ! -d venv ]; then
-    virtualenv venv
-fi
-. venv/bin/activate
-pip install -r ansible/requirements.txt
 
 # Run ansible scripts
 pushd ansible
