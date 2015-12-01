@@ -20,6 +20,7 @@ f.close()
 region = default["aws_region"]
 bench = default["bench"]
 dbprofile = custom["dbprofile"]
+keypair = custom["keypair"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--hosts", help="List the hosts for the specified group")
@@ -50,7 +51,10 @@ for i in allinstances:
     if state != "running":
         continue
     role = i.tags["bench_role"]
-    address = i.ip_address
+    if keypair == "Jenkins":
+        address = i.private_ip_address
+    else:
+        address = i.ip_address
     if role not in groups:
         groups[role] = {"hosts": []}
     if role == "db" and i.tags["dbprofile"].find(dbprofile) == -1:
@@ -65,7 +69,7 @@ for i in allinstances:
     hvars["id"] = i.id
     hvars["state"] = state
     hvars["image_id"] = i.image_id
-    hvars["public_ip"] = address
+    hvars["public_ip"] = i.ip_address
     hvars["private_ip"] = i.private_ip_address
 
     hostvars[address] = hvars
