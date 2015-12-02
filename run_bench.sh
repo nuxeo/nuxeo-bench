@@ -39,8 +39,9 @@ function load_data_into_redis() {
   pushd $SCRIPT_PATH || exit 2
   echo flushdb | redis-cli -n 7
   set > /tmp/b
-  python ./scripts/inject-arbres.py -d > /tmp/c
+  unset PYTHONUNBUFFERED
   python ./scripts/inject-arbres.py -d | redis-cli -n 7 --pipe || exit 3
+  export PYTHONUNBUFFERED=1
   popd
 }
 
