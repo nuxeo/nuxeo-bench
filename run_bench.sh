@@ -36,6 +36,7 @@ function clone_or_update_bench_scripts() {
 function load_data_into_redis() {
   echo "Load bench data into Redis"
   pushd $SCRIPT_PATH || exit 2
+  echo flushdb | redis-cli -n 7
   python ./scripts/inject-arbres.py -d | redis-cli -n 7 --pipe || exit 3
   popd
 }
