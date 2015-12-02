@@ -15,14 +15,14 @@ function clone_bench_scripts() {
   git config core.sparseCheckout true || exit 2
   echo "$SCRIPT_DIR" > .git/info/sparse-checkout
   git remote add origin $NUXEO_GIT || exit 2
-  git pull --depth 1 origin master || exit 2
+  git pull --depth 10 origin master || exit 2
   popd
 }
 
 function update_bench_scripts() {
   echo "Update bench script"
   pushd $SCRIPT_ROOT || exit 2
-  git pull --depth 1 origin master || exit 2
+  git pull --depth 20 origin master || exit 2
   popd
 }
 
