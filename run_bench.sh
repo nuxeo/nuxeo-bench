@@ -1,4 +1,5 @@
 #!/bin/bash -e
+cd $(dirname $0)
 
 NUXEO_GIT=https://github.com/nuxeo/nuxeo.git
 SCRIPT_ROOT="./bench-scripts"
@@ -37,6 +38,8 @@ function load_data_into_redis() {
   echo "Load bench data into Redis"
   pushd $SCRIPT_PATH || exit 2
   echo flushdb | redis-cli -n 7
+  set > /tmp/b
+  python ./scripts/inject-arbres.py -d > /tmp/c
   python ./scripts/inject-arbres.py -d | redis-cli -n 7 --pipe || exit 3
   popd
 }
