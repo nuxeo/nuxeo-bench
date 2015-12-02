@@ -5,7 +5,7 @@ NUXEO_GIT=https://github.com/nuxeo/nuxeo.git
 SCRIPT_ROOT="./bench-scripts"
 SCRIPT_DIR="nuxeo-distribution/nuxeo-distribution-cap-gatling-tests"
 SCRIPT_PATH="$SCRIPT_ROOT/$SCRIPT_DIR"
-TARGET=http://nuxeo-bench.nuxeo.org/
+TARGET=http://nuxeo-bench.nuxeo.org/nuxeo
 
 function clone_bench_scripts() {
   echo "Clone bench script"
@@ -38,7 +38,7 @@ function load_data_into_redis() {
   echo "Load bench data into Redis"
   pushd $SCRIPT_PATH || exit 2
   echo flushdb | redis-cli -n 7
-  set > /tmp/b
+  # redis-cli don't like unbuffered input
   unset PYTHONUNBUFFERED
   python ./scripts/inject-arbres.py -d | redis-cli -n 7 --pipe || exit 3
   export PYTHONUNBUFFERED=1
