@@ -50,8 +50,9 @@ function gatling() {
 }
 
 function run_simulations() {
-  pushd $SCRIPT_PATH || exit 2
   echo "Run simulations"
+  pushd $SCRIPT_PATH || exit 2
+  mvn -nsu clean
   gatling "org.nuxeo.cap.bench.Sim00Setup"
   gatling "org.nuxeo.cap.bench.Sim10MassImport"
   gatling "org.nuxeo.cap.bench.Sim10CreateFolders"
