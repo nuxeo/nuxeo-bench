@@ -10,14 +10,12 @@
     instance_ids: "{{stopped_instances.stdout}}"
     state: "running"
     wait: yes
-  when: stopped_instances.stdout != ""
+  when: mongo and stopped_instances.stdout != ""
   register: started_instances
-  when: mongo
 - name: Register empty list for started mongodb instances
   set_fact:
     started_instances: {"instances": []}
-  when: stopped_instances.stdout == ""
-  when: mongo
+  when: mongo and stopped_instances.stdout == ""
 - name: Add started instances to group
   add_host: hostname={{item.private_ip if keypair == "Jenkins" else item.public_ip}} groupname=mongodb
   with_items: started_instances.instances
