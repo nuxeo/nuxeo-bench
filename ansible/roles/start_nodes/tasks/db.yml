@@ -1,6 +1,6 @@
 ---
 - name: List stopped db instances
-  shell: aws ec2 describe-instances --filters "Name=tag:bench_role,Values=db" "Name=tag:dbprofile,Values=*{{dbprofile}}*" "Name=instance-state-name,Values=stopped" --region={{aws_region}} --no-paginate --query "Reservations[*].Instances[*].InstanceId" | grep "i-" | tr -d '" ,' | sed 'N;s/\n/,/'
+  shell: aws ec2 describe-instances --filters "Name=tag:bench_role,Values=db" "Name=tag:dbprofile,Values=*{{dbprofile}}*" "Name=instance-state-name,Values=stopped" --region={{aws_region}} --no-paginate --query "Reservations[*].Instances[*].InstanceId" | grep "i-" | tr -d '" ,' | paste -d, -s
   changed_when: False
   register: stopped_instances
 - name: Start stopped db instances
