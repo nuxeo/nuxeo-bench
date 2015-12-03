@@ -28,6 +28,13 @@
   roles:
   - reset_mongodb
 
+- hosts: mgmt
+  gather_facts: no
+  user: ubuntu
+  become: yes
+  roles:
+  - reset_mgmt
+
 - hosts: es
   gather_facts: no
   user: admin

@@ -1,0 +1,21 @@
+---
+- name: List stopped mgmt instances
+  shell: aws ec2 describe-instances --filters "Name=tag:bench_role,Values=mgmt" "Name=instance-state-name,Values=stopped" --region={{aws_region}} --no-paginate --query "Reservations[*].Instances[*].InstanceId" | grep "i-" | tr -d '" ,' | paste -d, -s
+  changed_when: False
+  register: stopped_instances
+- name: Start stopped mgmt instances
+  ec2:
+    region: "{{aws_region}}"
+    instance_ids: "{{stopped_instances.stdout}}"
+    state: "running"
+    wait: yes
+  when: stopped_instances.stdout != ""
+  register: started_instances
+- name: Register empty list for started mgmt instances
+  set_fact:
+    started_instances: {"instances": []}
+  when: stopped_instances.stdout == ""
+- name: Add started mgmt instances to group
+  add_host: hostname={{item.private_ip if keypair == "Jenkins" else item.public_ip}} groupname=mgmt
+  with_items: started_instances.instances
+
