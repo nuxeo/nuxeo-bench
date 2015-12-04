@@ -56,6 +56,16 @@ update-alternatives --set java /usr/lib/jvm/java-8/jre/bin/java
 # Get logstash image
 docker pull logstash:2.1
 
+# Install (disabled) Diamond
+apt-get -q -y install make pbuilder python-mock python-configobj python-support cdbs
+cd /usr/local/src
+git clone git://github.com/python-diamond/Diamond
+cd Diamond
+make builddeb
+dpkg -i build/diamond_*.deb
+service diamond stop
+update-rc.d diamond disable
+
 # Prepare cleanup
 cat << EOF > /mnt/cleanup.sh
 #!/bin/bash

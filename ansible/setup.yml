@@ -37,10 +37,9 @@
 
 - hosts: es
   gather_facts: no
-  user: admin
+  user: ubuntu
   become: yes
   roles:
-  - java8
   - reset_es
 
 - hosts: nuxeo

@@ -1,6 +1,20 @@
 ---
-#- name: ubuntu user authorized keys
-#  authorized_key: user=ubuntu key='{{lookup("pipe", "cat /opt/build/hudson/authorized_keys/id_*.pub" )}}'
+# Set better hostname
+- name: Reset node numbers
+  shell: redis-cli -h {{redis_host}} --csv del nuxeo_node_number
+  run_once: true
+- name: Get node number
+  shell: redis-cli -h {{redis_host}} --csv incr nuxeo_node_number
+  register: nodenum
+- name: Set hostname
+  shell: hostname nuxeo{{nodenum.stdout}}
+- name: Update /etc/hostname
+  shell: echo -n nuxeo{{nodenum.stdout}} > /etc/hostname
+- name: Update /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '^127.0.0.1.*$'
+    line: "127.0.0.1 localhost nuxeo{{nodenum.stdout}}"
 
 - name: Upload distribution and settings
   synchronize:
@@ -185,6 +199,11 @@
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?repository\.clustering\.enabled\s*='
     line: "repository.clustering.enabled=true"
+- name: Config - repository.clustering.id
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?repository\.clustering\.id\s*='
+    line: "repository.clustering.id={{nodenum.stdout}}"
 # Add nuxeoctl wrapper
 - name: nuxeoctl wrapper
   copy: src=nuxeoctl dest=/usr/bin/nuxeoctl mode=0755
@@ -243,6 +262,11 @@
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?metrics\.graphite\.period\s*='
     line: "metrics.graphite.period=10"
+- name: Config - metrics.graphite.prefix
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?metrics\.graphite\.prefix\s*='
+    line: "metrics.graphite.prefix=servers.nuxeo{{nodenum.stdout}}.nuxeo"
 - name: Config - metrics.tomcat.enabled
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
@@ -311,3 +335,10 @@
 - name: Install custom configuration
   shell: cat /deploy/conf >> /opt/nuxeo/conf/nuxeo.conf
   when: customconf.stat.exists
+
+# Setup Diamond
+- name: Add Diamond config
+  template: src=diamond.j2 dest=/etc/diamond/diamond.conf
+- name: Start Diamond
+  shell: service diamond restart
+
