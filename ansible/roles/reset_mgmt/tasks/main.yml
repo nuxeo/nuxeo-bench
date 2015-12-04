@@ -2,13 +2,13 @@
 - name: Kill old containers
   shell: docker-compose kill
   args:
-    chdir: monitoring
+    chdir: /root/monitoring
 - name: Delete old containers
   shell: docker-compose rm -f
   args:
-    chdir: monitoring
+    chdir: /root/monitoring
 - name: Start new containers
   shell: docker-compose up -d
   args:
-    chdir: monitoring
+    chdir: /root/monitoring
 
