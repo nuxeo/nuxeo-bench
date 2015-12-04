@@ -41,7 +41,8 @@ apt-get -q -y install \
     imagemagick ufraw ffmpeg2theora \
     poppler-utils exiftool libwpd-tools \
     libreoffice zip unzip redis-tools \
-    postgresql-client screen wget mongodb-org-shell
+    postgresql-client screen wget mongodb-org-shell \
+    atop sysstat
 
 # Install Java 8
 mkdir -p /usr/lib/jvm
@@ -51,6 +52,9 @@ rm /tmp/jdk-8-linux-x64.tgz
 ln -s /usr/lib/jvm/jdk1.8.0_65 /usr/lib/jvm/java-8
 update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8/jre/bin/java 1081
 update-alternatives --set java /usr/lib/jvm/java-8/jre/bin/java
+
+# Get logstash image
+docker pull logstash:2.1
 
 # Prepare cleanup
 cat << EOF > /mnt/cleanup.sh
