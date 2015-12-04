@@ -222,6 +222,32 @@
     regexp: 'JAVA_OPTS\s*=(.*)-Xms[^m]+m(.*)-Xmx[^m]+m(.*)'
     line: 'JAVA_OPTS=\1-Xms{{heapsize.stdout.strip()}}m\2-Xmx{{heapsize.stdout.strip()}}m\3'
     backrefs: yes
+# Graphite
+- name: Config - metrics.graphite.enabled
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?metrics\.graphite\.enabled\s*='
+    line: "metrics.graphite.enabled=true"
+- name: Config - metrics.graphite.host
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?metrics\.graphite\.host\s*='
+    line: "metrics.graphite.host={{mgmt_hosts[0]}}"
+- name: Config - metrics.graphite.port
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?metrics\.graphite\.port\s*='
+    line: "metrics.graphite.port=2030"
+- name: Config - metrics.graphite.period
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?metrics\.graphite\.period\s*='
+    line: "metrics.graphite.period=10"
+- name: Config - metrics.tomcat.enabled
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?metrics\.tomcat\.enabled\s*='
+    line: "metrics.tomcat.enabled=true"
 
 # Add distribution packages
 - name: Add distribution packages
