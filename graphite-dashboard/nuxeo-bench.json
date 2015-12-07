@@ -1,0 +1,356 @@
+[
+  {
+    "lineMode": "connected",
+    "target": [
+      "alias(secondYAxis(sumSeries(servers.es*.loadavg.processes_running)),\"process running\")",
+      "aliasByNode(servers.es*.loadavg.01,1)"
+    ],
+    "title": "ES sys/Load 1min",
+    "colorList": "darkgray,red,blue,green"
+  },
+  {
+    "lineMode": "connected",
+    "target": [
+      "alias(secondYAxis(sumSeries(servers.nuxeo*.loadavg.processes_running)),\"process running\")",
+      "aliasByNode(servers.nuxeo*.loadavg.01,1)"
+    ],
+    "title": "Nuxeos sys/Load",
+    "colorList": "darkgray,red,blue,green"
+  },
+  {
+    "lineMode": "connected",
+    "target": [
+      "alias(secondYAxis(servers.mypgsql.loadavg.processes_running),\"process running\")",
+      "alias(servers.mypgsql.loadavg.01,\"1min\")"
+    ],
+    "title": "DB sys/Load",
+    "colorList": "darkgray,red,orange,yellow"
+  },
+  {
+    "lineMode": "connected",
+    "target": [
+      "aliasByNode(servers.*.cpu.total.user,1)"
+    ],
+    "title": "sys/CPU users",
+    "vtitle": "CPU"
+  },
+  {
+    "lineMode": "connected",
+    "target": [
+      "aliasByNode(servers.*.cpu.total.system,1)"
+    ],
+    "title": "sys/CPU system",
+    "vtitle": "CPU"
+  },
+  {
+    "lineMode": "connected",
+    "target": [
+      "aliasByNode(servers.*.cpu.total.iowait,1)"
+    ],
+    "title": "sys/CPU iowait",
+    "vtitle": "CPU"
+  },
+  {
+    "lineMode": "connected",
+    "target": [
+      "aliasByNode(servers.*.cpu.total.idle,1)"
+    ],
+    "title": "sys/CPU idle",
+    "vtitle": "CPU"
+  },
+  {
+    "lineMode": "connected",
+    "target": [
+      "aliasByNode(servers.*.iostat.xvdf.util_percentage,1)"
+    ],
+    "title": "sys/Disk xvdf usage",
+    "vtitle": "percent"
+  },
+  {
+    "lineMode": "connected",
+    "target": [
+      "aliasByNode(servers.*.iostat.xvda.util_percentage,1)"
+    ],
+    "title": "sys/Disk xvda usage",
+    "vtitle": "percent"
+  },
+  {
+    "lineMode": "connected",
+    "target": [
+      "alias(secondYAxis(servers.mypgsql.memory.SwapCached),\"swap\")",
+      "alias(secondYAxis(servers.mypgsql.memory.Dirty),\"dirty\")",
+      "alias(asPercent(servers.mypgsql.memory.Buffers,servers.mypgsql.memory.MemTotal),\"buffers\")",
+      "alias(asPercent(servers.mypgsql.memory.Cached,servers.mypgsql.memory.MemTotal),\"cached\")",
+      "alias(asPercent(servers.mypgsql.memory.MemFree,servers.mypgsql.memory.MemTotal),\"free\")"
+    ],
+    "title": "sys/Memory DB",
+    "vtitle": "percent",
+    "colorList": "red,orange,blue,darkblue,green"
+  },
+  {
+    "target": [
+      "alias(servers.*.elasticsearch.process.cpu.percent,\"%CPU\")",
+      "alias(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size),\"index size\")"
+    ],
+    "yMaxLeft": "100",
+    "title": "es/Elasticsearch CPU and size",
+    "yMinLeft": "0",
+    "vtitle": "percent",
+    "colorList": "red,blue"
+  },
+  {
+    "colorList": "blue,orange",
+    "title": "es/Elasticsearch docs",
+    "target": [
+      "alias(servers.*.elasticsearch.indices._all.docs.count,\"total documents\")",
+      "alias(secondYAxis(servers.*.elasticsearch.indices._all.docs.deleted),\"deleted documents\")"
+    ]
+  },
+  {
+    "target": [
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_deleted),1),\"tup_deleted\")",
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_inserted),1),\"tup_inserted\")",
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_updated),1),\"tup_updated\")",
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.xact_commit),1),\"xact_commit\")",
+      "alias(secondYAxis(servers.*.postgres.database.*.connections),\"connections\")"
+    ],
+    "yMinRight": "0",
+    "title": "db/Postgres",
+    "colorList": "red,orange,yellow,blue,green"
+  },
+  {
+    "colorList": "darkgray,blue,green",
+    "title": "jvm/Threads",
+    "target": [
+      "alias(secondYAxis(servers.*.nuxeo.jvm.files),\"fd_usage\")",
+      "alias(servers.*.nuxeo.jvm.threads.count,\"thread_count\")",
+      "alias(servers.*.nuxeo.jvm.threads.daemon.count,\"daemond\")"
+    ]
+  },
+  {
+    "target": [
+      "alias(servers.*.nuxeo.jvm.threads.runnable.count,\"runnable\")",
+      "alias(servers.*.nuxeo.jvm.threads.new.count,\"new\")",
+      "alias(servers.*.nuxeo.jvm.threads.blocked.count,\"blocked\")",
+      "alias(servers.*.nuxeo.jvm.threads.waiting.count,\"waiting\")",
+      "alias(servers.*.nuxeo.jvm.threads.timed_waiting.count,\"timed_waiting\")",
+      "alias(servers.*.nuxeo.jvm.threads.terminated.count,\"terminated\")"
+    ],
+    "title": "jvm/Thread state",
+    "areaMode": "stacked",
+    "colorList": "green,blue,red,orange,yellow,purple"
+  },
+  {
+    "vtitle": "percent",
+    "title": "jvm/Heap",
+    "target": [
+      "alias(asPercent(servers.*.nuxeo.jvm.memory.heap.usage,1),\"heap usage\")",
+      "alias(asPercent(servers.*.nuxeo.jvm.memory.non-heap.usage,1),\"non heap usage\")"
+    ]
+  },
+  {
+    "lineMode": "staircase",
+    "target": [
+      "alias(asPercent(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.jvm.garbage.PS-Scavenge.time),1),1000),\"minor GC\")",
+      "alias(asPercent(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.jvm.garbage.PS-MarkSweep.time),1),1000),\"major GC\")"
+    ],
+    "title": "jvm/GC",
+    "areaMode": "first",
+    "vtitle": "percent",
+    "colorList": "orange,red"
+  },
+  {
+    "colorList": "green,red,yellow",
+    "title": "tcat/Processing time and errors",
+    "target": [
+      "alias(servers.*.nuxeo.tomcat.processingTime,\"processingTime\")",
+      "alias(secondYAxis(servers.*.nuxeo.tomcat.errorCount),\"requests in error\")"
+    ]
+  },
+  {
+    "title": "tcat/Throughtput Threads and sessions",
+    "target": [
+      "alias(servers.*.nuxeo.tomcat.currentThreadBusy,\"threads busy\")",
+      "alias(servers.*.nuxeo.tomcat.currentThreadCount,\"threads\")",
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.tomcat.requestCount),1),\"requests/s\")",
+      "alias(secondYAxis(servers.*.nuxeo.tomcat.activeSessions),\"activeSessions\")"
+    ]
+  },
+  {
+    "title": "nx/Repositories JDBC connections pool",
+    "target": [
+      "alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.count),\"total connection\")",
+      "alias(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.count),sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.idle)),\"active\")"
+    ]
+  },
+  {
+    "title": "nx/Repositories sessions",
+    "target": [
+      "alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.sessions),\"sessions\")",
+      "alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.count),\"total connections\")",
+      "alias(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.count),sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.idle)),\"active\")"
+    ]
+  },
+  {
+    "title": "nx/Directories max sessions per directory",
+    "target": [
+      "aliasByNode(servers.*.nuxeo.nuxeo.directories.*.sessions.max.count,5)"
+    ]
+  },
+  {
+    "title": "nx/Directories sessions and cache size",
+    "target": [
+      "alias(sumSeries(servers.*.nuxeo.nuxeo.directories.*.sessions.active.count),\"total active sessions\")",
+      "alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.directories.*.cache.size.count)),\"cache size\"),",
+      "alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.directories.*.cache.max.count)),\"max cache size\")"
+    ]
+  },
+  {
+    "target": [
+      "alias(servers.*.nuxeo.nuxeo.web.authentication.requests.count.m1_rate,\"1minRate\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.web.authentication.requests.count.mean),\"mean\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.web.authentication.requests.count.p95),\"95perc\")"
+    ],
+    "title": "nx/Requests",
+    "vtitle": "Req/s",
+    "colorList": "blue,orange,red"
+  },
+  {
+    "title": "nx/Requests and logged",
+    "target": [
+      "alias(servers.*.nuxeo.nuxeo.web.authentication.logged-users.count,\"logged\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.web.authentication.requests.concurrent.count.count),\"concurrent request\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.web.authentication.requests.concurrent.max.count),\"max concurrent\")"
+    ]
+  },
+  {
+    "target": [
+      "alias(servers.*.nuxeo.nuxeo.transactions.duration.m1_rate,\"1minRate\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.transactions.duration.mean),\"mean\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.transactions.duration.p99),\"99perc\")"
+    ],
+    "title": "nx/Transactions",
+    "vtitle": "Tx/s",
+    "colorList": "blue,orange,red"
+  },
+  {
+    "colorList": "red,blue,orange",
+    "title": "nx/Transactions rollback",
+    "target": [
+      "alias(drawAsInfinite(derivative(servers.*.nuxeo.nuxeo.transactions.rollbacks.count)),\"rollback\")",
+      "alias(servers.*.nuxeo.nuxeo.transactions.concurrents.count.count,\"concurrent tx\")",
+      "alias(servers.*.nuxeo.nuxeo.transactions.concurrents.max.count,\"max concurrent tx\")"
+    ]
+  },
+  {
+    "target": [
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.org.apache.log4j.Appender.warn.count),1),\"warnings\")",
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.org.apache.log4j.Appender.error.count),1),\"errors\")",
+      "alias(drawAsInfinite(absolute(derivative(transformNull(servers.*.nuxeo.nuxeo.instance-up.count,0)))),\"start or stop\")"
+    ],
+    "title": "nx/Up and log",
+    "vtitle": "log per second",
+    "colorList": "orange,red,green"
+  },
+  {
+    "target": [
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.repositories.*.documents.create.count),1),\"created\")",
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.repositories.*.documents.update.count),1),\"updated\")",
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.repositories.*.documents.delete.count),1),\"deleted\")"
+    ],
+    "title": "nx/Documents",
+    "areaMode": "stacked",
+    "vtitle": "per second"
+  },
+  {
+    "vtitle": "per second",
+    "title": "nx/SessionImpl",
+    "target": [
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.repositories.*.queries.count),1),\"query\")",
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.repositories.*.saves.count),1),\"save\")",
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.repositories.*.aclr-updates.count),1),\"aclrUpdate\")"
+    ]
+  },
+  {
+    "target": [
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.elasticsearch.service.search.count),1),\"search\")",
+      "alias(servers.*.nuxeo.nuxeo.elasticsearch.service.search.m1_rate,\"1minRate\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.search.mean),\"mean\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.search.p95),\"95perc\")"
+    ],
+    "title": "nx/Elasticsearch search",
+    "vtitle": "per second",
+    "colorList": "blue,darkblue,orange,red"
+  },
+  {
+    "target": [
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.elasticsearch.service.index.count),1),\"index\")",
+      "alias(servers.*.nuxeo.nuxeo.elasticsearch.service.index.m1_rate,\"1minRate\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.index.mean),\"mean\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.index.p95),\"95perc\")"
+    ],
+    "title": "nx/Elasticsearch index",
+    "vtitle": "per second",
+    "colorList": "blue,darkblue,orange,red"
+  },
+  {
+    "target": [
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.count),1),\"bulkIndex\")",
+      "alias(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.m1_rate,\"1minRate\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.mean),\"mean\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.p95),\"95perc\")"
+    ],
+    "title": "nx/Elasticsearch bulk index",
+    "vtitle": "per second",
+    "colorList": "blue,darkblue,orange,red"
+  },
+  {
+    "target": [
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.count),1),\"delete\")",
+      "alias(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.m1_rate,\"1minRate\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.mean),\"mean\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.p95),\"95perc\")"
+    ],
+    "title": "nx/Elasticsearch delete",
+    "vtitle": "per second",
+    "colorList": "blue,darkblue,orange,red"
+  },
+  {
+    "target": [
+      "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.count),1),\"fetch\")",
+      "alias(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.m1_rate,\"1minRate\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.mean),\"mean\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.p95),\"95perc\")"
+    ],
+    "title": "nx/Elasticsearch fetch docs",
+    "vtitle": "per second",
+    "colorList": "blue,darkblue,orange,red"
+  },
+  {
+    "title": "nx/VCS cache",
+    "target": [
+      "alias(asPercent(servers.*.nuxeo.nuxeo.repositories.default.caches.hit.count,servers.*.nuxeo.nuxeo.repositories.default.caches.get.count),\"Total hit-ratio\")",
+      "alias(asPercent(servers.*.nuxeo.nuxeo.repositories.default.caches.soft-ref.hits.count,servers.*.nuxeo.nuxeo.repositories.default.caches.soft-ref.get.count),\"Soft ref hit-ratio\")",
+      "alias(asPercent(servers.*.nuxeo.nuxeo.repositories.default.caches.selections.hit.count,servers.*.nuxeo.nuxeo.repositories.default.caches.selections.get.count),\"Selection hit-ratio\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.repositories.default.caches.hit.count),\"Total hit-count\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.repositories.default.caches.soft-ref.hits.count),\"Soft ref hit-count\")",
+      "alias(secondYAxis(servers.*.nuxeo.nuxeo.repositories.default.caches.selections.hit.count),\"Selection hit-count\")"
+    ]
+  },
+  {
+    "vtitle": "per second",
+    "title": "nx/Workers throughtput",
+    "target": [
+      "aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.works.*.scheduled.count.count),1),5,6)",
+      "aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.works.*.completed.count),1),5,6)"
+    ]
+  },
+  {
+    "vtitle": "count",
+    "title": "nx/Workers count",
+    "target": [
+      "aliasByNode(servers.*.nuxeo.nuxeo.works.*.scheduled.max.count,5,6)",
+      "aliasByNode(secondYAxis(servers.*.nuxeo.nuxeo.works.*.completed.count),5,6)"
+    ]
+  }
+]
