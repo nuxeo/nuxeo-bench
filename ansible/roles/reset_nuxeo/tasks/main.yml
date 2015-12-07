@@ -342,3 +342,15 @@
 - name: Start Diamond
   shell: service diamond restart
 
+# Setup logstash shipper
+- name: Kill old logstash container
+  shell: docker kill logstash
+  failed_when: false
+- name: Remove old logstash container
+  shell: docker rm logstash
+  failed_when: false
+- name: Add logstash config
+  template: src=logstash.j2 dest=/logstash.conf
+- name: Start logstash shipper
+  shell: docker run -d -t -i --name=logstash -h nuxeo{{nodenum.stdout}} -v /logstash.conf:/logstash.conf:ro -v /opt/nuxeo/logs:/opt/nuxeo/logs:ro logstash:2.1 logstash -f /logstash.conf
+

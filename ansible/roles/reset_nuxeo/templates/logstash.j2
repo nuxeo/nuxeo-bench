@@ -1,0 +1,21 @@
+input {
+    file {
+        path => "/opt/nuxeo/logs/server.log"
+        start_position => "beginning"
+        type => "nuxeo"
+        codec => multiline {
+            pattern => "^20"
+            negate => true
+            what => "previous"
+        }
+    }
+}
+
+output {
+    redis {
+        host => "{{mgmt_hosts[0]}}"
+        data_type => "list"
+        key => "logstash"
+    }
+}
+
