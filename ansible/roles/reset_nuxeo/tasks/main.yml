@@ -193,6 +193,11 @@
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?elasticsearch\.addressList\s*='
     line: "elasticsearch.addressList={{ es_hosts | map('regex_replace', '^(.*)$', '\\\\1:9300') | join(',') }}"
+- name: Config - elasticsearch.httpReadOnly.baseUrl
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?elasticsearc\.httpReadOnly\.baseUrl\s*='
+    line: "elasticsearch.httpReadOnly.baseUrl=http://{{es_hosts[0]}}:9200"
 # Add clustering config
 - name: Config - repository.clustering.enabled
   lineinfile:
