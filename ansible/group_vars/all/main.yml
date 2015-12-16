@@ -5,7 +5,7 @@ redis_host: nuxeo-bench.xsn1jx.0001.euw1.cache.amazonaws.com
 bucket: nuxeo-bench
 bench: test
 counts:
-  nuxeo: 1
+  nuxeo: 2
   es: 3
 volsizes:
   nuxeo: 50
