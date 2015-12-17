@@ -68,9 +68,9 @@ function run_simulations() {
   echo "Run simulations"
   pushd $SCRIPT_PATH || exit 2
   mvn -nsu clean
-  gatling "org.nuxeo.cap.bench.Sim00Setup" -Dpause_ms=200
+  gatling "org.nuxeo.cap.bench.Sim00Setup"
   gatling "org.nuxeo.cap.bench.Sim10MassImport"
-  gatling "org.nuxeo.cap.bench.Sim10CreateFolders" -Dpause_ms=200
+  gatling "org.nuxeo.cap.bench.Sim10CreateFolders"
   gatling "org.nuxeo.cap.bench.Sim20CreateDocuments"
   gatling "org.nuxeo.cap.bench.Sim30UpdateDocuments"
   gatling "org.nuxeo.cap.bench.Sim30Navigation"
