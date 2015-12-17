@@ -8,7 +8,8 @@ SCRIPT_DIR="nuxeo-distribution/nuxeo-distribution-cap-gatling-tests"
 SCRIPT_PATH="$SCRIPT_ROOT/$SCRIPT_DIR"
 REDIS_DB=7
 REPORT_PATH="./reports"
-
+GAT_REPORT_VERSION=1.0-SNAPSHOT
+GAT_REPORT_JAR=~/.m2/repository/org/nuxeo/tools/gatling-report/$GAT_REPORT_VERSION/gatling-report-$GAT_REPORT_VERSION-capsule-fat.jar
 # fail on any command error
 set -e
 
@@ -81,10 +82,26 @@ function run_simulations() {
   popd
 }
 
+function download_gatling_report() {
+  if [ ! -f $GAT_REPORT_JAR ]; then
+    mvn -DgroupId=org.nuxeo.tools -DartifactId=gatling-report -Dversion=$GAT_REPORT_VERSION dependency:get
+  fi
+}
+
+function build_report() {
+  report_root="${1%-*}"
+  mkdir $report_root || true
+  mv $1 $report_root/detail
+  java -jar $GAT_REPORT_JAR $report_root/detail/simulation.log -o $report_root/overview
+  gzip $report_root/detail/simulation.log
+}
+
 function build_reports() {
   echo "Buildingreports"
-
-
+  download_gatling_report
+  for report in `find $SCRIPT_PATH/target/gatling/results -name simulation.log`; do
+    build_report `dirname $report`
+  done
 }
 
 # main
