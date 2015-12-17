@@ -84,7 +84,7 @@ function run_simulations() {
 
 function download_gatling_report() {
   if [ ! -f $GAT_REPORT_JAR ]; then
-    mvn -DgroupId=org.nuxeo.tools -DartifactId=gatling-report -Dversion=$GAT_REPORT_VERSION dependency:get
+    mvn -DgroupId=org.nuxeo.tools -DartifactId=gatling-report -Dversion=$GAT_REPORT_VERSION -Dclassifier=capsule-fat -DrepoUrl=http://maven.nuxeo.org/nexus/content/groups/public-snapshot dependency:get
   fi
 }
 
@@ -108,4 +108,5 @@ function build_reports() {
 clone_or_update_bench_scripts
 load_data_into_redis
 run_simulations
+set +e
 build_reports
