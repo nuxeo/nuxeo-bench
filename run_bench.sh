@@ -93,7 +93,7 @@ function build_report() {
   report_root="${1%-*}"
   mkdir $report_root || true
   mv $1 $report_root/detail
-  java -jar $GAT_REPORT_JAR -o $report_root/overview -g $GRAPHITE_DASH $report_root/detail/simulation.log
+  java -jar $GAT_REPORT_JAR -o $report_root/overview -g $GRAPHITE_DASH --timezone 'Europe/Paris' $report_root/detail/simulation.log
   gzip $report_root/detail/simulation.log
 }
 
