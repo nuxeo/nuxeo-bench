@@ -105,9 +105,20 @@ function build_reports() {
   done
 }
 
+function move_reports() {
+  echo "Moving reports"
+  mv $SCRIPT_PATH/target/gatling/results/* $REPORT_PATH
+}
+
+function clean() {
+  rm -rf $REPORT_PATH
+}
+
 # main
+clean
 clone_or_update_bench_scripts
 load_data_into_redis
 run_simulations
 set +e
 build_reports
+move_reports
