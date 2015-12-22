@@ -1,13 +1,3 @@
-name: nuxeo-bench
-refreshConfig:
-    enabled: false
-    interval: 60000
-timeConfig:
-    relativeStartQuantity: '2'
-    relativeStartUnits: hours
-    relativeUntilQuantity: ''
-    relativeUntilUnits: now
-    type: relative
 defaultGraphParams:
     from: -2hours
     height: 400
@@ -18,75 +8,99 @@ graphSize:
     width: 500
 graphs:
 -
-    -   -
-    -   colorList: darkgray,red,blue,green
-        lineMode: connected
-        target:
-        - alias(secondYAxis(sumSeries(servers.es*.loadavg.processes_running)),"process
+    -   - alias(secondYAxis(sumSeries(servers.nuxeo*.loadavg.processes_running)),"process
             running")
-        - aliasByNode(servers.es*.loadavg.01,1)
-        title: ES sys/Load 1min
--
-    -   -
+        - aliasByNode(servers.nuxeo*.loadavg.01,1)
     -   colorList: darkgray,red,blue,green
         lineMode: connected
         target:
         - alias(secondYAxis(sumSeries(servers.nuxeo*.loadavg.processes_running)),"process
             running")
         - aliasByNode(servers.nuxeo*.loadavg.01,1)
-        title: Nuxeos sys/Load
+        title: sys/Load1min Nuxeo nodes
+        vtitle: load
+        vtitleRight: process
+    - /render?width=500&from=-2hours&until=now&height=400&lineMode=connected&colorList=darkgray%2Cred%2Cblue%2Cgreen&vtitle=load&vtitleRight=process&target=alias(secondYAxis(sumSeries(servers.nuxeo*.loadavg.processes_running))%2C%22process%20running%22)&target=aliasByNode(servers.nuxeo*.loadavg.01%2C1)&title=sys%2FLoad1min%20Nuxeo%20nodes
 -
-    -   -
+    -   - alias(secondYAxis(servers.mypgsql.loadavg.processes_running),"process running")
+        - alias(servers.mypgsql.loadavg.01,"1min")
     -   colorList: darkgray,red,orange,yellow
         lineMode: connected
         target:
         - alias(secondYAxis(servers.mypgsql.loadavg.processes_running),"process running")
         - alias(servers.mypgsql.loadavg.01,"1min")
-        title: DB sys/Load
+        title: sys/Load1min DB
+        vtitle: load
+        vtitleRight: process
+    - /render?width=500&from=-2hours&until=now&height=400&lineMode=connected&colorList=darkgray%2Cred%2Corange%2Cyellow&vtitle=load&vtitleRight=process&target=alias(secondYAxis(servers.mypgsql.loadavg.processes_running)%2C%22process%20running%22)&target=alias(servers.mypgsql.loadavg.01%2C%221min%22)&title=sys%2FLoad1min%20DB
 -
-    -   -
-    -   lineMode: connected
+    -   - alias(secondYAxis(sumSeries(servers.es*.loadavg.processes_running)),"process
+            running")
+        - aliasByNode(servers.es*.loadavg.01,1)
+    -   colorList: darkgray,red,blue,green
+        lineMode: connected
         target:
-        - aliasByNode(servers.*.cpu.total.user,1)
-        title: sys/CPU users
-        vtitle: CPU
+        - alias(secondYAxis(sumSeries(servers.es*.loadavg.processes_running)),"process
+            running")
+        - aliasByNode(servers.es*.loadavg.01,1)
+        title: sys/Load1min Elasticsearch
+        vtitle: load
+        vtitleRight: process
+    - /render?width=500&from=-2hours&until=now&height=400&lineMode=connected&colorList=darkgray%2Cred%2Cblue%2Cgreen&vtitle=load&vtitleRight=process&target=alias(secondYAxis(sumSeries(servers.es*.loadavg.processes_running))%2C%22process%20running%22)&target=aliasByNode(servers.es*.loadavg.01%2C1)&title=sys%2FLoad1min%20Elasticsearch
 -
-    -   -
-    -   lineMode: connected
-        target:
-        - aliasByNode(servers.*.cpu.total.system,1)
-        title: sys/CPU system
-        vtitle: CPU
--
-    -   -
-    -   lineMode: connected
-        target:
-        - aliasByNode(servers.*.cpu.total.iowait,1)
-        title: sys/CPU iowait
-        vtitle: CPU
--
-    -   -
+    -   - aliasByNode(servers.*.cpu.total.idle,1)
     -   lineMode: connected
         target:
         - aliasByNode(servers.*.cpu.total.idle,1)
-        title: sys/CPU idle
-        vtitle: CPU
+        title: sys/CPU Idle
+        vtitle: '% Idle'
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=%25%20Idle&lineMode=connected&target=aliasByNode(servers.*.cpu.total.idle%2C1)&title=sys%2FCPU%20Idle
 -
-    -   -
+    -   - aliasByNode(servers.*.cpu.total.user,1)
+    -   lineMode: connected
+        target:
+        - aliasByNode(servers.*.cpu.total.user,1)
+        title: sys/CPU User
+        vtitle: '% User'
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=%25%20User&lineMode=connected&target=aliasByNode(servers.*.cpu.total.user%2C1)&title=sys%2FCPU%20User
+-
+    -   - aliasByNode(servers.*.cpu.total.iowait,1)
+    -   lineMode: connected
+        target:
+        - aliasByNode(servers.*.cpu.total.iowait,1)
+        title: sys/CPU IoWait
+        vtitle: '% iowait'
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=%25%20iowait&lineMode=connected&target=aliasByNode(servers.*.cpu.total.iowait%2C1)&title=sys%2FCPU%20IoWait
+-
+    -   - aliasByNode(servers.*.cpu.total.system,1)
+    -   lineMode: connected
+        target:
+        - aliasByNode(servers.*.cpu.total.system,1)
+        title: sys/CPU System
+        vtitle: '% System'
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=%25%20System&lineMode=connected&target=aliasByNode(servers.*.cpu.total.system%2C1)&title=sys%2FCPU%20System
+-
+    -   - aliasByNode(servers.*.iostat.xvdf.util_percentage,1)
     -   lineMode: connected
         target:
         - aliasByNode(servers.*.iostat.xvdf.util_percentage,1)
-        title: sys/Disk xvdf usage
-        vtitle: percent
+        title: sys/Disk Usage xvdf
+        vtitle: '% usage'
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=%25%20usage&lineMode=connected&target=aliasByNode(servers.*.iostat.xvdf.util_percentage%2C1)&title=sys%2FDisk%20Usage%20xvdf
 -
     -   - aliasByNode(servers.*.iostat.xvda.util_percentage,1)
     -   lineMode: connected
         target:
         - aliasByNode(servers.*.iostat.xvda.util_percentage,1)
-        title: sys/Disk xvda usage
-        vtitle: percent
+        title: sys/Disk Usage xvda
+        vtitle: '% usage'
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=%25%20usage&lineMode=connected&target=aliasByNode(servers.*.iostat.xvda.util_percentage%2C1)&title=sys%2FDisk%20Usage%20xvda
 -
-    -   -
+    -   - alias(secondYAxis(servers.mypgsql.memory.SwapCached),"swap")
+        - alias(secondYAxis(servers.mypgsql.memory.Dirty),"dirty")
+        - alias(asPercent(servers.mypgsql.memory.Buffers,servers.mypgsql.memory.MemTotal),"buffers")
+        - alias(asPercent(servers.mypgsql.memory.Cached,servers.mypgsql.memory.MemTotal),"cached")
+        - alias(asPercent(servers.mypgsql.memory.MemFree,servers.mypgsql.memory.MemTotal),"free")
     -   colorList: red,orange,blue,darkblue,green
         lineMode: connected
         target:
@@ -96,28 +110,36 @@ graphs:
         - alias(asPercent(servers.mypgsql.memory.Cached,servers.mypgsql.memory.MemTotal),"cached")
         - alias(asPercent(servers.mypgsql.memory.MemFree,servers.mypgsql.memory.MemTotal),"free")
         title: sys/Memory DB
-        vtitle: percent
+        vtitle: '%'
+        vtitleRight: Bytes
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=%25&vtitleRight=Bytes&lineMode=connected&colorList=red%2Corange%2Cblue%2Cdarkblue%2Cgreen&target=alias(secondYAxis(servers.mypgsql.memory.SwapCached)%2C%22swap%22)&target=alias(secondYAxis(servers.mypgsql.memory.Dirty)%2C%22dirty%22)&target=alias(asPercent(servers.mypgsql.memory.Buffers%2Cservers.mypgsql.memory.MemTotal)%2C%22buffers%22)&target=alias(asPercent(servers.mypgsql.memory.Cached%2Cservers.mypgsql.memory.MemTotal)%2C%22cached%22)&target=alias(asPercent(servers.mypgsql.memory.MemFree%2Cservers.mypgsql.memory.MemTotal)%2C%22free%22)&title=sys%2FMemory%20DB
 -
-    -   -
-    -   colorList: red,blue
-        target:
-        - alias(servers.*.elasticsearch.process.cpu.percent,"%CPU")
-        - alias(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size),"index
-            size")
-        title: es/Elasticsearch CPU and size
-        vtitle: percent
+    -   - aliasByNode(servers.*.elasticsearch.process.cpu.percent,1)
+        - aliasByNode(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size),1)
+    -   target:
+        - aliasByNode(servers.*.elasticsearch.process.cpu.percent,1)
+        - aliasByNode(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size),1)
+        title: es/CPU and size
+        vtitle: '%'
+        vtitleRight: Bytes
         yMaxLeft: '100'
         yMinLeft: '0'
+    - /render?width=500&from=-2hours&until=now&height=400&target=aliasByNode(servers.*.elasticsearch.process.cpu.percent%2C1)&target=aliasByNode(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size)%2C1)&yMaxLeft=100&title=es%2FCPU%20and%20size&yMinLeft=0&vtitle=%25&vtitleRight=Bytes
 -
-    -   -
-    -   colorList: blue,orange
-        target:
-        - alias(servers.*.elasticsearch.indices._all.docs.count,"total documents")
-        - alias(secondYAxis(servers.*.elasticsearch.indices._all.docs.deleted),"deleted
-            documents")
-        title: es/Elasticsearch docs
+    -   - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),"total")
+        - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted),"deleted")
+    -   target:
+        - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),"total")
+        - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted),"deleted")
+        title: es/docs
+        vtitle: docs
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=docs&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count)%2C%22total%22)&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted)%2C%22deleted%22)&title=es%2Fdocs
 -
-    -   -
+    -   - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_deleted),1),"tup_deleted")
+        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_inserted),1),"tup_inserted")
+        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_updated),1),"tup_updated")
+        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.xact_commit),1),"xact_commit")
+        - alias(secondYAxis(servers.*.postgres.database.*.connections),"connections")
     -   colorList: red,orange,yellow,blue,green
         target:
         - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_deleted),1),"tup_deleted")
@@ -127,82 +149,118 @@ graphs:
         - alias(secondYAxis(servers.*.postgres.database.*.connections),"connections")
         title: db/Postgres
         yMinRight: '0'
+    - /render?width=500&from=-2hours&until=now&height=400&colorList=red%2Corange%2Cyellow%2Cblue%2Cgreen&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_deleted)%2C1)%2C%22tup_deleted%22)&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_inserted)%2C1)%2C%22tup_inserted%22)&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_updated)%2C1)%2C%22tup_updated%22)&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.xact_commit)%2C1)%2C%22xact_commit%22)&target=alias(secondYAxis(servers.*.postgres.database.*.connections)%2C%22connections%22)&yMinRight=0&title=db%2FPostgres
 -
-    -   -
+    -   - alias(secondYAxis(sumSeries(servers.*.nuxeo.jvm.files)),"fd_usage")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.count),"thread_count")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.daemon.count),"daemond")
     -   colorList: darkgray,blue,green
         target:
-        - alias(secondYAxis(servers.*.nuxeo.jvm.files),"fd_usage")
-        - alias(servers.*.nuxeo.jvm.threads.count,"thread_count")
-        - alias(servers.*.nuxeo.jvm.threads.daemon.count,"daemond")
-        title: jvm/Threads
+        - alias(secondYAxis(sumSeries(servers.*.nuxeo.jvm.files)),"fd_usage")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.count),"thread_count")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.daemon.count),"daemond")
+        title: jvm/Threads all nodes
+    - /render?width=500&from=-2hours&until=now&height=400&colorList=darkgray%2Cblue%2Cgreen&target=alias(secondYAxis(sumSeries(servers.*.nuxeo.jvm.files))%2C%22fd_usage%22)&target=alias(sumSeries(servers.*.nuxeo.jvm.threads.count)%2C%22thread_count%22)&target=alias(sumSeries(servers.*.nuxeo.jvm.threads.daemon.count)%2C%22daemond%22)&title=jvm%2FThreads%20all%20nodes
 -
-    -   -
+    -   - alias(sumSeries(servers.*.nuxeo.jvm.threads.runnable.count),"runnable")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.new.count),"new")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.blocked.count),"blocked")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.waiting.count),"waiting")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.timed_waiting.count),"timed_waiting")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.terminated.count),"terminated")
     -   areaMode: stacked
         colorList: green,blue,red,orange,yellow,purple
         target:
-        - alias(servers.*.nuxeo.jvm.threads.runnable.count,"runnable")
-        - alias(servers.*.nuxeo.jvm.threads.new.count,"new")
-        - alias(servers.*.nuxeo.jvm.threads.blocked.count,"blocked")
-        - alias(servers.*.nuxeo.jvm.threads.waiting.count,"waiting")
-        - alias(servers.*.nuxeo.jvm.threads.timed_waiting.count,"timed_waiting")
-        - alias(servers.*.nuxeo.jvm.threads.terminated.count,"terminated")
-        title: jvm/Thread state
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.runnable.count),"runnable")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.new.count),"new")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.blocked.count),"blocked")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.waiting.count),"waiting")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.timed_waiting.count),"timed_waiting")
+        - alias(sumSeries(servers.*.nuxeo.jvm.threads.terminated.count),"terminated")
+        title: jvm/Thread state all nodes
+    - /render?width=500&from=-2hours&until=now&height=400&areaMode=stacked&colorList=green%2Cblue%2Cred%2Corange%2Cyellow%2Cpurple&target=alias(sumSeries(servers.*.nuxeo.jvm.threads.runnable.count)%2C%22runnable%22)&target=alias(sumSeries(servers.*.nuxeo.jvm.threads.new.count)%2C%22new%22)&target=alias(sumSeries(servers.*.nuxeo.jvm.threads.blocked.count)%2C%22blocked%22)&target=alias(sumSeries(servers.*.nuxeo.jvm.threads.waiting.count)%2C%22waiting%22)&target=alias(sumSeries(servers.*.nuxeo.jvm.threads.timed_waiting.count)%2C%22timed_waiting%22)&target=alias(sumSeries(servers.*.nuxeo.jvm.threads.terminated.count)%2C%22terminated%22)&title=jvm%2FThread%20state%20all%20nodes
 -
-    -   -
+    -   - alias(asPercent(sumSeries(servers.*.nuxeo.jvm.memory.heap.usage),1),"heap
+            usage")
+        - alias(asPercent(sumSeries(servers.*.nuxeo.jvm.memory.non-heap.usage),1),"non
+            heap usage")
     -   target:
-        - alias(asPercent(servers.*.nuxeo.jvm.memory.heap.usage,1),"heap usage")
-        - alias(asPercent(servers.*.nuxeo.jvm.memory.non-heap.usage,1),"non heap usage")
-        title: jvm/Heap
+        - alias(asPercent(sumSeries(servers.*.nuxeo.jvm.memory.heap.usage),1),"heap
+            usage")
+        - alias(asPercent(sumSeries(servers.*.nuxeo.jvm.memory.non-heap.usage),1),"non
+            heap usage")
+        title: jvm/Heap all nodes
         vtitle: percent
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=percent&target=alias(asPercent(sumSeries(servers.*.nuxeo.jvm.memory.heap.usage)%2C1)%2C%22heap%20usage%22)&target=alias(asPercent(sumSeries(servers.*.nuxeo.jvm.memory.non-heap.usage)%2C1)%2C%22non%20heap%20usage%22)&title=jvm%2FHeap%20all%20nodes
 -
-    -   -
+    -   - aliasByNode(asPercent(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.jvm.garbage.PS-Scavenge.time),1),1000),1,5)
+        - aliasByNode(asPercent(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.jvm.garbage.PS-MarkSweep.time),1),1000),1,5)
     -   areaMode: first
-        colorList: orange,red
         lineMode: staircase
         target:
-        - alias(asPercent(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.jvm.garbage.PS-Scavenge.time),1),1000),"minor
-            GC")
-        - alias(asPercent(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.jvm.garbage.PS-MarkSweep.time),1),1000),"major
-            GC")
+        - aliasByNode(asPercent(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.jvm.garbage.PS-Scavenge.time),1),1000),1,5)
+        - aliasByNode(asPercent(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.jvm.garbage.PS-MarkSweep.time),1),1000),1,5)
         title: jvm/GC
-        vtitle: percent
+        vtitle: '%'
+    - /render?width=500&from=-2hours&until=now&height=400&lineMode=staircase&target=aliasByNode(asPercent(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.jvm.garbage.PS-Scavenge.time)%2C1)%2C1000)%2C1%2C5)&target=aliasByNode(asPercent(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.jvm.garbage.PS-MarkSweep.time)%2C1)%2C1000)%2C1%2C5)&title=jvm%2FGC&areaMode=first&vtitle=%25
 -
-    -   -
+    -   - alias(sumSeries(servers.*.nuxeo.tomcat.processingTime),"processingTime")
+        - alias(secondYAxis(sumSeries(servers.*.nuxeo.tomcat.errorCount)),"requests
+            in error")
     -   colorList: green,red,yellow
         target:
-        - alias(servers.*.nuxeo.tomcat.processingTime,"processingTime")
-        - alias(secondYAxis(servers.*.nuxeo.tomcat.errorCount),"requests in error")
-        title: tcat/Processing time and errors
+        - alias(sumSeries(servers.*.nuxeo.tomcat.processingTime),"processingTime")
+        - alias(secondYAxis(sumSeries(servers.*.nuxeo.tomcat.errorCount)),"requests
+            in error")
+        title: tcat/Processing time and errors all nodes
+    - /render?width=500&from=-2hours&until=now&height=400&colorList=green%2Cred%2Cyellow&target=alias(sumSeries(servers.*.nuxeo.tomcat.processingTime)%2C%22processingTime%22)&target=alias(secondYAxis(sumSeries(servers.*.nuxeo.tomcat.errorCount))%2C%22requests%20in%20error%22)&title=tcat%2FProcessing%20time%20and%20errors%20all%20nodes
 -
-    -   -
+    -   - alias(sumSeries(servers.*.nuxeo.tomcat.currentThreadBusy),"threads busy")
+        - alias(sumSeries(servers.*.nuxeo.tomcat.currentThreadCount),"threads")
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.tomcat.requestCount)),1),"requests/s")
+        - alias(secondYAxis(sumSeries(servers.*.nuxeo.tomcat.activeSessions)),"activeSessions")
     -   target:
-        - alias(servers.*.nuxeo.tomcat.currentThreadBusy,"threads busy")
-        - alias(servers.*.nuxeo.tomcat.currentThreadCount,"threads")
-        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.tomcat.requestCount),1),"requests/s")
-        - alias(secondYAxis(servers.*.nuxeo.tomcat.activeSessions),"activeSessions")
+        - alias(sumSeries(servers.*.nuxeo.tomcat.currentThreadBusy),"threads busy")
+        - alias(sumSeries(servers.*.nuxeo.tomcat.currentThreadCount),"threads")
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.tomcat.requestCount)),1),"requests/s")
+        - alias(secondYAxis(sumSeries(servers.*.nuxeo.tomcat.activeSessions)),"activeSessions")
         title: tcat/Throughtput Threads and sessions
+    - /render?width=500&from=-2hours&until=now&height=400&target=alias(sumSeries(servers.*.nuxeo.tomcat.currentThreadBusy)%2C%22threads%20busy%22)&target=alias(sumSeries(servers.*.nuxeo.tomcat.currentThreadCount)%2C%22threads%22)&target=alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.tomcat.requestCount))%2C1)%2C%22requests%2Fs%22)&target=alias(secondYAxis(sumSeries(servers.*.nuxeo.tomcat.activeSessions))%2C%22activeSessions%22)&title=tcat%2FThroughtput%20Threads%20and%20sessions
 -
-    -   -
+    -   - alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.count),"total
+            connection")
+        - alias(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.count),sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.idle)),"active")
     -   target:
         - alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.count),"total
             connection")
         - alias(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.count),sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.idle)),"active")
-        title: nx/Repositories JDBC connections pool
+        title: nx/Repositories JDBC connections pool all nodes
+    - /render?width=500&from=-2hours&until=now&height=400&target=alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.count)%2C%22total%20connection%22)&target=alias(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.count)%2CsumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.idle))%2C%22active%22)&title=nx%2FRepositories%20JDBC%20connections%20pool%20all%20nodes
 -
-    -   -
+    -   - alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.sessions),"sessions")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.count),"total
+            connections")
+        - alias(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.count),sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.idle)),"active")
     -   target:
         - alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.sessions),"sessions")
         - alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.count),"total
             connections")
         - alias(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.count),sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.idle)),"active")
         title: nx/Repositories sessions
+    - /render?width=500&from=-2hours&until=now&height=400&target=alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.sessions)%2C%22sessions%22)&target=alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.count)%2C%22total%20connections%22)&target=alias(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.count)%2CsumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.idle))%2C%22active%22)&title=nx%2FRepositories%20sessions
 -
-    -   -
+    -   - alias(sumSeries(servers.*.nuxeo.nuxeo.directories.*.sessions.max.count),"count")
     -   target:
-        - aliasByNode(servers.*.nuxeo.nuxeo.directories.*.sessions.max.count,5)
-        title: nx/Directories max sessions per directory
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.directories.*.sessions.max.count),"count")
+        title: nx/Directories max sessions for all directories and nodes
+    - /render?width=500&from=-2hours&until=now&height=400&target=alias(sumSeries(servers.*.nuxeo.nuxeo.directories.*.sessions.max.count)%2C%22count%22)&title=nx%2FDirectories%20max%20sessions%20for%20all%20directories%20and%20nodes
 -
-    -   -
+    -   - alias(sumSeries(servers.*.nuxeo.nuxeo.directories.*.sessions.active.count),"total
+            active sessions")
+        - alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.directories.*.cache.size.count)),"cache
+            size"),
+        - alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.directories.*.cache.max.count)),"max
+            cache size")
     -   target:
         - alias(sumSeries(servers.*.nuxeo.nuxeo.directories.*.sessions.active.count),"total
             active sessions")
@@ -211,45 +269,65 @@ graphs:
         - alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.directories.*.cache.max.count)),"max
             cache size")
         title: nx/Directories sessions and cache size
+    - /render?width=500&from=-2hours&until=now&height=400&target=alias(sumSeries(servers.*.nuxeo.nuxeo.directories.*.sessions.active.count)%2C%22total%20active%20sessions%22)&target=alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.directories.*.cache.size.count))%2C%22cache%20size%22)%2C&target=alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.directories.*.cache.max.count))%2C%22max%20cache%20size%22)&title=nx%2FDirectories%20sessions%20and%20cache%20size
 -
-    -   -
+    -   - alias(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.count.m1_rate),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.count.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.count.p95)),"95perc")
     -   colorList: blue,orange,red
         target:
-        - alias(servers.*.nuxeo.nuxeo.web.authentication.requests.count.m1_rate,"1minRate")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.web.authentication.requests.count.mean),"mean")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.web.authentication.requests.count.p95),"95perc")
-        title: nx/Requests
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.count.m1_rate),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.count.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.count.p95)),"95perc")
+        title: nx/Requests all nodes
         vtitle: Req/s
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=Req%2Fs&colorList=blue%2Corange%2Cred&target=alias(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.count.m1_rate)%2C%221minRate%22)&target=alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.count.mean))%2C%22mean%22)&target=alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.count.p95))%2C%2295perc%22)&title=nx%2FRequests%20all%20nodes
 -
-    -   -
-    -   target:
-        - alias(servers.*.nuxeo.nuxeo.web.authentication.logged-users.count,"logged")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.web.authentication.requests.concurrent.count.count),"concurrent
+    -   - alias(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.logged-users.count),"logged")
+        - alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.concurrent.count.count)),"concurrent
             request")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.web.authentication.requests.concurrent.max.count),"max
+        - alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.concurrent.max.count)),"max
             concurrent")
-        title: nx/Requests and logged
+    -   target:
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.logged-users.count),"logged")
+        - alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.concurrent.count.count)),"concurrent
+            request")
+        - alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.concurrent.max.count)),"max
+            concurrent")
+        title: nx/Requests and logged all nodes
+    - /render?width=500&from=-2hours&until=now&height=400&target=alias(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.logged-users.count)%2C%22logged%22)&target=alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.concurrent.count.count))%2C%22concurrent%20request%22)&target=alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.concurrent.max.count))%2C%22max%20concurrent%22)&title=nx%2FRequests%20and%20logged%20all%20nodes
 -
-    -   -
+    -   - alias(sumSeries(servers.*.nuxeo.nuxeo.transactions.duration.m1_rate),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.transactions.duration.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.transactions.duration.p95)),"95perc")
     -   colorList: blue,orange,red
         target:
-        - alias(servers.*.nuxeo.nuxeo.transactions.duration.m1_rate,"1minRate")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.transactions.duration.mean),"mean")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.transactions.duration.p99),"99perc")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.transactions.duration.m1_rate),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.transactions.duration.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.transactions.duration.p95)),"95perc")
         title: nx/Transactions
         vtitle: Tx/s
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=Tx%2Fs&colorList=blue%2Corange%2Cred&target=alias(sumSeries(servers.*.nuxeo.nuxeo.transactions.duration.m1_rate)%2C%221minRate%22)&target=alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.transactions.duration.mean))%2C%22mean%22)&target=alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.transactions.duration.p95))%2C%2295perc%22)&title=nx%2FTransactions
 -
-    -   -
+    -   - alias(drawAsInfinite(derivative(sumSerries(servers.*.nuxeo.nuxeo.transactions.rollbacks.count))),"rollback")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.transactions.concurrents.count.count),"concurrent
+            tx")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.transactions.concurrents.max.count),"max
+            concurrent tx")
     -   colorList: red,blue,orange
         target:
-        - alias(drawAsInfinite(derivative(servers.*.nuxeo.nuxeo.transactions.rollbacks.count)),"rollback")
-        - alias(servers.*.nuxeo.nuxeo.transactions.concurrents.count.count,"concurrent
+        - alias(drawAsInfinite(derivative(sumSerries(servers.*.nuxeo.nuxeo.transactions.rollbacks.count))),"rollback")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.transactions.concurrents.count.count),"concurrent
             tx")
-        - alias(servers.*.nuxeo.nuxeo.transactions.concurrents.max.count,"max concurrent
-            tx")
-        title: nx/Transactions rollback
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.transactions.concurrents.max.count),"max
+            concurrent tx")
+        title: nx/Transactions rollback all nodes
+    - /render?width=500&from=-2hours&until=now&height=400&colorList=red%2Cblue%2Corange&target=alias(drawAsInfinite(derivative(sumSerries(servers.*.nuxeo.nuxeo.transactions.rollbacks.count)))%2C%22rollback%22)&target=alias(sumSeries(servers.*.nuxeo.nuxeo.transactions.concurrents.count.count)%2C%22concurrent%20tx%22)&target=alias(sumSeries(servers.*.nuxeo.nuxeo.transactions.concurrents.max.count)%2C%22max%20concurrent%20tx%22)&title=nx%2FTransactions%20rollback%20all%20nodes
 -
-    -   -
+    -   - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.org.apache.log4j.Appender.warn.count),1),"warnings")
+        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.org.apache.log4j.Appender.error.count),1),"errors")
+        - alias(drawAsInfinite(absolute(derivative(transformNull(servers.*.nuxeo.nuxeo.instance-up.count,0)))),"start
+            or stop")
     -   colorList: orange,red,green
         target:
         - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.org.apache.log4j.Appender.warn.count),1),"warnings")
@@ -258,75 +336,111 @@ graphs:
             or stop")
         title: nx/Up and log
         vtitle: log per second
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=log%20per%20second&colorList=orange%2Cred%2Cgreen&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.org.apache.log4j.Appender.warn.count)%2C1)%2C%22warnings%22)&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.org.apache.log4j.Appender.error.count)%2C1)%2C%22errors%22)&target=alias(drawAsInfinite(absolute(derivative(transformNull(servers.*.nuxeo.nuxeo.instance-up.count%2C0))))%2C%22start%20or%20stop%22)&title=nx%2FUp%20and%20log
 -
-    -   -
+    -   - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.documents.create.count)),1),"created")
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.documents.update.count)),1),"updated")
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.documents.delete.count)),1),"deleted")
     -   areaMode: stacked
         target:
-        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.repositories.*.documents.create.count),1),"created")
-        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.repositories.*.documents.update.count),1),"updated")
-        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.repositories.*.documents.delete.count),1),"deleted")
-        title: nx/Documents
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.documents.create.count)),1),"created")
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.documents.update.count)),1),"updated")
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.documents.delete.count)),1),"deleted")
+        title: nx/Documents all nodes
         vtitle: per second
+    - /render?width=500&from=-2hours&until=now&height=400&areaMode=stacked&target=alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.documents.create.count))%2C1)%2C%22created%22)&target=alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.documents.update.count))%2C1)%2C%22updated%22)&target=alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.documents.delete.count))%2C1)%2C%22deleted%22)&vtitle=per%20second&title=nx%2FDocuments%20all%20nodes
 -
-    -   -
+    -   - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.queries.count.count),1)),"query")
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.saves.count),1)),"save")
     -   target:
-        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.repositories.*.queries.count),1),"query")
-        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.repositories.*.saves.count),1),"save")
-        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.repositories.*.aclr-updates.count),1),"aclrUpdate")
-        title: nx/SessionImpl
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.queries.count.count),1)),"query")
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.saves.count),1)),"save")
+        title: nx/SessionImpl all nodes
         vtitle: per second
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=per%20second&target=alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.queries.count.count)%2C1))%2C%22query%22)&target=alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.saves.count)%2C1))%2C%22save%22)&title=nx%2FSessionImpl%20all%20nodes
 -
-    -   -
+    -   - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.count)),1),"search")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.m1_rate),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.p95)),"95perc")
     -   colorList: blue,darkblue,orange,red
         target:
-        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.elasticsearch.service.search.count),1),"search")
-        - alias(servers.*.nuxeo.nuxeo.elasticsearch.service.search.m1_rate,"1minRate")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.search.mean),"mean")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.search.p95),"95perc")
-        title: nx/Elasticsearch search
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.count)),1),"search")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.m1_rate),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.p95)),"95perc")
+        title: nx/Elasticsearch search all nodes
         vtitle: per second
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=per%20second&colorList=blue%2Cdarkblue%2Corange%2Cred&target=alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.count))%2C1)%2C%22search%22)&target=alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.m1_rate)%2C%221minRate%22)&target=alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.mean))%2C%22mean%22)&target=alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.p95))%2C%2295perc%22)&title=nx%2FElasticsearch%20search%20all%20nodes
 -
-    -   -
+    -   - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.count)),1),"index")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.m1_rate),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.p95)),"95perc")
     -   colorList: blue,darkblue,orange,red
         target:
-        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.elasticsearch.service.index.count),1),"index")
-        - alias(servers.*.nuxeo.nuxeo.elasticsearch.service.index.m1_rate,"1minRate")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.index.mean),"mean")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.index.p95),"95perc")
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.count)),1),"index")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.m1_rate),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.p95)),"95perc")
         title: nx/Elasticsearch index
         vtitle: per second
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=per%20second&colorList=blue%2Cdarkblue%2Corange%2Cred&target=alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.count))%2C1)%2C%22index%22)&target=alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.m1_rate)%2C%221minRate%22)&target=alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.mean))%2C%22mean%22)&target=alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.p95))%2C%2295perc%22)&title=nx%2FElasticsearch%20index
 -
-    -   -
+    -   - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.count)),1),"bulkIndex")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.m1_rate)),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.p95)),"95perc")
     -   colorList: blue,darkblue,orange,red
         target:
-        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.count),1),"bulkIndex")
-        - alias(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.m1_rate,"1minRate")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.mean),"mean")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.p95),"95perc")
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.count)),1),"bulkIndex")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.m1_rate)),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.p95)),"95perc")
         title: nx/Elasticsearch bulk index
         vtitle: per second
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=per%20second&colorList=blue%2Cdarkblue%2Corange%2Cred&target=alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.count))%2C1)%2C%22bulkIndex%22)&target=alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.m1_rate))%2C%221minRate%22)&target=alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.mean))%2C%22mean%22)&target=alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.p95))%2C%2295perc%22)&title=nx%2FElasticsearch%20bulk%20index
 -
-    -   -
+    -   - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.count)),1),"delete")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.m1_rate),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.p95)),"95perc")
     -   colorList: blue,darkblue,orange,red
         target:
-        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.count),1),"delete")
-        - alias(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.m1_rate,"1minRate")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.mean),"mean")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.p95),"95perc")
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.count)),1),"delete")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.m1_rate),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.p95)),"95perc")
         title: nx/Elasticsearch delete
         vtitle: per second
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=per%20second&colorList=blue%2Cdarkblue%2Corange%2Cred&target=alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.count))%2C1)%2C%22delete%22)&target=alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.m1_rate)%2C%221minRate%22)&target=alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.mean))%2C%22mean%22)&target=alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.p95))%2C%2295perc%22)&title=nx%2FElasticsearch%20delete
 -
-    -   -
+    -   - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.count),1)),"fetch")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.m1_rate),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.p95)),"95perc")
     -   colorList: blue,darkblue,orange,red
         target:
-        - alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.count),1),"fetch")
-        - alias(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.m1_rate,"1minRate")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.mean),"mean")
-        - alias(secondYAxis(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.p95),"95perc")
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.count),1)),"fetch")
+        - alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.m1_rate),"1minRate")
+        - alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.mean)),"mean")
+        - alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.p95)),"95perc")
         title: nx/Elasticsearch fetch docs
         vtitle: per second
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=per%20second&colorList=blue%2Cdarkblue%2Corange%2Cred&target=alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.count)%2C1))%2C%22fetch%22)&target=alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.m1_rate)%2C%221minRate%22)&target=alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.mean))%2C%22mean%22)&target=alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.p95))%2C%2295perc%22)&title=nx%2FElasticsearch%20fetch%20docs
 -
-    -   -
+    -   - alias(asPercent(servers.*.nuxeo.nuxeo.repositories.default.caches.hit.count,servers.*.nuxeo.nuxeo.repositories.default.caches.get.count),"Total
+            hit-ratio")
+        - alias(asPercent(servers.*.nuxeo.nuxeo.repositories.default.caches.soft-ref.hits.count,servers.*.nuxeo.nuxeo.repositories.default.caches.soft-ref.get.count),"Soft
+            ref hit-ratio")
+        - alias(asPercent(servers.*.nuxeo.nuxeo.repositories.default.caches.selections.hit.count,servers.*.nuxeo.nuxeo.repositories.default.caches.selections.get.count),"Selection
+            hit-ratio")
+        - alias(secondYAxis(servers.*.nuxeo.nuxeo.repositories.default.caches.hit.count),"Total
+            hit-count")
+        - alias(secondYAxis(servers.*.nuxeo.nuxeo.repositories.default.caches.soft-ref.hits.count),"Soft
+            ref hit-count")
+        - alias(secondYAxis(servers.*.nuxeo.nuxeo.repositories.default.caches.selections.hit.count),"Selection
+            hit-count")
     -   target:
         - alias(asPercent(servers.*.nuxeo.nuxeo.repositories.default.caches.hit.count,servers.*.nuxeo.nuxeo.repositories.default.caches.get.count),"Total
             hit-ratio")
@@ -341,17 +455,43 @@ graphs:
         - alias(secondYAxis(servers.*.nuxeo.nuxeo.repositories.default.caches.selections.hit.count),"Selection
             hit-count")
         title: nx/VCS cache
+    - /render?width=500&from=-2hours&until=now&height=400&target=alias(asPercent(servers.*.nuxeo.nuxeo.repositories.default.caches.hit.count%2Cservers.*.nuxeo.nuxeo.repositories.default.caches.get.count)%2C%22Total%20hit-ratio%22)&target=alias(asPercent(servers.*.nuxeo.nuxeo.repositories.default.caches.soft-ref.hits.count%2Cservers.*.nuxeo.nuxeo.repositories.default.caches.soft-ref.get.count)%2C%22Soft%20ref%20hit-ratio%22)&target=alias(asPercent(servers.*.nuxeo.nuxeo.repositories.default.caches.selections.hit.count%2Cservers.*.nuxeo.nuxeo.repositories.default.caches.selections.get.count)%2C%22Selection%20hit-ratio%22)&target=alias(secondYAxis(servers.*.nuxeo.nuxeo.repositories.default.caches.hit.count)%2C%22Total%20hit-count%22)&target=alias(secondYAxis(servers.*.nuxeo.nuxeo.repositories.default.caches.soft-ref.hits.count)%2C%22Soft%20ref%20hit-count%22)&target=alias(secondYAxis(servers.*.nuxeo.nuxeo.repositories.default.caches.selections.hit.count)%2C%22Selection%20hit-count%22)&title=nx%2FVCS%20cache
 -
-    -   -
+    -   - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.works.*.scheduled.count.count)),1),"scheduled")
+        - aliasByNode(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.works.*.completed.count)),1),"completed")
+    -   target:
+        - alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.works.*.scheduled.count.count)),1),"scheduled")
+        - aliasByNode(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.works.*.completed.count)),1),"completed")
+        title: nx/Workers throughtput total
+        vtitle: per second
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=per%20second&target=alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.works.*.scheduled.count.count))%2C1)%2C%22scheduled%22)&target=aliasByNode(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.works.*.completed.count))%2C1)%2C%22completed%22)&title=nx%2FWorkers%20throughtput%20total
+-
+    -   - aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.works.*.scheduled.count.count),1),5,6)
+        - aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.works.*.completed.count),1),5,6)
     -   target:
         - aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.works.*.scheduled.count.count),1),5,6)
         - aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.works.*.completed.count),1),5,6)
         title: nx/Workers throughtput
         vtitle: per second
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=per%20second&target=aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.works.*.scheduled.count.count)%2C1)%2C5%2C6)&target=aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.works.*.completed.count)%2C1)%2C5%2C6)&title=nx%2FWorkers%20throughtput
 -
-    -   -
+    -   - aliasByNode(servers.*.nuxeo.nuxeo.works.*.scheduled.max.count,5,6)
+        - aliasByNode(secondYAxis(servers.*.nuxeo.nuxeo.works.*.completed.count),5,6)
     -   target:
         - aliasByNode(servers.*.nuxeo.nuxeo.works.*.scheduled.max.count,5,6)
         - aliasByNode(secondYAxis(servers.*.nuxeo.nuxeo.works.*.completed.count),5,6)
         title: nx/Workers count
         vtitle: count
+    - /render?width=500&from=-2hours&until=now&height=400&vtitle=count&target=aliasByNode(servers.*.nuxeo.nuxeo.works.*.scheduled.max.count%2C5%2C6)&target=aliasByNode(secondYAxis(servers.*.nuxeo.nuxeo.works.*.completed.count)%2C5%2C6)&title=nx%2FWorkers%20count
+name: nuxeo-bench
+refreshConfig:
+    enabled: false
+    interval: 60000
+timeConfig:
+    endDate: NaN-NaN-NaNTNaN:NaN:NaN
+    relativeStartQuantity: '2'
+    relativeStartUnits: hours
+    relativeUntilQuantity: ''
+    relativeUntilUnits: now
+    startDate: NaN-NaN-NaNTNaN:NaN:NaN
+    type: relative
