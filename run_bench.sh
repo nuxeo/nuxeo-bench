@@ -111,7 +111,8 @@ function move_reports() {
 }
 
 function clean() {
-  rm -rf $REPORT_PATH
+  rm -rf $REPORT_PATH || true
+  mkdir $REPORT_PATH
 }
 
 # main
