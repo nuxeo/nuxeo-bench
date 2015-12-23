@@ -74,7 +74,9 @@ function run_simulations() {
   gatling "org.nuxeo.cap.bench.Sim10MassImport"
   gatling "org.nuxeo.cap.bench.Sim10CreateFolders"
   gatling "org.nuxeo.cap.bench.Sim20CreateDocuments"
+  gatling "org.nuxeo.cap.bench.Sim25WaitForAsync"
   gatling "org.nuxeo.cap.bench.Sim30UpdateDocuments"
+  gatling "org.nuxeo.cap.bench.Sim35WaitForAsync"
   gatling "org.nuxeo.cap.bench.Sim30Navigation"
   gatling "org.nuxeo.cap.bench.Sim30NavigationJsf"
   gatling "org.nuxeo.cap.bench.Sim50Bench"
@@ -115,7 +117,9 @@ function clean() {
   mkdir $REPORT_PATH
 }
 
+# -------------------------------------------------------
 # main
+#
 clean
 clone_or_update_bench_scripts
 load_data_into_redis
