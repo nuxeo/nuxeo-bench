@@ -375,7 +375,7 @@
   {
     "title": "nx/Workers deviant completed count",
     "target": [
-      "mostDeviant(6,aliasByNode(servers.*.nuxeo.nuxeo.works.*.scheduled.max.count,1,5))"
+      "mostDeviant(6,aliasByNode(servers.*.nuxeo.nuxeo.works.*.completed.count,1,5))"
     ],
     "vtitle": "count"
   }

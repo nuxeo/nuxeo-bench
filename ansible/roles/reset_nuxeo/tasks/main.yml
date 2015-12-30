@@ -246,6 +246,10 @@
     regexp: 'JAVA_OPTS\s*=(.*)-Xms[^m]+m(.*)-Xmx[^m]+m(.*)'
     line: 'JAVA_OPTS=\1-Xms{{heapsize.stdout.strip()}}m\2-Xmx{{heapsize.stdout.strip()}}m\3'
     backrefs: yes
+- name: Profiling
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?JAVA_OPTS\s*(.*)FlightRecorder'
+    line: "JAVA_OPTS=$JAVA_OPTS -Dcom.sun.management.jmxremote.autodiscovery=true -Dcom.sun.management.jdp.name=Nuxeo -XX:+UnlockCommercialFeatures -XX:+FlightRecorder"
 # Graphite
 - name: Config - metrics.graphite.enabled
   lineinfile:
