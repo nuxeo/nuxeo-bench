@@ -63,7 +63,7 @@ function load_data_into_redis() {
 }
 
 function gatling() {
-  mvn -nsu test gatling:execute -Pbench -Durl=$TARGET -Dgatling.simulationClass=$1
+  mvn -nsu test gatling:execute -Pbench -Durl=$TARGET -Dgatling.simulationClass=$@
 }
 
 function run_simulations() {
@@ -73,15 +73,16 @@ function run_simulations() {
   gatling "org.nuxeo.cap.bench.Sim00Setup"
   gatling "org.nuxeo.cap.bench.Sim10MassImport"
   gatling "org.nuxeo.cap.bench.Sim10CreateFolders"
-  gatling "org.nuxeo.cap.bench.Sim20CreateDocuments"
+  gatling "org.nuxeo.cap.bench.Sim20CreateDocuments" -Dusers=16
   gatling "org.nuxeo.cap.bench.Sim25WaitForAsync"
-  gatling "org.nuxeo.cap.bench.Sim30UpdateDocuments"
+  gatling "org.nuxeo.cap.bench.Sim30UpdateDocuments" -Dusers=16 -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim35WaitForAsync"
-  gatling "org.nuxeo.cap.bench.Sim30Navigation"
-  gatling "org.nuxeo.cap.bench.Sim30NavigationJsf"
-  gatling "org.nuxeo.cap.bench.Sim50Bench"
-  gatling "org.nuxeo.cap.bench.Sim50CRUD"
+  gatling "org.nuxeo.cap.bench.Sim30Navigation" -Dusers=16 -Dduration=180
+  gatling "org.nuxeo.cap.bench.Sim30NavigationJsf" -Dduration=180
+  gatling "org.nuxeo.cap.bench.Sim50Bench" -Dnav.users=80 -Dnavjsf=5 -Dupd.user=15 -Dnavjsf.pause_ms=1000 -Dduration=180
+  gatling "org.nuxeo.cap.bench.Sim50CRUD" -Dusers=16 -Dduration=120
   gatling "org.nuxeo.cap.bench.Sim80ReindexAll"
+  gatling "org.nuxeo.cap.bench.Sim30Navigation" -Dusers=100 -Dduration=120 -Dramp=50
   popd
 }
 
@@ -93,9 +94,12 @@ function download_gatling_report() {
 
 function build_report() {
   report_root="${1%-*}"
+  if [ -d $report_root ]; then
+    report_root = "${report_root}-bis"
+  fi
   mkdir $report_root || true
   mv $1 $report_root/detail
-  java -jar $GAT_REPORT_JAR -o $report_root/overview -g $GRAPHITE_DASH --timezone 'Europe/Paris' $report_root/detail/simulation.log
+  java -jar $GAT_REPORT_JAR -o $report_root/overview -g $GRAPHITE_DASH $report_root/detail/simulation.log
   gzip $report_root/detail/simulation.log
 }
 
