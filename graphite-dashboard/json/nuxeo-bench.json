@@ -352,18 +352,17 @@
     "vtitle": "count"
   },
   {
+    "title": "nx/Workers scheduled not completed",
+    "target": [
+      "alias(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.works.*.scheduled.count.count), sumSeries(servers.*.nuxeo.nuxeo.works.*.completed.count)),\"to process\")"
+    ]
+  },
+  {
     "title": "nx/Workers deviant scheduled throughtput",
     "target": [
       "mostDeviant(6,aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.works.*.scheduled.count.count),1),1,5))"
     ],
     "vtitle": "per second"
-  },
-  {
-    "title": "nx/Workers deviant scheduled count",
-    "target": [
-      "mostDeviant(6,aliasByNode(servers.*.nuxeo.nuxeo.works.*.scheduled.max.count,1,5))"
-    ],
-    "vtitle": "count"
   },
   {
     "title": "nx/Workers deviant completed throughtput",
