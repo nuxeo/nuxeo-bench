@@ -10,6 +10,8 @@
     instance_tags:
       bench: "{{bench}}"
       bench_role: "{{type}}"
+      billing-category: build
+      billing-subcategory: bench
     state: "running"
     wait: yes
   when: stopped_instances.stdout != ""
@@ -36,6 +38,8 @@
       Name: bench-{{bench}}-{{type}}
       bench: "{{bench}}"
       bench_role: "{{type}}"
+      billing-category: build
+      billing-subcategory: bench
     exact_count: "{{counts[type]}}"
     count_tag:
       bench: "{{bench}}"
