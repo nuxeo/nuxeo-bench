@@ -1,5 +1,6 @@
 #!/bin/bash
 REPORT_PATH="./reports"
+DATA_FILE=$REPORT_PATH/data.yml
 
 cd $(dirname $0)
 . venv/bin/activate
@@ -17,5 +18,10 @@ for h in $(ansible/inventory.py --hosts nuxeo); do
     scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@$h:/opt/nuxeo/server/nxserver/perf*.csv logs/$h/ || true
 done
 
-# Extract the mass import document per second stat and insert it into the report stat file
-tail -n1 logs/*/perf*.csv | cut -d \; -f3 | LC_ALL=C xargs printf "import_dps:%.1f" >> $REPORT_PATH/data.yml
+# Add some info to the data stat file
+echo "dbprofile:$dbprofile" >> $DATA_FILE
+echo "benchid:$benchid" >> $DATA_FILE
+echo "benchname:$benchname" >> $DATA_FILE
+# Extract the mass import document per second
+tail -n1 logs/*/perf*.csv | cut -d \; -f3 | LC_ALL=C xargs printf "import_dps:%.1f" >> $DATA_FILE
+
