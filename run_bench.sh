@@ -121,14 +121,14 @@ function build_stat() {
   # create a yml file with all the stats
   java -jar $GAT_REPORT_JAR -f -o $REPORT_PATH -n data.yml -t $MUSTACHE_TEMPLATE \
     -m import,create,nav,navjsf,update,bench,crud,reindex \
-    $GAT_REPORT_JAR/sim10massimport/detail/simulation.log.gz \
-    $GAT_REPORT_JAR/sim20createdocuments/detail/simulation.log.gz \
-    $GAT_REPORT_JAR/sim30navigation/detail/simulation.log.gz \
-    $GAT_REPORT_JAR/sim30navigationjsf/detail/simulation.log.gz \
-    $GAT_REPORT_JAR/sim30updatedocuments/detail/simulation.log.gz \
-    $GAT_REPORT_JAR/sim50bench/detail/simulation.log.gz \
-    $GAT_REPORT_JAR/sim50crud/detail/simulation.log.gz \
-    $GAT_REPORT_JAR/sim80reindexall/detail/simulation.log.gz
+    $REPORT_PATH/sim10massimport/detail/simulation.log.gz \
+    $REPORT_PATH/sim20createdocuments/detail/simulation.log.gz \
+    $REPORT_PATH/sim30navigation/detail/simulation.log.gz \
+    $REPORT_PATH/sim30navigationjsf/detail/simulation.log.gz \
+    $REPORT_PATH/sim30updatedocuments/detail/simulation.log.gz \
+    $REPORT_PATH/sim50bench/detail/simulation.log.gz \
+    $REPORT_PATH/sim50crud/detail/simulation.log.gz \
+    $REPORT_PATH/sim80reindexall/detail/simulation.log.gz
 }
 
 function clean() {
