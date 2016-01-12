@@ -11,6 +11,7 @@ REPORT_PATH="./reports"
 GAT_REPORT_VERSION=1.0-SNAPSHOT
 GAT_REPORT_JAR=~/.m2/repository/org/nuxeo/tools/gatling-report/$GAT_REPORT_VERSION/gatling-report-$GAT_REPORT_VERSION-capsule-fat.jar
 GRAPHITE_DASH=http://bench-mgmt.nuxeo.org/dashboard/#nuxeo-bench
+MUSTACHE_TEMPLATE=./report-templates/data.mustache
 # fail on any command error
 set -e
 
@@ -86,7 +87,7 @@ function run_simulations() {
   popd
 }
 
-function download_gatling_report() {
+function download_gatling_report_tool() {
   if [ ! -f $GAT_REPORT_JAR ]; then
     mvn -DgroupId=org.nuxeo.tools -DartifactId=gatling-report -Dversion=$GAT_REPORT_VERSION -Dclassifier=capsule-fat -DrepoUrl=http://maven.nuxeo.org/nexus/content/groups/public-snapshot dependency:get
   fi
@@ -105,7 +106,7 @@ function build_report() {
 
 function build_reports() {
   echo "Buildingreports"
-  download_gatling_report
+  download_gatling_report_tool
   for report in `find $SCRIPT_PATH/target/gatling/results -name simulation.log`; do
     build_report `dirname $report`
   done
@@ -114,6 +115,20 @@ function build_reports() {
 function move_reports() {
   echo "Moving reports"
   mv $SCRIPT_PATH/target/gatling/results/* $REPORT_PATH
+}
+
+function build_stat() {
+  # create a yml file with all the stats
+  java -jar $GAT_REPORT_JAR -f -o $REPORT_PATH -n data.yml -t $MUSTACHE_TEMPLATE \
+    -m import,create,nav,navjsf,update,bench,crud,reindex \
+    $GAT_REPORT_JAR/sim10massimport/detail/simulation.log.gz \
+    $GAT_REPORT_JAR/sim20createdocuments/detail/simulation.log.gz \
+    $GAT_REPORT_JAR/sim30navigation/detail/simulation.log.gz \
+    $GAT_REPORT_JAR/sim30navigationjsf/detail/simulation.log.gz \
+    $GAT_REPORT_JAR/sim30updatedocuments/detail/simulation.log.gz \
+    $GAT_REPORT_JAR/sim50bench/detail/simulation.log.gz \
+    $GAT_REPORT_JAR/sim50crud/detail/simulation.log.gz \
+    $GAT_REPORT_JAR/sim80reindexall/detail/simulation.log.gz
 }
 
 function clean() {
@@ -131,3 +146,4 @@ run_simulations
 set +e
 build_reports
 move_reports
+build_stat
