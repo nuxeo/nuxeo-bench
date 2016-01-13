@@ -8,16 +8,29 @@
     <h1>{{ (index .Site.Data.bench $data).benchname }} - {{ (index .Site.Data.bench $data).dbprofile }}</h1>
     <span class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
     {{ .Content }}
+    <h2>Configuration</h2>
+    <dl>
+      <dt>Bench Id</dt>
+      <dd>{{ (index .Site.Data.bench $data).benchid }}</dd>
+      <dt>Bench Name</dt>
+      <dd>{{ (index .Site.Data.bench $data).benchname }}</dd>
+      <dt>CI Build number</dt>
+      <dd>{{ (index .Site.Data.bench $data).build_number }}</dd>
+      <dt>CI Build URL</dt>
+      <dd><a href="{{ (index .Site.Data.bench $data).build_url }}">{{ (index .Site.Data.bench $data).build_url }}</a></dd>
+      <dt>Number of Nuxeo nodes:</dt>
+      <dd>{{ (index .Site.Data.bench $data).nuxeonodes }}</dd>
+    </dl>
     <h2>Results</h2>
 
     <h3>Mass import</h3>
-    <div>This simulation uses the nuxeo-importer on an empty instance. {{ (index .Site.Data.bench $data).import_massimportwiththreads_name }}.</div>
+    <div>This simulation uses the nuxeo-importer on an empty instance.</div>
     <dl>
-      <dt>Total time of import in ms</dt>
-      <dd>{{ (index .Site.Data.bench $data).import_massimportwiththreads_avg }}</dd>
-      <dt>Documents per second</dt>
+      <dt>Documents created per second</dt>
       <dd>{{ (index .Site.Data.bench $data).import_dps }}</dd>
-      <dt>Time to process asynchronous jobs</dt>
+      <dt>Time of import in ms</dt>
+      <dd>{{ (index .Site.Data.bench $data).import_massimportwiththreads_avg }}</dd>
+      <dt>Time to process asynchronous jobs in ms</dt>
       <dd>{{ (index .Site.Data.bench $data).import_waitforasyncjobs_avg }}</dd>
       <dt>Reports</dt>
       <dd>
@@ -26,30 +39,33 @@
     </dl>
 
     <h3>Create document using REST</h3>
-    <div>This simulation creates 100k documents (without attachement) on top on the existing instance</div>
+    <div>This simulation creates new documents (without attachement) on top on the existing instance</div>
     <dl>
-      <dt>Response time in ms</dt>
-      <dd>Average: {{ (index .Site.Data.bench $data).create_avg }} (+/- {{ (index .Site.Data.bench $data).create_createfile_std }}),
-        min: {{ (index .Site.Data.bench $data).create_createfile_min }},
-        p50: {{ (index .Site.Data.bench $data).create_createfile_p50 }},
-        p95: {{ (index .Site.Data.bench $data).create_createfile_p95 }}
-      </dd>
-      <dt>Documents per second</dt>
+      <dt>Documents created per second</dt>
       <dd>{{ (index .Site.Data.bench $data).create_rps }}</dd>
+      <dt>Response time in ms</dt>
+      <dd>Average: {{ (index .Site.Data.bench $data).create_avg }} (+/- {{ (index .Site.Data.bench $data).create_std }})<br>
+        min: {{ (index .Site.Data.bench $data).create_min }}<br>
+        p50: {{ (index .Site.Data.bench $data).create_p50 }}<br>
+        p95: {{ (index .Site.Data.bench $data).create_p95 }}
+      </dd>
       <dt>Reports</dt>
       <dd>
         <a href="/build/{{ .Params.benchid }}/{{ .Params.dbprofile }}/archive/reports/sim20createdocuments/overview/">overview and monitoring</a>,
         <a href="/build/{{ .Params.benchid }}/{{ .Params.dbprofile }}/archive/reports/sim20createdocuments/detail/">detail</a></dd>
     </dl>
 
-    <h3>Navigation usgin REST</h3>
+    <h3>Navigation using REST</h3>
     <div>This simulation navigate on the existing instance.</div>
     <dl>
-      <dt>Response time in ms</dt>
-      <dd>Average: {{ (index .Site.Data.bench $data).nav_avg }}
-      </dd>
       <dt>Request per seconds</dt>
       <dd>{{ (index .Site.Data.bench $data).nav_rps }}</dd>
+      <dt>Response time in ms</dt>
+      <dd>Average: {{ (index .Site.Data.bench $data).nav_avg }} (+/- {{ (index .Site.Data.bench $data).nav_std }})<br>
+      min: {{ (index .Site.Data.bench $data).nav_min }}<br>
+      p50: {{ (index .Site.Data.bench $data).nav_p50 }}<br>
+      p95: {{ (index .Site.Data.bench $data).nav_p95 }}
+      </dd>
       <dt>Reports</dt>
       <dd>
         <a href="/build/{{ .Params.benchid }}/{{ .Params.dbprofile }}/archive/reports/sim30navigation/overview/">overview and monitoring</a>,
@@ -60,11 +76,14 @@
     <h3>Navigation usgin JSF</h3>
     <div>This simulation use the JSF interface to navigate on folder and document tabs.</div>
     <dl>
-      <dt>Response time in ms</dt>
-      <dd>Average: {{ (index .Site.Data.bench $data).navjsf_avg }}
-      </dd>
       <dt>Request per seconds</dt>
       <dd>{{ (index .Site.Data.bench $data).navjsf_rps }}</dd>
+      <dt>Response time in ms</dt>
+      <dd>Average: {{ (index .Site.Data.bench $data).navjsf_avg }} (+/- {{ (index .Site.Data.bench $data).navjsf_std }})<br>
+        min: {{ (index .Site.Data.bench $data).navjsf_min }}<br>
+        p50: {{ (index .Site.Data.bench $data).navjsf_p50 }}<br>
+        p95: {{ (index .Site.Data.bench $data).navjsf_p95 }}
+      </dd>
       <dt>Reports</dt>
       <dd>
         <a href="/build/{{ .Params.benchid }}/{{ .Params.dbprofile }}/archive/reports/sim30navigationjsf/overview/">overview and monitoring</a>,
@@ -73,17 +92,59 @@
     </dl>
 
     <h3>Update REST</h3>
-    <div>This simulation update a document metadata using REST.</div>
+    <div>This simulation performs concurrent update of documents metadata using REST.</div>
     <dl>
-      <dt>Response time in ms</dt>
-      <dd>Average: {{ (index .Site.Data.bench $data).update_avg }}
-      </dd>
       <dt>Request per seconds</dt>
       <dd>{{ (index .Site.Data.bench $data).update_rps }}</dd>
+      <dt>Response time in ms</dt>
+      <dd>Average: {{ (index .Site.Data.bench $data).update_avg }} (+/- {{ (index .Site.Data.bench $data).update_std }})<br>
+        min: {{ (index .Site.Data.bench $data).update_min }}<br>
+        p50: {{ (index .Site.Data.bench $data).update_p50 }}<br>
+        p95: {{ (index .Site.Data.bench $data).update_p95 }}
+      </dd>
+      </dd>
       <dt>Reports</dt>
       <dd>
         <a href="/build/{{ .Params.benchid }}/{{ .Params.dbprofile }}/archive/reports/sim30updatedocuments/overview/">overview and monitoring</a>,
         <a href="/build/{{ .Params.benchid }}/{{ .Params.dbprofile }}/archive/reports/sim30updatedocuments/detail/">detail</a>
+      </dd>
+    </dl>
+
+    <h3>CRUD on documents in REST</h3>
+    <div>This simulation performs concurrent Create Read Update Delete operations using REST.</div>
+    <dl>
+      <dt>Request per seconds</dt>
+      <dd>{{ (index .Site.Data.bench $data).crud_rps }}</dd>
+      <dt>Response time in ms</dt>
+      <dd>Average: {{ (index .Site.Data.bench $data).crud_avg }} (+/- {{ (index .Site.Data.bench $data).crud_std }})<br>
+        min: {{ (index .Site.Data.bench $data).crud_min }}<br>
+        p50: {{ (index .Site.Data.bench $data).crud_p50 }}<br>
+        p95: {{ (index .Site.Data.bench $data).crud_p95 }}
+      </dd>
+      </dd>
+      <dt>Reports</dt>
+      <dd>
+        <a href="/build/{{ .Params.benchid }}/{{ .Params.dbprofile }}/archive/reports/sim50crud/overview/">overview and monitoring</a>,
+        <a href="/build/{{ .Params.benchid }}/{{ .Params.dbprofile }}/archive/reports/sim50crud/detail/">detail</a>
+      </dd>
+    </dl>
+
+    <h3>Bench mixing actions</h3>
+    <div>This simulation performs JSF read and CRUD in REST.</div>
+    <dl>
+      <dt>Request per seconds</dt>
+      <dd>{{ (index .Site.Data.bench $data).bench_rps }}</dd>
+      <dt>Response time in ms</dt>
+      <dd>Average: {{ (index .Site.Data.bench $data).bench_avg }} (+/- {{ (index .Site.Data.bench $data).bench_std }})<br>
+        min: {{ (index .Site.Data.bench $data).bench_min }}<br>
+        p50: {{ (index .Site.Data.bench $data).bench_p50 }}<br>
+        p95: {{ (index .Site.Data.bench $data).bench_p95 }}
+      </dd>
+      </dd>
+      <dt>Reports</dt>
+      <dd>
+        <a href="/build/{{ .Params.benchid }}/{{ .Params.dbprofile }}/archive/reports/sim50bench/overview/">overview and monitoring</a>,
+        <a href="/build/{{ .Params.benchid }}/{{ .Params.dbprofile }}/archive/reports/sim50bench/detail/">detail</a>
       </dd>
     </dl>
 
