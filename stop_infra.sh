@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# Stop the bench infra
 cd $(dirname $0)
 . venv/bin/activate
 

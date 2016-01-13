@@ -1,4 +1,5 @@
 #!/bin/bash -e
+# Run the Nuxeo gatling bench and generates simulation reports
 cd $(dirname $0)
 
 TARGET=http://nuxeo-bench.nuxeo.org/nuxeo
@@ -130,6 +131,9 @@ function build_stat() {
     $REPORT_PATH/sim50bench/detail/simulation.log.gz \
     $REPORT_PATH/sim50crud/detail/simulation.log.gz \
     $REPORT_PATH/sim80reindexall/detail/simulation.log.gz
+  echo "build_number: $BUILD_NUMBER" >> $REPORT_PATH/data.yml
+  echo "build_url: \"$BUILD_URL\"" >> $REPORT_PATH/data.yml
+  echo "job_name: \"$JOB_NAME\"" >> $REPORT_PATH/data.yml
   set +x
 }
 

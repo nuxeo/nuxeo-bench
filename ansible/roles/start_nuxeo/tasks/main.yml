@@ -1,4 +1,5 @@
 ---
 - name: Start nuxeo
   shell: nuxeoctl start
-
+- name: Save config
+  shell: nuxeoctl showconf > /opt/nuxeo/logs/nuxeo_conf.log

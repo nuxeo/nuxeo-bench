@@ -1,5 +1,5 @@
 #!/bin/bash -e
-
+# Start the required infra to run a bench
 cd $(dirname $0)
 
 db="pgsql"

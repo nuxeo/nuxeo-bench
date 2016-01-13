@@ -9,4 +9,5 @@ bench-scripts/
 reports/
 bench-site/site/themes
 bench-site/site/content/bench/
-bench-site/site/data
+bench-site/site/data/bench/
+bench-site/site/static/
