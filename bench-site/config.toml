@@ -1,7 +1,0 @@
-baseurl = "http://qa.nuxeo.org/benchmarks/"
-languageCode = "en-us"
-title = "Nuxeo Ref Bench"
-[params]
-  description = "Nuxeo Reference Benchmarks"
-  author = "Nuxeo"
-
