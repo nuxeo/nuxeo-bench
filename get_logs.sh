@@ -27,7 +27,6 @@ echo "dbprofile: \"$dbprofile\"" >> $DATA_FILE
 echo "benchid: \"$benchid\"" >> $DATA_FILE
 echo "benchname: \"$benchname\"" >> $DATA_FILE
 echo "nuxeonodes: $count" >> DATA_FILE
-echo "
 # Extract the mass import document per second
 tail -n1 logs/*/perf*.csv | cut -d \; -f3 | LC_ALL=C xargs printf "import_dps: %.1f" >> $DATA_FILE
 
