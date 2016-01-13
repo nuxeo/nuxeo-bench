@@ -7,7 +7,3 @@ ansible/group_vars/all/custom.yml
 *.swp
 bench-scripts/
 reports/
-bench-site/site/themes
-bench-site/site/content/bench/
-bench-site/site/data/bench/
-bench-site/site/static/
