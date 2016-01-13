@@ -20,11 +20,13 @@ function get_artifact_info() {
 }
 
 function copy_artifact() {
+  mkdir -p $SITE_PATH/static/build
   mkdir $SITE_PATH/static/build/$BENCHID
   cp -af $BUILD_PATH $SITE_PATH/static/build/$BENCHID/$DBPROFILE
 }
 
 function add_data() {
+  mkdir -p $SITE_PATH/data/bench
   cp -r $DATA_FILE $SITE_PATH/data/bench/$BENCHID$DBPROFILE.yml
 }
 
