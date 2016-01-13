@@ -43,6 +43,13 @@ type: bench
 EOF
 }
 
+function rebuild_site() {
+  pushd $SITE_PATH
+  git pull
+  hugo --theme=hyde
+  popd
+}
+
 # -------------------------------------------------------
 # main
 #
@@ -50,4 +57,5 @@ get_artifact_info
 copy_artifact
 add_data
 add_content
+rebuild_site
 echo "Done"
