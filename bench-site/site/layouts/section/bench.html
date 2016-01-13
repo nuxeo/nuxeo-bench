@@ -1,0 +1,23 @@
+{{ partial "head.html" . }}
+<body class="{{ .Site.Params.themeColor }}">
+
+{{ partial "sidebar.html" . }}
+
+<div class="content container">
+  <ul class="posts">
+    {{ range .Data.Pages.GroupByParam "benchid" }}
+    <h3>{{ .Key }}</h3>
+    <ul>
+      {{ range .Pages }}
+      <li>
+        <a href="{{ .Permalink }}">{{ .Params.dbprofile }}</a>
+        <div class="meta">{{ .Date.Format "Mon, Jan 2,  2006" }}</div>
+      </li>
+      {{ end }}
+    </ul>
+
+    {{ end }}
+  </ul>
+</div>
+</body>
+</html>

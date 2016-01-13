@@ -119,6 +119,7 @@ function move_reports() {
 
 function build_stat() {
   # create a yml file with all the stats
+  set -x
   java -jar $GAT_REPORT_JAR -f -o $REPORT_PATH -n data.yml -t $MUSTACHE_TEMPLATE \
     -m import,create,nav,navjsf,update,bench,crud,reindex \
     $REPORT_PATH/sim10massimport/detail/simulation.log.gz \
@@ -129,6 +130,7 @@ function build_stat() {
     $REPORT_PATH/sim50bench/detail/simulation.log.gz \
     $REPORT_PATH/sim50crud/detail/simulation.log.gz \
     $REPORT_PATH/sim80reindexall/detail/simulation.log.gz
+  set +x
 }
 
 function clean() {

@@ -1,3 +1,7 @@
 baseurl = "http://benchmarks.nuxeo.org/"
 languageCode = "en-us"
-title = "Nuxeo Benchmarks Reference Site"
+title = "Nuxeo Ref Bench"
+[params]
+  description = "Nuxeo Reference Benchmarks"
+  author = "Benoit Delbosc"
+

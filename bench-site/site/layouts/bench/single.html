@@ -1,0 +1,82 @@
+{{ partial "head.html" . }}
+<body class="{{ .Site.Params.themeColor }}">
+{{ partial "sidebar.html" . }}
+{{ $data := .Params.dfile }}
+
+<div class="content container">
+  <div class="post">
+    <h1>{{ (index .Site.Data.bench $data).benchname }} - {{ (index .Site.Data.bench $data).dbprofile }}</h1>
+    <span class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
+    {{ .Content }}
+    <h2>Results</h2>
+
+    <h3>Mass import</h3>
+    <div>This simulation uses the nuxeo-importer on an empty instance. {{ (index .Site.Data.bench $data).import_massimportwiththreads_name }}.</div>
+    <dl>
+      <dt>Total time of import in ms</dt>
+      <dd>{{ (index .Site.Data.bench $data).import_massimportwiththreads_avg }}</dd>
+      <dt>Documents per second</dt>
+      <dd>{{ (index .Site.Data.bench $data).import_dps }}</dd>
+      <dt>Time to process asynchronous jobs</dt>
+      <dd>{{ (index .Site.Data.bench $data).import_waitforasyncjobs_avg }}</dd>
+    </dl>
+
+    <h3>Create document using REST</h3>
+    <div>This simulation creates 100k documents (without attachement) on top on the existing instance</div>
+    <dl>
+      <dt>Response time in ms</dt>
+      <dd>Average: {{ (index .Site.Data.bench $data).create_avg }} (+/- {{ (index .Site.Data.bench $data).create_createfile_std }}),
+        min: {{ (index .Site.Data.bench $data).create_createfile_min }},
+        p50: {{ (index .Site.Data.bench $data).create_createfile_p50 }},
+        p95: {{ (index .Site.Data.bench $data).create_createfile_p95 }}
+      </dd>
+      <dt>Documents per second</dt>
+      <dd>{{ (index .Site.Data.bench $data).create_rps }}</dd>
+    </dl>
+
+    <h3>Navigation usgin REST</h3>
+    <div>This simulation navigate on the existing instance.</div>
+    <dl>
+      <dt>Response time in ms</dt>
+      <dd>Average: {{ (index .Site.Data.bench $data).nav_avg }}
+      </dd>
+      <dt>Request per seconds</dt>
+      <dd>{{ (index .Site.Data.bench $data).nav_rps }}</dd>
+    </dl>
+
+    <h3>Navigation usgin JSF</h3>
+    <dl>
+      <dt>Response time in ms</dt>
+      <dd>Average: {{ (index .Site.Data.bench $data).navjsf_avg }}
+      </dd>
+      <dt>Request per seconds</dt>
+      <dd>{{ (index .Site.Data.bench $data).navjsf_rps }}</dd>
+    </dl>
+
+    <h3>Update REST</h3>
+    <dl>
+      <dt>Response time in ms</dt>
+      <dd>Average: {{ (index .Site.Data.bench $data).update_avg }}
+      </dd>
+      <dt>Request per seconds</dt>
+      <dd>{{ (index .Site.Data.bench $data).update_rps }}</dd>
+    </dl>
+
+    <h3>Reindex repository</h3>
+    <dl>
+      <dt>Response time in ms</dt>
+      <dd>Average: {{ (index .Site.Data.bench $data).reindex_reindexallrepository_avg }}
+      </dd>
+      <dt>Time to process asynchronous jobs</dt>
+      <dd>{{ (index .Site.Data.bench $data).reindex_waitforasync_avg }}</dd>
+    </dl>
+
+  </div>
+  {{ if and (isset .Site.Params "disqusShortname") (ne .Site.Params.disqusShortname "") }}
+  <h2>Comments</h2>
+  {{ partial "disqus" . }}
+  {{ end }}
+</div>
+
+</body>
+</html>

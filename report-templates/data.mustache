@@ -3,12 +3,15 @@ import_rps: {{import.simStat.throughput}}
 {{#import.requests}}
 import_{{requestId}}_name: "{{request}}"
 import_{{requestId}}_avg: {{average}}
-import_{{requestId}}_std: {{stddev}}
-import_{{requestId}}_rps: {{throughput}}
 {{/import.requests}}
 
 create_avg: {{create.simStat.average}}
 create_rps: {{create.simStat.throughput}}
+create_std: {{create.simStat.stddev}}
+create_min: {{create.simStat.min}}
+create_p50: {{create.simStat.p50}}
+create_p95: {{create.simStat.p95}}
+create_max: {{create.simStat.max}}
 {{#create.requests}}
 create_{{requestId}}_name: "{{request}}"
 create_{{requestId}}_avg: {{average}}
@@ -22,39 +25,93 @@ create_{{requestId}}_rps: {{throughput}}
 
 nav_avg: {{nav.simStat.average}}
 nav_rps: {{nav.simStat.throughput}}
+nav_std: {{nav.simStat.stddev}}
+nav_min: {{nav.simStat.min}}
+nav_p50: {{nav.simStat.p50}}
+nav_p95: {{nav.simStat.p95}}
+nav_max: {{nav.simStat.max}}
 {{#nav.requests}}
 nav_{{requestId}}_name: "{{request}}"
 nav_{{requestId}}_avg: {{average}}
 nav_{{requestId}}_std: {{stddev}}
+nav_{{requestId}}_min: {{min}}
+nav_{{requestId}}_p50: {{p50}}
+nav_{{requestId}}_p95: {{p95}}
+nav_{{requestId}}_max: {{max}}
 nav_{{requestId}}_rps: {{throughput}}
 {{/nav.requests}}
 
 navjsf_avg: {{navjsf.simStat.average}}
 navjsf_rps: {{navjsf.simStat.throughput}}
+navjsf_std: {{navjsf.simStat.stddev}}
+navjsf_min: {{navjsf.simStat.min}}
+navjsf_p50: {{navjsf.simStat.p50}}
+navjsf_p95: {{navjsf.simStat.p95}}
+navjsf_max: {{navjsf.simStat.max}}
 {{#navjsf.requests}}
 navjsf_{{requestId}}_name: "{{request}}"
 navjsf_{{requestId}}_avg: {{average}}
 navjsf_{{requestId}}_std: {{stddev}}
+navjsf_{{requestId}}_min: {{min}}
+navjsf_{{requestId}}_p50: {{p50}}
+navjsf_{{requestId}}_p95: {{p95}}
+navjsf_{{requestId}}_max: {{max}}
 navjsf_{{requestId}}_rps: {{throughput}}
 {{/navjsf.requests}}
 
 bench_avg: {{bench.simStat.average}}
 bench_rps: {{bench.simStat.throughput}}
+bench_std: {{bench.simStat.stddev}}
+bench_min: {{bench.simStat.min}}
+bench_p50: {{bench.simStat.p50}}
+bench_p95: {{bench.simStat.p95}}
+bench_max: {{bench.simStat.max}}
 {{#bench.requests}}
 bench_{{requestId}}_name: "{{request}}"
 bench_{{requestId}}_avg: {{average}}
 bench_{{requestId}}_std: {{stddev}}
+bench_{{requestId}}_min: {{min}}
+bench_{{requestId}}_p50: {{p50}}
+bench_{{requestId}}_p95: {{p95}}
+bench_{{requestId}}_max: {{max}}
 bench_{{requestId}}_rps: {{throughput}}
 {{/bench.requests}}
 
 update_avg: {{update.simStat.average}}
 update_rps: {{update.simStat.throughput}}
+update_std: {{update.simStat.stddev}}
+update_min: {{update.simStat.min}}
+update_p50: {{update.simStat.p50}}
+update_p95: {{update.simStat.p95}}
+update_max: {{update.simStat.max}}
 {{#update.requests}}
 update_{{requestId}}_name: "{{request}}"
 update_{{requestId}}_avg: {{average}}
 update_{{requestId}}_std: {{stddev}}
+update_{{requestId}}_min: {{min}}
+update_{{requestId}}_p50: {{p50}}
+update_{{requestId}}_p95: {{p95}}
+update_{{requestId}}_max: {{max}}
 update_{{requestId}}_rps: {{throughput}}
 {{/update.requests}}
+
+crud_avg: {{crud.simStat.average}}
+crud_rps: {{crud.simStat.throughput}}
+crud_std: {{crud.simStat.stddev}}
+crud_min: {{crud.simStat.min}}
+crud_p50: {{crud.simStat.p50}}
+crud_p95: {{crud.simStat.p95}}
+crud_max: {{crud.simStat.max}}
+{{#crud.requests}}
+crud_{{requestId}}_name: "{{request}}"
+crud_{{requestId}}_avg: {{average}}
+crud_{{requestId}}_std: {{stddev}}
+crud_{{requestId}}_min: {{min}}
+crud_{{requestId}}_p50: {{p50}}
+crud_{{requestId}}_p95: {{p95}}
+crud_{{requestId}}_max: {{max}}
+crud_{{requestId}}_rps: {{throughput}}
+{{/crud.requests}}
 
 reindex_avg: {{reindex.simStat.average}}
 reindex_rps: {{reindex.simStat.throughput}}
