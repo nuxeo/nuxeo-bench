@@ -102,11 +102,11 @@ function build_report() {
   mkdir $report_root || true
   mv $1 $report_root/detail
   java -jar $GAT_REPORT_JAR -o $report_root/overview -g $GRAPHITE_DASH $report_root/detail/simulation.log
-  gzip $report_root/detail/simulation.log
+  find $report_root -name simulation.log -exec gzip {} \;
 }
 
 function build_reports() {
-  echo "Buildingreports"
+  echo "Building reports"
   download_gatling_report_tool
   for report in `find $SCRIPT_PATH/target/gatling/results -name simulation.log`; do
     build_report `dirname $report`
