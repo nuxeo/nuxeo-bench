@@ -17,7 +17,7 @@ function help {
     exit 0
 }
 
-while getopts ":P:md:k:h" opt; do
+while getopts ":P:md:k:n:h" opt; do
     case $opt in
         h)
             help
