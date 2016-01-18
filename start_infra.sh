@@ -13,6 +13,7 @@ function help {
     echo "  -m              : use mongodb"
     echo "  -d distribution : nuxeo distribution (default: lastbuild) (see bin/get-nuxeo-distribution for details)"
     echo "  -k keypair      : use this keypair instead of jenkins"
+    echo "  -n nodes        : the number of Nuxeo nodes in the cluster, default=2"
     exit 0
 }
 
@@ -51,6 +52,9 @@ while getopts ":P:md:k:h" opt; do
         k)
             keypair=$OPTARG
             ;;
+        n)
+            nbnodes=$OPTARG
+            ;;
         :)
             echo "Option -$OPTARG requires an argument" >&2
             exit 1
@@ -78,6 +82,9 @@ echo "---" > ansible/group_vars/all/custom.yml
 echo "dbprofile: $db" >> ansible/group_vars/all/custom.yml
 echo "mongo: $mongo" >> ansible/group_vars/all/custom.yml
 echo "keypair: $keypair" >> ansible/group_vars/all/custom.yml
+
+# Set nb of Nuxeo nodes
+perl -pi -e "s,counts\:\n\s+nuxeo\:[^\n]+\n,counts\:\n  nuxeo: ${nbnodes}\n,igs" -0777 ansible/group_vars/all/main.yml
 
 # Setup virtualenv
 if [ ! -d venv ]; then
