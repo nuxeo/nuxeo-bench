@@ -104,6 +104,12 @@
     dest: /opt/es/elasticsearch/config/elasticsearch.yml
     regexp: '^#?\s*bootstrap\.mlockall:'
     line: "bootstrap.mlockall: true"
+- name: Config - bulk queue size
+  lineinfile:
+    dest: /opt/es/elasticsearch/config/elasticsearch.yml
+    regexp: '^#?\s*threadpool\.bulk\.queue_size:'
+    line: "threadpool.bulk.queue_size: 1000"
+
 #- name: Logging - debug
 #  lineinfile:
 #    dest: /opt/es/elasticsearch/config/logging.yml
