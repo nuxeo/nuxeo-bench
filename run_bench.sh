@@ -75,16 +75,16 @@ function run_simulations() {
   gatling "org.nuxeo.cap.bench.Sim00Setup"
   gatling "org.nuxeo.cap.bench.Sim10MassImport"
   gatling "org.nuxeo.cap.bench.Sim10CreateFolders"
-  gatling "org.nuxeo.cap.bench.Sim20CreateDocuments" -Dusers=16
+  gatling "org.nuxeo.cap.bench.Sim20CreateDocuments" -Dusers=32
   gatling "org.nuxeo.cap.bench.Sim25WaitForAsync"
-  gatling "org.nuxeo.cap.bench.Sim30UpdateDocuments" -Dusers=16 -Dduration=180
+  gatling "org.nuxeo.cap.bench.Sim30UpdateDocuments" -Dusers=32 -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim35WaitForAsync"
-  gatling "org.nuxeo.cap.bench.Sim30Navigation" -Dusers=16 -Dduration=180
+  gatling "org.nuxeo.cap.bench.Sim30Navigation" -Dusers=48 -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim30NavigationJsf" -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim50Bench" -Dnav.users=80 -Dnavjsf=5 -Dupd.user=15 -Dnavjsf.pause_ms=1000 -Dduration=180
-  gatling "org.nuxeo.cap.bench.Sim50CRUD" -Dusers=16 -Dduration=120
+  gatling "org.nuxeo.cap.bench.Sim50CRUD" -Dusers=32 -Dduration=120
   gatling "org.nuxeo.cap.bench.Sim80ReindexAll"
-  gatling "org.nuxeo.cap.bench.Sim30Navigation" -Dusers=100 -Dduration=120 -Dramp=50
+  # gatling "org.nuxeo.cap.bench.Sim30Navigation" -Dusers=100 -Dduration=120 -Dramp=50
   popd
 }
 
