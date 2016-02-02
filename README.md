@@ -1,6 +1,6 @@
-# About Nuxeo bench
+# About Nuxeo Benchmarks
 
-Helper scripts for the Nuxeo reference benches.
+Helper scripts for the Nuxeo reference benchmarks.
 
 This sets up an infrastructure with:
 
@@ -95,14 +95,12 @@ http://qa.nuxeo.org/jenkins/job/nuxeo-reference-site/
 
 # About Nuxeo
 
-Nuxeo provides a modular, extensible Java-based
-[open source software platform for enterprise content management](http://www.nuxeo.com/en/products/ep)
-and packaged applications for
-[document management](http://www.nuxeo.com/en/products/document-management),
-[digital asset management](http://www.nuxeo.com/en/products/dam) and
-[case management](http://www.nuxeo.com/en/products/case-management). Designed
+Nuxeo provides a modular, extensible, open source
+[platform for enterprise content management](http://www.nuxeo.com/products/content-management-platform) used by organizations worldwide to power business processes and content repositories in the area of 
+[document management](http://www.nuxeo.com/solutions/document-management),
+[digital asset management](http://www.nuxeo.com/solutions/digital-asset-management),
+[case management](http://www.nuxeo.com/case-management) and [knowledge management](http://www.nuxeo.com/solutions/advanced-knowledge-base/). Designed
 by developers for developers, the Nuxeo platform offers a modern
-architecture, a powerful plug-in model and extensive packaging
-capabilities for building content applications.
+architecture, a powerful plug-in model and top notch performance.
 
 More information on: <http://www.nuxeo.com/>
