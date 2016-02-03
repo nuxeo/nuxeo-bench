@@ -27,6 +27,4 @@ echo "benchname: \"$benchname\"" >> $DATA_FILE
 echo "nuxeonodes: $nbnodes" >> $DATA_FILE
 echo "classifier: \"$classifier\"" >> $DATA_FILE
 echo "distribution: \"$distribution\"" >> $DATA_FILE
-# Extract the mass import document per second
-tail -n1 logs/*/perf*.csv | cut -d \; -f3 | LC_ALL=C xargs printf "import_dps: %.1f" >> $DATA_FILE
-
+echo "" >> $DATA_FILE

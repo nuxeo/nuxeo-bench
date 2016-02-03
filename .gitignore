@@ -8,3 +8,4 @@ ansible/group_vars/all/custom.yml
 bench-scripts/
 reports/
 bench-site/public
+bin/.build

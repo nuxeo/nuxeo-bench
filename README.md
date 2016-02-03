@@ -20,6 +20,9 @@ This is a mix of static and dynamic parts:
 
 The bench is a composed of a dozen of gatling simulation.
 
+Benchmarks are launched using Jenkins and populate a reference site:
+http://qa.nuxeo.org/benchmarks/
+
 ## Benchmark workflow
 
 ### Running a benchmark
@@ -27,36 +30,35 @@ The bench is a composed of a dozen of gatling simulation.
 New benchmark are triggered using the following Jenkins job:
 http://qa.nuxeo.org/jenkins/job/nuxeo-reference-bench/
 
-
-There are parameters that impact the target installations:
+The job has parameters that impact the target Nuxeo setup:
 
 - dbprofile: the backend used for the repository
 - nbnodes: the number of nodes in the Nuxeo cluster
 - distribution: the Nuxeo distribution to test, can be a branch with a different Nuxeo tuning for instance.
 
-There are parameters that help to categorize the benchmarks:
+There are parameters that help to categorize the benchmarks results:
 
 - benchid
-- benchname
+- benchname 
 - classifier
 
 The `benchid/benchname` is the same for all benchmark that attempt to test a common target with differeent axis. 
-Typical value for `benchid/benchname` can be: `nuxeo81/Nuxeo 8.1` or `master/Current Snaphot`. 
+Typical values for `benchid/benchname` can be: `nuxeo81/Nuxeo 8.1` or `master/Current Snaphot`. 
  
 The variation for each run will be on `dbprofile`, `nbnodes` or `distribution`, you can use the classifier to add an extra note
 about the target like: "db invalidation" or "postgresql tuned" 
   
 When displaying a list of benchmarks for a benchname, the list will be ordered by "$dbprofile $nbnodes $buildid",
 and the name displayed will contain the classifier.
- 
+
 
 ### Adding a benchmark result to the reference site
 
 The Jenkins job is launched automatically after a bench to extract the results and push them to the site:
-http://qa.nuxeo.org/jenkins/job/nuxeo-reference-bench/
+http://qa.nuxeo.org/jenkins/job/nuxeo-reference-site-add/
 
 
-By default the results is categorized under the "Continuous resutls".
+By default the results is categorized under the "Continuous results".
 
 You can manually run the job to add a build to another categories : milestone or misc.
 
@@ -64,7 +66,7 @@ You can manually run the job to add a build to another categories : milestone or
 ### Removing a benchmark result from the site
 
 Using the same Jenkins job just check the "remove from the site" case :
-http://qa.nuxeo.org/jenkins/job/nuxeo-reference-bench/
+http://qa.nuxeo.org/jenkins/job/nuxeo-reference-site-add/
 
 
 ### Updating the site
@@ -78,7 +80,7 @@ http://qa.nuxeo.org/jenkins/job/nuxeo-reference-site/
 
 
 
-## Benchmark protocol for release
+## Release Benchmark protocol
  
  First choose a benchid/benchname like: nuxeo81/Nuxeo 8.1 and keep it for all the runs.
 
@@ -90,7 +92,11 @@ http://qa.nuxeo.org/jenkins/job/nuxeo-reference-site/
  
  There is no need to use a classifier here.
  
+ Use the following job to add the results in the "milestone" category:
+ http://qa.nuxeo.org/jenkins/job/nuxeo-reference-site-add/
 
+ Soon the resutls will be listed on the site:
+ http://qa.nuxeo.org/benchmarks/milestone/
  
 
 # About Nuxeo

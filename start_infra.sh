@@ -11,7 +11,7 @@ function help {
     echo "Usage: $0 -P<dbprofile> -m -d<distribution>"
     echo "  -P dbprofile    : one of pgsql,mssql,oracle12c,mysql (default: pgsql)"
     echo "  -m              : use mongodb"
-    echo "  -d distribution : nuxeo distribution (default: lastbuild) (see bin/get-nuxeo-distribution for details)"
+    echo "  -d distribution : nuxeo distribution (default: lastbuild) (see bin/get-nuxeo-distribution.py for details)"
     echo "  -k keypair      : use this keypair instead of jenkins"
     echo "  -n nodes        : the number of Nuxeo nodes in the cluster, default=2"
     exit 0
@@ -73,7 +73,7 @@ fi
 mkdir deploy
 sudo apt-get update
 sudo apt-get -q -y install python-lxml python-requests
-./bin/get-nuxeo-distribution -v $distrib -o deploy/nuxeo-distribution.zip
+./bin/get-nuxeo-distribution.py -v $distrib -o deploy/nuxeo-distribution.zip
 cp /opt/build/hudson/instance.clid deploy/
 echo "nuxeo-platform-importer" > deploy/mp-list
 
