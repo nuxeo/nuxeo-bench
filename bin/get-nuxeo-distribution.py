@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import os
 import argparse
 import re
 import requests
@@ -65,7 +65,8 @@ elif re.match('^[0-9\.]+$', arg):
 elif re.match('^[0-9\.]+-SNAPSHOT$', arg):
     url = 'http://community.nuxeo.com/static/latest-snapshot/nuxeo-distribution-tomcat,%s,nuxeo-cap.zip' % arg[:-9]
 else:
-    subprocess.check_call(["./build-distribution.sh", "-b", arg, "-o", output])
+    cmd = os.path.join(os.path.dirname(os.path.realpath(__file__)), "build-distribution.sh")
+    subprocess.check_call([cmd, "-b", arg, "-o", output])
     sys.exit(1)
 
 if url.startswith('file://'):
