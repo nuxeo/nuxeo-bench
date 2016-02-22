@@ -12,7 +12,7 @@ MVN_HOME=/opt/build/tools/maven3
 set -e
 
 function help {
-  echo "Usage: $0 -b<branch> -f<fallback> -d<outputdir>"
+  echo "Usage: $0 -b<branch> -f<fallback> -o<zipfile>"
   echo "  -b branch       : the git branch to build the distrib"
   echo "  -f fallback     : the breanch to falls back, default is master"
   echo "  -o zipfile      : the nuxeo zip archive output file"

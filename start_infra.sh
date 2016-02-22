@@ -1,6 +1,7 @@
 #!/bin/bash -e
 # Start the required infra to run a bench
 cd $(dirname $0)
+HERE=`readlink -e .`
 
 db="pgsql"
 mongo="false"
@@ -67,15 +68,15 @@ while getopts ":P:md:k:n:h" opt; do
 done
 
 # Prepare distribution
-if [ -d deploy ]; then
-    rm -rf deploy
+if [ -d $HERE/deploy ]; then
+    rm -rf $HERE/deploy
 fi
-mkdir deploy
+mkdir $HERE/deploy
 sudo apt-get update
 sudo apt-get -q -y install python-lxml python-requests
-./bin/get-nuxeo-distribution.py -v $distrib -o deploy/nuxeo-distribution.zip
-cp /opt/build/hudson/instance.clid deploy/
-echo "nuxeo-platform-importer" > deploy/mp-list
+./bin/get-nuxeo-distribution.py -v $distrib -o $HERE/deploy/nuxeo-distribution.zip
+cp /opt/build/hudson/instance.clid $HERE/deploy/
+echo "nuxeo-platform-importer" > $HERE/deploy/mp-list
 
 # Set db options
 echo "---" > ansible/group_vars/all/custom.yml
