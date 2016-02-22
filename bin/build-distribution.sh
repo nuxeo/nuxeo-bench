@@ -6,6 +6,7 @@ BRANCH=master
 PARENT_BRANCH=master
 HERE=`readlink -e .`
 TMP=$HERE/.build
+OUTPUT=$TMP/nuxeo-distribution.zip
 MVN_HOME=/opt/build/tools/maven3
 # fail on any command error
 set -e
@@ -14,7 +15,7 @@ function help {
   echo "Usage: $0 -b<branch> -f<fallback> -d<outputdir>"
   echo "  -b branch       : the git branch to build the distrib"
   echo "  -f fallback     : the breanch to falls back, default is master"
-  echo "  -d outputdir    : the output directory to put the nuxeo zip archive"
+  echo "  -o zipfile      : the nuxeo zip archive output file"
   echo "  -t tempdir      : where to checkout the src to build"
   echo "  -j java_home    : JAVA_HOME"
   exit 0
@@ -63,17 +64,20 @@ function build_nuxeo {
   echo "### Building Nuxeo tomcat distrib"
   time {
     pushd "$TMP/nuxeo"
-    # hack to download deps concurrently
-    time MAVEN_OPTS="-Xms1024m -Xmx4096m -XX:MaxPermSize=2048m" mvn -Dmaven.repo.local="$TMP/m2" -Paddons,distrib,qa -DskipTests=true  -DexcludeGroupIds=org.nuxeo -DexcludeTransitive=true  dependency:go-offline -T16 || true
-    set -x
-    time MAVEN_OPTS="-Xms1024m -Xmx4096m -XX:MaxPermSize=2048m" mvn -Dmaven.repo.local="$TMP/m2" -Paddons,distrib,qa -DskipTests=true -nsu install
-    set +x
+    # exclude npm build that fails randomly 
+    time MAVEN_OPTS="-Xms1024m -Xmx4096m -XX:MaxPermSize=2048m" mvn -Dmaven.repo.local="$TMP/m2" -nsu -am -pl nuxeo-distribution/nuxeo-distribution-tomcat -Paddons,distrib,qa -DskipTests=true -DexcludeGroupIds=org.nuxeo  -T16 install || true
+    #time MAVEN_OPTS="-Xms1024m -Xmx4096m -XX:MaxPermSize=2048m" mvn -Dmaven.repo.local="$TMP/m2" -nsu -am -pl nuxeo-distribution/nuxeo-distribution-tomcat,-addons/nuxeo-review-workflows-dashboards,-addons/nuxeo-salesforce,-addons/nuxeo-salesforce,-nuxeo-features/nuxeo-admin-center/nuxeo-admin-center-analytics,-addons/nuxeo-platform-spreadsheet,-addons/nuxeo-travel-expenses,-addons/nuxeo-salesforce/nuxeo-salesforce-web,-addons/nuxeo-salesforce/nuxeo-salesforce-core -Paddons,distrib,qa -DskipTests=true -DexcludeGroupIds=org.nuxeo  -T16 install || true
     popd
   }
   echo "### Build done"
 }
 
-while getopts "b:f:h" opt; do
+function copy_zip {
+    cp $TMP/nuxeo/nuxeo-distribution/nuxeo-distribution-tomcat/target/nuxeo-distribution-*-nuxeo-cap.zip $OUTPUT
+    echo "### zip ready: $OUTPUT"
+}
+
+while getopts "b:f:t:j:o:h" opt; do
     case $opt in
         h)
             help
@@ -90,6 +94,9 @@ while getopts "b:f:h" opt; do
         j)
             JDK_HOME=$OPTARG
             ;;
+        o)
+            OUTPUT=$OPTARG
+            ;;
         ?)
             echo "Invalid option: -$OPTARG" >&2
             exit 1
@@ -101,3 +108,4 @@ setup_env
 #clean_tmp
 #clone_src
 build_nuxeo
+copy_zip

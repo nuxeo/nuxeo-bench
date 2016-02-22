@@ -7,20 +7,21 @@ import shutil
 import sys
 import urlparse
 from lxml import html
-
+import subprocess
 
 parser = argparse.ArgumentParser(description='Download nuxeo distribution')
 parser.add_argument('-v', dest='version', type=str, default='lastbuild',
-    help='one of: ' + \
-         'lastbuild (downloads the last build from nuxeo-distribution-master), ' + \
-         'lastitbuild (downloads the last IT build distribution), ' + \
-         'lastitsuccess (downloads the last successful IT build distribution), ' + \
-         'lastlts (downloads the latest LTS from cdn.nuxeo.com), ' + \
-         'lastft (downloads the latest FastTrack from cdn.nuxeo.com), ' + \
-         'lastsnapshot (downloads the latest published snapshot from community.nuxeo.com), ' + \
-         'version (downloads that version from community.nuxeo.com (SNAPSHOT) or cdn.nuxeo.com (release)), ' + \
-         'url ((http:// or https://): downloads that URL, no resolving done), ' + \
-         'file ((file:// or starts with /): uses that local file)')
+                    help='one of: ' + \
+                    'lastbuild (downloads the last build from nuxeo-distribution-master), ' + \
+                    'lastitbuild (downloads the last IT build distribution), ' + \
+                    'lastitsuccess (downloads the last successful IT build distribution), ' + \
+                    'lastlts (downloads the latest LTS from cdn.nuxeo.com), ' + \
+                    'lastft (downloads the latest FastTrack from cdn.nuxeo.com), ' + \
+                    'lastsnapshot (downloads the latest published snapshot from community.nuxeo.com), ' + \
+                    'VERSION (downloads that version from community.nuxeo.com (SNAPSHOT) or cdn.nuxeo.com (release)), ' + \
+                    'URL ((http:// or https://): downloads that URL, no resolving done), ' + \
+                    'FILE ((file:// or starts with /): uses that local file)'  + \
+                    'BRANCH (build Nuxeo distribution from a git branch)')
 parser.add_argument('-o', dest='output', type=str, default='nuxeo-distribution.zip',
     help='output file')
 
@@ -29,7 +30,7 @@ args = parser.parse_args()
 arg = args.version
 output = args.output
 
-print 'Looking for %s ...' % arg
+print 'Looking for version %s ...' % arg
 
 if arg == 'lastbuild':
     base = 'http://qa.nuxeo.org/jenkins/job/nuxeo-distribution-master/lastSuccessfulBuild/artifact/nuxeo-distribution/nuxeo-distribution-tomcat/target/'
@@ -64,12 +65,12 @@ elif re.match('^[0-9\.]+$', arg):
 elif re.match('^[0-9\.]+-SNAPSHOT$', arg):
     url = 'http://community.nuxeo.com/static/latest-snapshot/nuxeo-distribution-tomcat,%s,nuxeo-cap.zip' % arg[:-9]
 else:
-    print 'Unknown version: %s' % arg
+    subprocess.check_call(["./build-distribution.sh", "-b", arg, "-o", output])
     sys.exit(1)
 
-if arg.startswith('file://'):
+if url.startswith('file://'):
     shutil.copy(url[7:], output)
-elif arg.startswith('/'):
+elif url.startswith('/'):
     shutil.copy(url, output)
 else:
     print 'Downloading %s ...' % url
