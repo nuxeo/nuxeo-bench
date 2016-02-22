@@ -105,7 +105,7 @@ while getopts "b:f:t:j:o:h" opt; do
 done
 
 setup_env
-#clean_tmp
-#clone_src
+clean_tmp
+clone_src
 build_nuxeo
 copy_zip
