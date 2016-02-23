@@ -67,7 +67,7 @@ elif re.match('^[0-9\.]+-SNAPSHOT$', arg):
 else:
     cmd = os.path.join(os.path.dirname(os.path.realpath(__file__)), "build-distribution.sh")
     subprocess.check_call([cmd, "-b", arg, "-o", output])
-    sys.exit(1)
+    sys.exit(0)
 
 if url.startswith('file://'):
     shutil.copy(url[7:], output)
