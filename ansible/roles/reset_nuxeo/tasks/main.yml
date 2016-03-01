@@ -166,7 +166,7 @@
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?nuxeo\.redis\.host\s*='
-    line: "nuxeo.redis.host={{redis_host}}"
+    line: "nuxeo.redis.host={{db_hosts[0]}}"
 # Add ES config
 - name: Config - elasticsearch.clusterName
   lineinfile:
