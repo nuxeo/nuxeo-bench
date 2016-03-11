@@ -21,7 +21,8 @@ parser.add_argument('-v', dest='version', type=str, default='lastbuild',
                     'VERSION (downloads that version from community.nuxeo.com (SNAPSHOT) or cdn.nuxeo.com (release)), ' + \
                     'URL ((http:// or https://): downloads that URL, no resolving done), ' + \
                     'FILE ((file:// or starts with /): uses that local file)'  + \
-                    'BRANCH (build Nuxeo distribution from a git branch)')
+                    'BRANCH (build Nuxeo distribution from a git branch fallback on master)' +\
+                    'BRANCH/FALLBACK (build Nuxeo distribution from a git branch fallback on FALLBACK branch)')
 parser.add_argument('-o', dest='output', type=str, default='nuxeo-distribution.zip',
     help='output file')
 
@@ -66,7 +67,11 @@ elif re.match('^[0-9\.]+-SNAPSHOT$', arg):
     url = 'http://community.nuxeo.com/static/latest-snapshot/nuxeo-distribution-tomcat,%s,nuxeo-cap.zip' % arg[:-9]
 else:
     cmd = os.path.join(os.path.dirname(os.path.realpath(__file__)), "build-distribution.sh")
-    subprocess.check_call([cmd, "-b", arg, "-o", output])
+    branches = arg.split('/')
+    param = [cmd, "-b", branches[0], "-o", output]
+    if (len(branches) > 1):
+        param.extend(["-f", branches[1]])
+    subprocess.check_call(param)
     sys.exit(0)
 
 if url.startswith('file://'):
