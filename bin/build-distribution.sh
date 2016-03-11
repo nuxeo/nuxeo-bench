@@ -53,7 +53,6 @@ function clone_src {
     . scripts/gitfunctions.sh
     echo "### Switch to branch $BRANCH if exists else falls back on $PARENT_BRANCH"
     ./clone.py $BRANCH -f $PARENT_BRANCH
-    gitfa rebase origin/$PARENT_BRANCH
     (! (gitfa status --porcelain | grep -e "^U"))
     popd
   }
@@ -64,7 +63,7 @@ function build_nuxeo {
   echo "### Building Nuxeo tomcat distrib"
   time {
     pushd "$TMP/nuxeo"
-    # exclude npm build that fails randomly 
+    # exclude npm build that fails randomly
     time MAVEN_OPTS="-Xms1024m -Xmx4096m -XX:MaxPermSize=2048m" mvn -Dmaven.repo.local="$TMP/m2" -nsu -am -pl nuxeo-distribution/nuxeo-distribution-tomcat -Paddons,distrib,qa -DskipTests=true -DexcludeGroupIds=org.nuxeo  -T16 install || true
     #time MAVEN_OPTS="-Xms1024m -Xmx4096m -XX:MaxPermSize=2048m" mvn -Dmaven.repo.local="$TMP/m2" -nsu -am -pl nuxeo-distribution/nuxeo-distribution-tomcat,-addons/nuxeo-review-workflows-dashboards,-addons/nuxeo-salesforce,-addons/nuxeo-salesforce,-nuxeo-features/nuxeo-admin-center/nuxeo-admin-center-analytics,-addons/nuxeo-platform-spreadsheet,-addons/nuxeo-travel-expenses,-addons/nuxeo-salesforce/nuxeo-salesforce-web,-addons/nuxeo-salesforce/nuxeo-salesforce-core -Paddons,distrib,qa -DskipTests=true -DexcludeGroupIds=org.nuxeo  -T16 install || true
     popd
