@@ -124,14 +124,17 @@ function build_stat() {
   # create a yml file with all the stats
   set -x
   java -jar $GAT_REPORT_JAR -f -o $REPORT_PATH -n data.yml -t $MUSTACHE_TEMPLATE \
-    -m import,create,nav,navjsf,update,bench,crud,reindex \
+    -m import,create,createasync,nav,navjsf,update,updateasync,bench,crud,crudasync,reindex \
     $REPORT_PATH/sim10massimport/detail/simulation.log.gz \
     $REPORT_PATH/sim20createdocuments/detail/simulation.log.gz \
+    $REPORT_PATH/sim25waitforasync/detail/simulation.log.gz \
     $REPORT_PATH/sim30navigation/detail/simulation.log.gz \
     $REPORT_PATH/sim30navigationjsf/detail/simulation.log.gz \
     $REPORT_PATH/sim30updatedocuments/detail/simulation.log.gz \
+    $REPORT_PATH/sim35waitforasync/detail/simulation.log.gz \
     $REPORT_PATH/sim50bench/detail/simulation.log.gz \
     $REPORT_PATH/sim50crud/detail/simulation.log.gz \
+    $REPORT_PATH/sim55waitforasync/detail/simulation.log.gz \
     $REPORT_PATH/sim80reindexall/detail/simulation.log.gz
   echo "build_number: $BUILD_NUMBER" >> $REPORT_PATH/data.yml
   echo "build_url: \"$BUILD_URL\"" >> $REPORT_PATH/data.yml
