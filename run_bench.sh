@@ -74,7 +74,7 @@ function run_simulations() {
   mvn -nsu clean
   gatling "org.nuxeo.cap.bench.Sim00Setup"
   #gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=100000
-  gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=1000000
+  gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=1000000 -Dusers=32
   gatling "org.nuxeo.cap.bench.Sim10CreateFolders"
   gatling "org.nuxeo.cap.bench.Sim20CreateDocuments" -Dusers=32
   gatling "org.nuxeo.cap.bench.Sim25WaitForAsync"
