@@ -377,5 +377,15 @@
       "mostDeviant(6,aliasByNode(servers.*.nuxeo.nuxeo.works.*.completed.count,1,5))"
     ],
     "vtitle": "count"
+  },
+  {
+    "title": "nx/Audit throughput",
+    "target": [
+            "aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.audit.drained.count),1),1,5)",
+            "aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.audit.scheduled.count),1),1,5)",
+            "alias(secondYAxis(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.audit.queued.count), sumSeries(servers.*.nuxeo.nuxeo.audit.drained.count))),\"queue size\")"
+
+    ],
+    "vtitle": "count"
   }
 ]
