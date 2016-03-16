@@ -35,6 +35,12 @@ create_{{requestId}}_max: {{max}}
 create_{{requestId}}_rps: {{throughput}}
 {{/create.requests}}
 
+createasync_avg: {{createasync.simStat.average}}
+createasync_duration: {{createasync.simStat.duration}}
+createasync_count: {{createasync.simStat.count}}
+createasync_percentError: {{createasync.simStat.percentError}}
+createasync_error: {{createasync.simStat.errorCount}}
+
 nav_avg: {{nav.simStat.average}}
 nav_rps: {{nav.simStat.throughput}}
 nav_std: {{nav.simStat.stddev}}
@@ -131,6 +137,12 @@ update_{{requestId}}_max: {{max}}
 update_{{requestId}}_rps: {{throughput}}
 {{/update.requests}}
 
+updatesync_avg: {{updateasync.simStat.average}}
+updateasync_duration: {{updateasync.simStat.duration}}
+updateasync_count: {{updateasync.simStat.count}}
+updateasync_percentError: {{updateasync.simStat.percentError}}
+updateasync_error: {{updateasync.simStat.errorCount}}
+
 crud_avg: {{crud.simStat.average}}
 crud_rps: {{crud.simStat.throughput}}
 crud_std: {{crud.simStat.stddev}}
@@ -154,6 +166,12 @@ crud_{{requestId}}_p95: {{p95}}
 crud_{{requestId}}_max: {{max}}
 crud_{{requestId}}_rps: {{throughput}}
 {{/crud.requests}}
+
+crudasync_avg: {{crudasync.simStat.average}}
+crudasync_duration: {{crudasync.simStat.duration}}
+crudasync_count: {{crudasync.simStat.count}}
+crudasync_percentError: {{crudasync.simStat.percentError}}
+crudasync_error: {{crudasync.simStat.errorCount}}
 
 reindex_avg: {{reindex.simStat.average}}
 reindex_rps: {{reindex.simStat.throughput}}
