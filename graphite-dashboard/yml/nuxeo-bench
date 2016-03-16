@@ -127,13 +127,19 @@ graphs:
     - /render?width=500&from=-20minutes&until=now&height=400&vtitle=%25&yMinLeft=0&title=es%2FCPU%20and%20size&yMaxLeft=100&target=aliasByNode(servers.*.elasticsearch.process.cpu.percent%2C1)&target=aliasByNode(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size)%2C1)&vtitleRight=Bytes
 -
     -   - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),"total")
+        - alias(maxSeries(servers.*.elasticsearch.indices.nuxeo.docs.count),"docs")
+        - alias(maxSeries(servers.*.elasticsearch.indices.nuxeo-audit.docs.count),"audit")
+        - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),"total")
         - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted),"deleted")
     -   target:
+        - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),"total")
+        - alias(maxSeries(servers.*.elasticsearch.indices.nuxeo.docs.count),"docs")
+        - alias(maxSeries(servers.*.elasticsearch.indices.nuxeo-audit.docs.count),"audit")
         - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),"total")
         - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted),"deleted")
         title: es/docs
         vtitle: docs
-    - /render?width=500&from=-20minutes&until=now&height=400&title=es%2Fdocs&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count)%2C%22total%22)&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted)%2C%22deleted%22)&vtitle=docs
+    - /render?width=500&from=-20minutes&until=now&height=400&title=es%2Fdocs&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count)%2C%22total%22)&target=alias(maxSeries(servers.*.elasticsearch.indices.nuxeo.docs.count)%2C%22docs%22)&target=alias(maxSeries(servers.*.elasticsearch.indices.nuxeo-audit.docs.count)%2C%22audit%22)&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count)%2C%22total%22)&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted)%2C%22deleted%22)&vtitle=docs
 -
     -   - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_deleted),1),"tup_deleted")
         - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_inserted),1),"tup_inserted")

@@ -109,6 +109,9 @@
     "title": "es/docs",
     "target": [
       "alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),\"total\")",
+      "alias(maxSeries(servers.*.elasticsearch.indices.nuxeo.docs.count),\"docs\")",
+      "alias(maxSeries(servers.*.elasticsearch.indices.nuxeo-audit.docs.count),\"audit\")",
+      "alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),\"total\")",
       "alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted),\"deleted\")"
     ],
     "vtitle": "docs"
