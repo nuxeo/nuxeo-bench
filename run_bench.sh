@@ -73,6 +73,8 @@ function run_simulations() {
   pushd $SCRIPT_PATH || exit 2
   mvn -nsu clean
   gatling "org.nuxeo.cap.bench.Sim00Setup"
+  # init user ws and give some chance to graphite to init all metrics before mass import
+  gatling "org.nuxeo.cap.bench.Sim25WarmUsersJsf"
   #gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=100000
   gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=1000000 -Dusers=32
   gatling "org.nuxeo.cap.bench.Sim10CreateFolders"
