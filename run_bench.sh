@@ -85,6 +85,7 @@ function run_simulations() {
   gatling "org.nuxeo.cap.bench.Sim30NavigationJsf" -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim50Bench" -Dnav.users=80 -Dnavjsf=5 -Dupd.user=15 -Dnavjsf.pause_ms=1000 -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim50CRUD" -Dusers=32 -Dduration=120
+  gatling "org.nuxeo.cap.bench.Sim55WaitForAsync"
   gatling "org.nuxeo.cap.bench.Sim80ReindexAll"
   # gatling "org.nuxeo.cap.bench.Sim30Navigation" -Dusers=100 -Dduration=120 -Dramp=50
   popd
