@@ -38,16 +38,15 @@ The job has parameters that impact the target Nuxeo setup:
 
 There are parameters that help to categorize the benchmarks results:
 
-- benchid
-- benchname 
+- benchname
 - classifier
 
-The `benchid/benchname` is the same for all benchmark that attempt to test a common target with differeent axis. 
-Typical values for `benchid/benchname` can be: `nuxeo81/Nuxeo 8.1` or `master/Current Snaphot`. 
- 
+The `benchname` is the same for all benchmark that attempt to test a common target with differeent axis.
+Typical values for `benchname` can be: `Nuxeo 8.1` or `Current Snaphot`.
+
 The variation for each run will be on `dbprofile`, `nbnodes` or `distribution`, you can use the classifier to add an extra note
-about the target like: "db invalidation" or "postgresql tuned" 
-  
+about the target like: "db invalidation" or "postgresql tuned"
+
 When displaying a list of benchmarks for a benchname, the list will be ordered by "$dbprofile $nbnodes $buildid",
 and the name displayed will contain the classifier.
 
@@ -81,28 +80,22 @@ http://qa.nuxeo.org/jenkins/job/nuxeo-reference-site/
 
 
 ## Release Benchmark protocol
- 
- First choose a benchid/benchname like: nuxeo81/Nuxeo 8.1 and keep it for all the runs.
 
- Then Schedule bench with http://qa.nuxeo.org/jenkins/job/nuxeo-reference-bench/
-  
-  - one per dbprofile 
-  - dbprofile=mongodb with nbnodes 1, 3, 4
-  - dbprofile=postgrsql with nbnodes 1, 3, 4
- 
- There is no need to use a classifier here.
- 
+ Use the trigger job: http://qa.nuxeo.org/jenkins/job/trigger-nuxeo-reference-bench/
+
+ Choose a benchname like: Nuxeo 8.1
+
  Use the following job to add the results in the "milestone" category:
  http://qa.nuxeo.org/jenkins/job/nuxeo-reference-site-add/
 
  Soon the resutls will be listed on the site:
  http://qa.nuxeo.org/benchmarks/milestone/
- 
+
 
 # About Nuxeo
 
 Nuxeo provides a modular, extensible, open source
-[platform for enterprise content management](http://www.nuxeo.com/products/content-management-platform) used by organizations worldwide to power business processes and content repositories in the area of 
+[platform for enterprise content management](http://www.nuxeo.com/products/content-management-platform) used by organizations worldwide to power business processes and content repositories in the area of
 [document management](http://www.nuxeo.com/solutions/document-management),
 [digital asset management](http://www.nuxeo.com/solutions/digital-asset-management),
 [case management](http://www.nuxeo.com/case-management) and [knowledge management](http://www.nuxeo.com/solutions/advanced-knowledge-base/). Designed

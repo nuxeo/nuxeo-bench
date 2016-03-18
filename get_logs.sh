@@ -1,10 +1,6 @@
 #!/bin/bash
 # Collect remote logs from the Nuxeo nodes and misc info
 cd $(dirname $0)
-REPORT_PATH="./reports"
-DATA_FILE=$REPORT_PATH/data.yml
-
-cd $(dirname $0)
 . venv/bin/activate
 
 if [ -d logs ]; then
@@ -20,11 +16,3 @@ for h in $(ansible/inventory.py --hosts nuxeo); do
     scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@$h:/opt/nuxeo/logs/nuxeo_conf.log logs/$h/ || true
 done
 
-# Add some info to the data stat file
-echo "dbprofile: \"$dbprofile\"" >> $DATA_FILE
-echo "benchid: \"$benchid\"" >> $DATA_FILE
-echo "benchname: \"$benchname\"" >> $DATA_FILE
-echo "nuxeonodes: $nbnodes" >> $DATA_FILE
-echo "classifier: \"$classifier\"" >> $DATA_FILE
-echo "distribution: \"$distribution\"" >> $DATA_FILE
-echo "" >> $DATA_FILE
