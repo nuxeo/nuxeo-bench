@@ -143,7 +143,7 @@ function build_stat() {
   echo "build_url: \"$BUILD_URL\"" >> $REPORT_PATH/data.yml
   echo "job_name: \"$JOB_NAME\"" >> $REPORT_PATH/data.yml
   echo "dbprofile: \"$dbprofile\"" >> $REPORT_PATH/data.yml
-  echo "benchname: \"$benchname\"" >> $REPORT_PATH/data.yml
+  echo "bench_suite: \"$benchsuite\"" >> $REPORT_PATH/data.yml
   echo "nuxeonodes: $nbnodes" >> $REPORT_PATH/data.yml
   echo "classifier: \"$classifier\"" >> $REPORT_PATH/data.yml
   echo "distribution: \"$distribution\"" >> $REPORT_PATH/data.yml
