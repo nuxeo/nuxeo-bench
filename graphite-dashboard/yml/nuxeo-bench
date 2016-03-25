@@ -116,7 +116,8 @@ graphs:
 -
     -   - aliasByNode(servers.*.elasticsearch.process.cpu.percent,1)
         - aliasByNode(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size),1)
-    -   target:
+    -   lineMode: connected
+        target:
         - aliasByNode(servers.*.elasticsearch.process.cpu.percent,1)
         - aliasByNode(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size),1)
         title: es/CPU and size
@@ -124,14 +125,15 @@ graphs:
         vtitleRight: Bytes
         yMaxLeft: '100'
         yMinLeft: '0'
-    - /render?width=500&from=-20minutes&until=now&height=400&vtitle=%25&yMinLeft=0&title=es%2FCPU%20and%20size&yMaxLeft=100&target=aliasByNode(servers.*.elasticsearch.process.cpu.percent%2C1)&target=aliasByNode(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size)%2C1)&vtitleRight=Bytes
+    - /render?width=500&from=-20minutes&until=now&height=400&vtitle=%25&yMinLeft=0&title=es%2FCPU%20and%20size&yMaxLeft=100&target=aliasByNode(servers.*.elasticsearch.process.cpu.percent%2C1)&target=aliasByNode(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size)%2C1)&vtitleRight=Bytes&lineMode=connected
 -
     -   - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),"total")
         - alias(maxSeries(servers.*.elasticsearch.indices.nuxeo.docs.count),"docs")
         - alias(maxSeries(servers.*.elasticsearch.indices.nuxeo-audit.docs.count),"audit")
         - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),"total")
         - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted),"deleted")
-    -   target:
+    -   lineMode: connected
+        target:
         - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),"total")
         - alias(maxSeries(servers.*.elasticsearch.indices.nuxeo.docs.count),"docs")
         - alias(maxSeries(servers.*.elasticsearch.indices.nuxeo-audit.docs.count),"audit")
@@ -139,7 +141,7 @@ graphs:
         - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted),"deleted")
         title: es/docs
         vtitle: docs
-    - /render?width=500&from=-20minutes&until=now&height=400&title=es%2Fdocs&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count)%2C%22total%22)&target=alias(maxSeries(servers.*.elasticsearch.indices.nuxeo.docs.count)%2C%22docs%22)&target=alias(maxSeries(servers.*.elasticsearch.indices.nuxeo-audit.docs.count)%2C%22audit%22)&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count)%2C%22total%22)&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted)%2C%22deleted%22)&vtitle=docs
+    - /render?width=500&from=-20minutes&until=now&height=400&title=es%2Fdocs&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count)%2C%22total%22)&target=alias(maxSeries(servers.*.elasticsearch.indices.nuxeo.docs.count)%2C%22docs%22)&target=alias(maxSeries(servers.*.elasticsearch.indices.nuxeo-audit.docs.count)%2C%22audit%22)&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count)%2C%22total%22)&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted)%2C%22deleted%22)&vtitle=docs&lineMode=connected
 -
     -   - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_deleted),1),"tup_deleted")
         - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_inserted),1),"tup_inserted")
@@ -147,6 +149,7 @@ graphs:
         - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.xact_commit),1),"xact_commit")
         - alias(secondYAxis(servers.*.postgres.database.*.connections),"connections")
     -   colorList: red,orange,yellow,blue,green
+        lineMode: connected
         target:
         - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_deleted),1),"tup_deleted")
         - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_inserted),1),"tup_inserted")
@@ -155,7 +158,57 @@ graphs:
         - alias(secondYAxis(servers.*.postgres.database.*.connections),"connections")
         title: db/Postgres
         yMinRight: '0'
-    - /render?width=500&from=-20minutes&until=now&height=400&title=db%2FPostgres&yMinRight=0&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_deleted)%2C1)%2C%22tup_deleted%22)&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_inserted)%2C1)%2C%22tup_inserted%22)&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_updated)%2C1)%2C%22tup_updated%22)&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.xact_commit)%2C1)%2C%22xact_commit%22)&target=alias(secondYAxis(servers.*.postgres.database.*.connections)%2C%22connections%22)&colorList=red%2Corange%2Cyellow%2Cblue%2Cgreen
+    - /render?width=500&from=-20minutes&until=now&height=400&title=db%2FPostgres&yMinRight=0&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_deleted)%2C1)%2C%22tup_deleted%22)&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_inserted)%2C1)%2C%22tup_inserted%22)&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_updated)%2C1)%2C%22tup_updated%22)&target=alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.xact_commit)%2C1)%2C%22xact_commit%22)&target=alias(secondYAxis(servers.*.postgres.database.*.connections)%2C%22connections%22)&colorList=red%2Corange%2Cyellow%2Cblue%2Cgreen&lineMode=connected
+-
+    -   - aliasByNode(servers.*.mongo.opcounters_per_sec.*,4)
+        - alias(secondYAxis(servers.*.mongo.connections.current),"connections")
+    -   lineMode: connected
+        target:
+        - aliasByNode(servers.*.mongo.opcounters_per_sec.*,4)
+        - alias(secondYAxis(servers.*.mongo.connections.current),"connections")
+        title: db/MongoDB throughput
+        vtitle: op/s
+        yMinRight: '0'
+    - /render?width=500&from=-20minutes&until=now&height=400&title=db%2FMongoDB%20throughput&yMinRight=0&target=aliasByNode(servers.*.mongo.opcounters_per_sec.*%2C4)&target=alias(secondYAxis(servers.*.mongo.connections.current)%2C%22connections%22)&lineMode=connected&vtitle=op%2Fs
+-
+    -   - alias(servers.*.mongo.databases.bench.dataSize,"data")
+        - alias(servers.*.mongo.databases.bench.indexSize,"index")
+        - alias(servers.*.mongo.databases.bench.storageSize,"storage")
+        - alias(secondYAxis(servers.*.mongo.connections.current),"connections")
+        - alias(secondYAxis(servers.*.mongo.databases.bench.indexes),"nb indexes")
+    -   lineMode: connected
+        target:
+        - alias(servers.*.mongo.databases.bench.dataSize,"data")
+        - alias(servers.*.mongo.databases.bench.indexSize,"index")
+        - alias(servers.*.mongo.databases.bench.storageSize,"storage")
+        - alias(secondYAxis(servers.*.mongo.connections.current),"connections")
+        - alias(secondYAxis(servers.*.mongo.databases.bench.indexes),"nb indexes")
+        title: db/MongoDB size
+        vtitle: bytes
+        yMinRight: '0'
+    - /render?width=500&from=-20minutes&until=now&height=400&title=db%2FMongoDB%20size&yMinRight=0&target=alias(servers.*.mongo.databases.bench.dataSize%2C%22data%22)&target=alias(servers.*.mongo.databases.bench.indexSize%2C%22index%22)&target=alias(servers.*.mongo.databases.bench.storageSize%2C%22storage%22)&target=alias(secondYAxis(servers.*.mongo.connections.current)%2C%22connections%22)&target=alias(secondYAxis(servers.*.mongo.databases.bench.indexes)%2C%22nb%20indexes%22)&lineMode=connected&vtitle=bytes
+-
+    -   - alias(servers.*.mongo.databases.bench.objects,"docs")
+        - alias(secondYAxis(servers.*.mongo.databases.bench.avgObjSize),"avg doc size")
+    -   lineMode: connected
+        target:
+        - alias(servers.*.mongo.databases.bench.objects,"docs")
+        - alias(secondYAxis(servers.*.mongo.databases.bench.avgObjSize),"avg doc size")
+        title: db/MongoDB more size
+        yMinRight: '0'
+    - /render?width=500&from=-20minutes&until=now&height=400&title=db%2FMongoDB%20more%20size&yMinRight=0&target=alias(servers.*.mongo.databases.bench.objects%2C%22docs%22)&target=alias(secondYAxis(servers.*.mongo.databases.bench.avgObjSize)%2C%22avg%20doc%20size%22)&lineMode=connected
+-
+    -   - alias(servers.*.mongo.mem.resident,"resident size")
+        - alias(secondYAxis(servers.*.mongo.network_per_sec.numRequests),"network
+            req/s")
+    -   lineMode: connected
+        target:
+        - alias(servers.*.mongo.mem.resident,"resident size")
+        - alias(secondYAxis(servers.*.mongo.network_per_sec.numRequests),"network
+            req/s")
+        title: db/MongoDB memory
+        yMinRight: '0'
+    - /render?width=500&from=-20minutes&until=now&height=400&title=db%2FMongoDB%20memory&yMinRight=0&target=alias(servers.*.mongo.mem.resident%2C%22resident%20size%22)&target=alias(secondYAxis(servers.*.mongo.network_per_sec.numRequests)%2C%22network%20req%2Fs%22)&lineMode=connected
 -
     -   - alias(secondYAxis(sumSeries(servers.*.nuxeo.jvm.files)),"fd_usage")
         - alias(sumSeries(servers.*.nuxeo.jvm.threads.count),"thread_count")

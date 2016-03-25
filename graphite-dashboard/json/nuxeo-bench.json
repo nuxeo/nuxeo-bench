@@ -103,7 +103,8 @@
       "aliasByNode(servers.*.elasticsearch.process.cpu.percent,1)",
       "aliasByNode(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size),1)"
     ],
-    "vtitleRight": "Bytes"
+    "vtitleRight": "Bytes",
+    "lineMode": "connected"
   },
   {
     "title": "es/docs",
@@ -114,7 +115,8 @@
       "alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),\"total\")",
       "alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted),\"deleted\")"
     ],
-    "vtitle": "docs"
+    "vtitle": "docs",
+    "lineMode": "connected"
   },
   {
     "title": "db/Postgres",
@@ -126,7 +128,49 @@
       "alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.xact_commit),1),\"xact_commit\")",
       "alias(secondYAxis(servers.*.postgres.database.*.connections),\"connections\")"
     ],
-    "colorList": "red,orange,yellow,blue,green"
+    "colorList": "red,orange,yellow,blue,green",
+    "lineMode": "connected"
+  },
+  {
+    "title": "db/MongoDB throughput",
+    "yMinRight": "0",
+    "target": [
+      "aliasByNode(servers.*.mongo.opcounters_per_sec.*,4)",
+      "alias(secondYAxis(servers.*.mongo.connections.current),\"connections\")"
+    ],
+    "lineMode": "connected",
+    "vtitle": "op/s"
+  },
+  {
+    "title": "db/MongoDB size",
+    "yMinRight": "0",
+    "target": [
+      "alias(servers.*.mongo.databases.bench.dataSize,\"data\")",
+      "alias(servers.*.mongo.databases.bench.indexSize,\"index\")",
+      "alias(servers.*.mongo.databases.bench.storageSize,\"storage\")",
+      "alias(secondYAxis(servers.*.mongo.connections.current),\"connections\")",
+      "alias(secondYAxis(servers.*.mongo.databases.bench.indexes),\"nb indexes\")"
+    ],
+    "lineMode": "connected",
+    "vtitle": "bytes"
+  },
+  {
+    "title": "db/MongoDB more size",
+    "yMinRight": "0",
+    "target": [
+      "alias(servers.*.mongo.databases.bench.objects,\"docs\")",
+      "alias(secondYAxis(servers.*.mongo.databases.bench.avgObjSize),\"avg doc size\")"
+    ],
+    "lineMode": "connected"
+  },
+  {
+    "title": "db/MongoDB memory",
+    "yMinRight": "0",
+    "target": [
+      "alias(servers.*.mongo.mem.resident,\"resident size\")",
+      "alias(secondYAxis(servers.*.mongo.network_per_sec.numRequests),\"network req/s\")"
+    ],
+    "lineMode": "connected"
   },
   {
     "title": "jvm/Threads all nodes",
