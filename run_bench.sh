@@ -60,7 +60,7 @@ function load_data_into_redis() {
   # redis-cli don't like unbuffered input
   unset PYTHONUNBUFFERED
   python ./scripts/inject-arbres.py -d > /dev/null
-  python ./scripts/inject-arbres.py | redis-cli -n $REDIS_DB --pipe
+  python ./scripts/inject-arbres.py -d | redis-cli -n $REDIS_DB --pipe
   export PYTHONUNBUFFERED=1
   popd
 }
