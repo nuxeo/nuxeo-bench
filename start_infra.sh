@@ -38,6 +38,9 @@ while getopts ":P:md:k:n:h" opt; do
                 oracle12c)
                     db="oracle12c"
                     ;;
+                mysql)
+                    db="mysql"
+                    ;;
                 *)
                     echo "Invalid db profile: $OPTARG" >&2
                     exit 1
