@@ -85,6 +85,7 @@ function run_simulations() {
   #gatling "org.nuxeo.cap.bench.Sim30UpdateDocuments" -Dusers=32 -Dduration=400
   gatling "org.nuxeo.cap.bench.Sim35WaitForAsync"
   gatling "org.nuxeo.cap.bench.Sim30Navigation" -Dusers=48 -Dduration=180
+  gatling "org.nuxeo.cap.bench.Sim30Search" -Dusers=48 -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim30NavigationJsf" -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim50Bench" -Dnav.users=80 -Dnavjsf=5 -Dupd.user=15 -Dnavjsf.pause_ms=1000 -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim50CRUD" -Dusers=32 -Dduration=120
@@ -128,12 +129,13 @@ function build_stat() {
   # create a yml file with all the stats
   set -x
   java -jar $GAT_REPORT_JAR -f -o $REPORT_PATH -n data.yml -t $MUSTACHE_TEMPLATE \
-    -m import,create,createasync,nav,navjsf,update,updateasync,bench,crud,crudasync,reindex \
+    -m import,create,createasync,nav,navjsf,search,update,updateasync,bench,crud,crudasync,reindex \
     $REPORT_PATH/sim10massimport/detail/simulation.log.gz \
     $REPORT_PATH/sim20createdocuments/detail/simulation.log.gz \
     $REPORT_PATH/sim25waitforasync/detail/simulation.log.gz \
     $REPORT_PATH/sim30navigation/detail/simulation.log.gz \
     $REPORT_PATH/sim30navigationjsf/detail/simulation.log.gz \
+    $REPORT_PATH/sim30search/detail/simulation.log.gz \
     $REPORT_PATH/sim30updatedocuments/detail/simulation.log.gz \
     $REPORT_PATH/sim35waitforasync/detail/simulation.log.gz \
     $REPORT_PATH/sim50bench/detail/simulation.log.gz \

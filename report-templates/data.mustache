@@ -90,6 +90,31 @@ navjsf_{{requestId}}_max: {{max}}
 navjsf_{{requestId}}_rps: {{throughput}}
 {{/navjsf.requests}}
 
+search_avg: {{search.simStat.average}}
+search_rps: {{search.simStat.throughput}}
+search_std: {{search.simStat.stddev}}
+search_min: {{search.simStat.min}}
+search_p50: {{search.simStat.p50}}
+search_p95: {{search.simStat.p95}}
+search_max: {{search.simStat.max}}
+search_user: {{search.simStat.maxUsers}}
+search_date: {{search.simStat.startDate}}
+search_duration: {{search.simStat.duration}}
+search_count: {{search.simStat.count}}
+search_percentError: {{search.simStat.percentError}}
+search_error: {{search.simStat.errorCount}}
+{{#search.requests}}
+search_{{requestId}}_name: "{{request}}"
+search_{{requestId}}_avg: {{average}}
+search_{{requestId}}_std: {{stddev}}
+search_{{requestId}}_min: {{min}}
+search_{{requestId}}_p50: {{p50}}
+search_{{requestId}}_p95: {{p95}}
+search_{{requestId}}_max: {{max}}
+search_{{requestId}}_rps: {{throughput}}
+{{/search.requests}}
+
+
 bench_avg: {{bench.simStat.average}}
 bench_rps: {{bench.simStat.throughput}}
 bench_std: {{bench.simStat.stddev}}
