@@ -34,6 +34,7 @@
     group: "{{security_group}}"
     instance_profile_name: "{{instance_profile}}"
     assign_public_ip: yes
+    ebs_optimized: true
     instance_tags:
       Name: bench-{{bench}}-{{type}}
       bench: "{{bench}}"
