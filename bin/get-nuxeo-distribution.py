@@ -34,19 +34,19 @@ output = args.output
 print 'Looking for version %s ...' % arg
 
 if arg == 'lastbuild':
-    base = 'http://qa.nuxeo.org/jenkins/job/nuxeo-distribution-master/lastSuccessfulBuild/artifact/nuxeo-distribution/nuxeo-distribution-tomcat/target/'
+    base = 'http://qa.nuxeo.org/jenkins/job/master/job/nuxeo-distribution-master/lastSuccessfulBuild/artifact/nuxeo-distribution/nuxeo-distribution-tomcat/target/'
     r = requests.get(base)
     tree = html.fromstring(r.text)
     archive = tree.xpath('//table[@class="fileList"]/tr/td[2]/a[starts-with(@href,"nuxeo-distribution-tomcat-") and contains(@href,"-nuxeo-cap.zip")]/@href')[0]
     url = urlparse.urljoin(base, archive)
 elif arg == 'lastitbuild':
-    base = 'http://qa.nuxeo.org/jenkins/job/IT-nuxeo-master-build/lastBuild/artifact/archives/'
+    base = 'http://qa.nuxeo.org/jenkins/job/Deploy/job/IT-nuxeo-master-build/lastBuild/artifact/archives/'
     r = requests.get(base)
     tree = html.fromstring(r.text)
     archive = tree.xpath('//table[@class="fileList"]/tr/td[2]/a[starts-with(@href,"nuxeo-cap-") and contains(@href,"-tomcat.zip")]/@href')[0]
     url = urlparse.urljoin(base, archive)
 elif arg == 'lastitsuccess':
-    base = 'http://qa.nuxeo.org/jenkins/job/IT-nuxeo-master-build/lastSuccessfulBuild/artifact/archives/'
+    base = 'http://qa.nuxeo.org/jenkins/job/Deploy/job/IT-nuxeo-master-build/lastSuccessfulBuil/archives/'
     r = requests.get(base)
     tree = html.fromstring(r.text)
     archive = tree.xpath('//table[@class="fileList"]/tr/td[2]/a[starts-with(@href,"nuxeo-cap-") and contains(@href,"-tomcat.zip")]/@href')[0]
