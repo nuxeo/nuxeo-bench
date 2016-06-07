@@ -1,12 +1,14 @@
 #!/bin/bash -e
 # Run the Nuxeo gatling bench and generates simulation reports
 cd $(dirname $0)
+HERE=`readlink -e .`
 
 TARGET=http://nuxeo-bench.nuxeo.org/nuxeo
 NUXEO_GIT=https://github.com/nuxeo/nuxeo.git
 SCRIPT_ROOT="./bench-scripts"
 SCRIPT_DIR="nuxeo-distribution/nuxeo-distribution-cap-gatling-tests"
 SCRIPT_PATH="$SCRIPT_ROOT/$SCRIPT_DIR"
+SCRIPT_BRANCH=master
 REDIS_DB=7
 REPORT_PATH="./reports"
 GAT_REPORT_VERSION=1.0-SNAPSHOT
@@ -16,6 +18,17 @@ MUSTACHE_TEMPLATE=./report-templates/data.mustache
 # fail on any command error
 set -e
 
+function find_bench_scripts_branch() {
+  local build_dir="$HERE/bin/.build/nuxeo"
+  # if the distrib as been build from a branch use the same branch
+  if [ -d $build_dir ]; then
+    pushd $build_dir
+    SCRIPT_BRANCH=`git symbolic-ref --short HEAD`
+    popd
+  fi
+}
+
+
 function clone_bench_scripts() {
   echo "Clone bench script"
   mkdir $SCRIPT_ROOT
@@ -24,7 +37,7 @@ function clone_bench_scripts() {
   git config core.sparseCheckout true
   echo "$SCRIPT_DIR" > .git/info/sparse-checkout
   git remote add origin $NUXEO_GIT
-  git pull --depth 10 origin master
+  git pull --depth 10 origin $SCRIPT_BRANCH
   popd
 }
 
@@ -32,7 +45,7 @@ function update_bench_scripts() {
   echo "Update bench script"
   pushd $SCRIPT_ROOT
   set +e
-  git pull --depth 20 origin master
+  git pull --depth 20 origin $SCRIPT_BRANCH
   if [ $? -ne 0 ]; then
     popd
     set -e
@@ -46,6 +59,7 @@ function update_bench_scripts() {
 }
 
 function clone_or_update_bench_scripts() {
+  find_bench_scripts_branch
   if [ -d $SCRIPT_ROOT ]; then
     update_bench_scripts
   else
