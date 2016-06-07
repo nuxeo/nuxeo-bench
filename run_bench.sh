@@ -30,7 +30,7 @@ function find_bench_scripts_branch() {
 
 
 function clone_bench_scripts() {
-  echo "Clone bench script"
+  echo "Cloning bench script using $SCRIPT_BRANCH"
   mkdir $SCRIPT_ROOT
   pushd $SCRIPT_ROOT
   git init
@@ -42,7 +42,7 @@ function clone_bench_scripts() {
 }
 
 function update_bench_scripts() {
-  echo "Update bench script"
+  echo "Updating bench script using $SCRIPT_BRANCH"
   pushd $SCRIPT_ROOT
   set +e
   git pull --depth 20 origin $SCRIPT_BRANCH
