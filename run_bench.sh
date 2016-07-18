@@ -23,7 +23,7 @@ function find_bench_scripts_branch() {
   # if the distrib as been build from a branch use the same branch
   if [ -d $build_dir ]; then
     pushd $build_dir
-    SCRIPT_BRANCH=`git symbolic-ref --short HEAD`
+    SCRIPT_BRANCH=`git symbolic-ref -q --short HEAD || git describe --tags --exact-match`
     popd
   fi
 }
