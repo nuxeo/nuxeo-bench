@@ -89,10 +89,9 @@ inventory["es"]["vars"] = {"mgmt_hosts": []}
 if "db" in groups:
     for i in groups["db"]["hosts"]:
         inventory["nuxeo"]["vars"]["db_hosts"].append(hostvars[i]["private_ip"])
-if "es" in groups:
-    # es run on nuxeo host
-    for i in groups["nuxeo"]["hosts"]:
-        inventory["nuxeo"]["vars"]["es_hosts"].append(hostvars[i]["private_ip"])
+# es run on nuxeo host
+for i in groups["nuxeo"]["hosts"]:
+    inventory["nuxeo"]["vars"]["es_hosts"].append(hostvars[i]["private_ip"])
 if "mongodb" in groups:
     for i in groups["mongodb"]["hosts"]:
         inventory["nuxeo"]["vars"]["mongodb_hosts"].append(hostvars[i]["private_ip"])
