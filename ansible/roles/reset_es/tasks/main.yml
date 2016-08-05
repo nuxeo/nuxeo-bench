@@ -1,20 +1,4 @@
 ---
-# Set better hostname
-- name: Reset node numbers
-  shell: redis-cli -h {{redis_host}} --csv del es_node_number
-  run_once: true
-- name: Get node number
-  shell: redis-cli -h {{redis_host}} --csv incr es_node_number
-  register: nodenum
-- name: Set hostname
-  shell: hostname es{{nodenum.stdout}}
-- name: Update /etc/hostname
-  shell: echo -n es{{nodenum.stdout}} > /etc/hostname
-- name: Update /etc/hosts
-  lineinfile:
-    dest: /etc/hosts
-    regexp: '^127.0.0.1.*$'
-    line: "127.0.0.1 localhost es{{nodenum.stdout}}"
 
 # Install tools
 - name: Update apt cache
@@ -34,17 +18,6 @@
 - name: Delete /opt/es
   file: path=/opt/es state=absent
 
-# Prepare EBS volume
-- name: Check if EBS volume is mounted
-  shell: cat /proc/mounts | grep /dev/xvdf
-  changed_when: False
-  failed_when: False
-  register: mounted
-- name: Format EBS volume
-  shell: mkfs.ext4 /dev/xvdf
-  when: mounted.stdout == ""
-- name: Mount EBS volume
-  mount: src=/dev/xvdf name=/opt fstype=ext4 state=mounted
 
 # Get ES
 - name: Get ES
@@ -128,22 +101,4 @@
 # Start ES
 - name: Start ES
   shell: /etc/init.d/elasticsearch start
-
-# Setup Diamond
-- name: Add Diamond config
-  template: src=diamond.j2 dest=/etc/diamond/diamond.conf
-- name: Start Diamond
-  shell: service diamond restart
-
-# Setup logstash shipper
-- name: Kill old logstash container
-  shell: docker kill logstash
-  failed_when: false
-- name: Remove old logstash container
-  shell: docker rm logstash
-  failed_when: false
-- name: Add logstash config
-  template: src=logstash.j2 dest=/logstash.conf
-- name: Start logstash shipper
-  shell: docker run -d -t -i --name=logstash -h es{{nodenum.stdout}} -v /logstash.conf:/logstash.conf:ro -v /opt/es/elasticsearch/log:/opt/es/elasticsearch/log:ro logstash:2.1 logstash -f /logstash.conf
 
