@@ -14,7 +14,7 @@ types:
   es: c4.xlarge
 counts:
   nuxeo: 2
-  es: 3
+  es: 2
 volsizes:
   nuxeo: 10
   es: 10

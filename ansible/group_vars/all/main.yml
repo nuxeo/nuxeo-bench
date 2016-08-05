@@ -6,7 +6,7 @@ bucket: nuxeo-bench
 bench: test
 counts:
   nuxeo: 2
-  es: 3
+  es: 2
 volsizes:
   nuxeo: 50
   es: 250
