@@ -47,9 +47,9 @@ ES_GROUP=es
 ES_HOME=/opt/es/$NAME
 
 # Heap size defaults to 256m min, 1g max
-# Set ES_HEAP_SIZE to 50% of available RAM, but no more than 31g
+# Set ES_HEAP_SIZE to 25% of available RAM and nuxeo, but no more than 31g
 #ES_HEAP_SIZE=2g
-ES_HEAP_SIZE=$(( $(grep MemTotal /proc/meminfo | awk '{print $2}') / 131072 / 10 ))g
+ES_HEAP_SIZE=$(( $(grep MemTotal /proc/meminfo | awk '{print $2}') / 131072 / 20 ))g
 
 # Heap new generation
 #ES_HEAP_NEWSIZE=

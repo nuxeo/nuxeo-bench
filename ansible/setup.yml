@@ -43,13 +43,6 @@
   - name: Install Graphite dashboard
     shell: graphite-dashboardcli copy nuxeo-bench ../graphite-dashboard/yml http://{{groups["mgmt"][0]}}
 
-- hosts: es
-  gather_facts: no
-  user: ubuntu
-  become: yes
-  roles:
-  - reset_es
-
 - hosts: nuxeo
   gather_facts: no
   user: ubuntu
@@ -57,6 +50,7 @@
   roles:
   - reset_redis
   - reset_nuxeo
+  - reset_es
 
 - hosts: nuxeo
   gather_facts: no

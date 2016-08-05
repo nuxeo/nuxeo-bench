@@ -236,9 +236,9 @@
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?nuxeo\.wizard\.done\s*='
     line: "nuxeo.wizard.done=true"
-# Java heap size (about 80% of total memory)
+# Java heap size (about 40% of total memory)
 - name: Calculate heap size
-  shell: echo $(( $(grep MemTotal /proc/meminfo | awk '{print $2}') / 128 / 10 ))
+  shell: echo $(( $(grep MemTotal /proc/meminfo | awk '{print $2}') / 128 / 20 ))
   register: heapsize
 - name: Config - heap size
   lineinfile:
