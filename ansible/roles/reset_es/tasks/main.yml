@@ -89,7 +89,8 @@
 #    regexp: '^#?\s*es\.logger\.level:'
 #    line: "es.logger.level: DEBUG"
 - name: EC2 plugin install
-  shell: /opt/es/elasticsearch/bin/plugin -install org.elasticsearch/elasticsearch-cloud-aws/{{ec2_plugin_version}}
+  # shell: /opt/es/elasticsearch/bin/plugin -install org.elasticsearch/elasticsearch-cloud-aws/{{ec2_plugin_version}}
+  shell: /opt/es/elasticsearch/bin/plugin -install cloud-aws
   become_user: es
 - name: Init script
   copy:
