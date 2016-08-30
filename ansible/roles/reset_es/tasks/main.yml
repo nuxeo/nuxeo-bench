@@ -109,6 +109,11 @@
     dest: /opt/es/elasticsearch/config/elasticsearch.yml
     regexp: '^#?\s*threadpool\.bulk\.queue_size:'
     line: "threadpool.bulk.queue_size: 1000"
+- name: Config - Set network host
+  lineinfile:
+    dest: /opt/es/elasticsearch/config/elasticsearch.yml
+    regexp: '^#?\s*network\.host:'
+    line: "network.host: _ec2:privateIp_"
 
 #- name: Logging - debug
 #  lineinfile:
