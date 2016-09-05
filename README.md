@@ -21,14 +21,14 @@ This is a mix of static and dynamic parts:
 The bench is a composed of a dozen of gatling simulation.
 
 Benchmarks are launched using Jenkins and populate a reference site:
-http://qa.nuxeo.org/benchmarks/
+https://benchmarks.nuxeo.com/
 
 ## Benchmark workflow
 
 ### Running a benchmark
 
 New benchmark are triggered using the following Jenkins job:
-http://qa.nuxeo.org/jenkins/job/nuxeo-reference-bench/
+https://qa.nuxeo.org/jenkins/job/Misc/job/nuxeo-reference-bench/
 
 The job has parameters that impact the target Nuxeo setup:
 
@@ -54,7 +54,7 @@ and the name displayed will contain the classifier.
 ### Adding a benchmark result to the reference site
 
 The Jenkins job is launched automatically after a bench to extract the results and push them to the site:
-http://qa.nuxeo.org/jenkins/job/nuxeo-reference-site-add/
+https://qa.nuxeo.org/jenkins/job/Misc/job/nuxeo-reference-site-add/
 
 
 By default the results is categorized under the "Continuous results".
@@ -65,7 +65,7 @@ You can manually run the job to add a build to another categories : milestone or
 ### Removing a benchmark result from the site
 
 Using the same Jenkins job just check the "remove from the site" case :
-http://qa.nuxeo.org/jenkins/job/nuxeo-reference-site-add/
+https://qa.nuxeo.org/jenkins/job/Misc/job/nuxeo-reference-site-add/
 
 
 ### Updating the site
@@ -75,21 +75,17 @@ https://github.com/nuxeo/nuxeo-bench-site
 
 
 The update job is automatically launched:
-http://qa.nuxeo.org/jenkins/job/nuxeo-reference-site/
-
+https://qa.nuxeo.org/jenkins/job/Misc/job/nuxeo-reference-site/
 
 
 ## Release Benchmark protocol
 
- Use the trigger job: http://qa.nuxeo.org/jenkins/job/trigger-nuxeo-reference-bench/
+ Use the trigger job: https://qa.nuxeo.org/jenkins/job/Misc/job/trigger-nuxeo-reference-bench/
 
  Choose a benchname like: Nuxeo 8.1
 
- Use the following job to add the results in the "milestone" category:
- http://qa.nuxeo.org/jenkins/job/nuxeo-reference-site-add/
-
  Soon the resutls will be listed on the site:
- http://qa.nuxeo.org/benchmarks/milestone/
+ https://benchmarks.nuxeo.com/milestone/index.html
 
 
 # About Nuxeo
