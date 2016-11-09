@@ -34,7 +34,7 @@ output = args.output
 print 'Looking for version %s ...' % arg
 
 if arg == 'lastbuild':
-    base = 'http://qa.nuxeo.org/jenkins/job/master/job/nuxeo-distribution-master/lastSuccessfulBuild/artifact/nuxeo-distribution/nuxeo-distribution-tomcat/target/'
+    base = 'http://qa.nuxeo.org/jenkins/job/master/job/nuxeo-distribution-master/lastSuccessfulBuild/artifact/nuxeo-distribution/nuxeo-server-tomcat/target/'
     r = requests.get(base)
     tree = html.fromstring(r.text)
     archive = tree.xpath('//table[@class="fileList"]/tr/td[2]/a[starts-with(@href,"nuxeo-server-tomcat-") and contains(@href,".zip")]/@href')[0]
