@@ -115,10 +115,12 @@
     regexp: '^#?\s*network\.host:'
     line: "network.host: _ec2:privateIp_"
 - name: Config - Adapt translog durability
+  lineinfile:
     dest: /opt/es/elasticsearch/config/elasticsearch.yml
     regexp: '^#?\s*index\.translog\.durability:'
     line: "index.translog.durability: async"
 - name: Config - Adapt translog sync interval
+  lineinfile:
     dest: /opt/es/elasticsearch/config/elasticsearch.yml
     regexp: '^#?\s*index\.translog\.sync_interval:'
     line: "index.translog.sync_interval: 10s"
