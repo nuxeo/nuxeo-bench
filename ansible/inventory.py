@@ -20,6 +20,7 @@ f.close()
 region = default["aws_region"]
 bench = default["bench"]
 dbprofile = custom["dbprofile"]
+nosqldbprofile = custom["nosqldbprofile"]
 keypair = custom["keypair"]
 
 parser = argparse.ArgumentParser()
@@ -32,6 +33,8 @@ reservations = ec2.get_all_instances(filters={"tag:bench": bench, "tag-key": "be
 instances = [i for r in reservations for i in r.instances]
 dbreservations = ec2.get_all_instances(filters={"tag:bench_role": "db", "tag:dbprofile": "*" + dbprofile + "*"})
 dbinstances = [i for r in dbreservations for i in r.instances]
+nosqldbreservations = ec2.get_all_instances(filters={"tag:bench_role": "db", "tag:dbprofile": "*" + nosqldbprofile + "*"})
+nosqldbinstances = [i for r in nosqldbreservations for i in r.instances]
 mongodbreservations = ec2.get_all_instances(filters={"tag:bench_role": "db", "tag:dbprofile": "*mongodb*"})
 mongodbinstances = [i for r in mongodbreservations for i in r.instances]
 mgmtreservations = ec2.get_all_instances(filters={"tag:bench_role": "mgmt"})
@@ -42,7 +45,7 @@ groups = {}
 
 allinstances = []
 allids = []
-for i in instances + dbinstances + mongodbinstances + mgmtinstances:
+for i in instances + dbinstances + nosqldbinstances + mongodbinstances + mgmtinstances:
     if i.id not in allids:
         allinstances.append(i)
         allids.append(i.id)
@@ -63,6 +66,12 @@ for i in allinstances:
         pass
     else:
         groups[role]["hosts"].append(address)
+    if role == "db" and i.tags["dbprofile"].find(nosqldbprofile) == -1:
+        pass
+    else:
+        if "nosqldb" not in groups:
+            groups["nosqldb"] = {"hosts": []}
+        groups["nosqldb"]["hosts"].append(address)
     if role == "db" and i.tags["dbprofile"].find("mongodb") != -1:
         if "mongodb" not in groups:
             groups["mongodb"] = {"hosts": []}
@@ -89,6 +98,9 @@ inventory["es"]["vars"] = {"mgmt_hosts": []}
 if "db" in groups:
     for i in groups["db"]["hosts"]:
         inventory["nuxeo"]["vars"]["db_hosts"].append(hostvars[i]["private_ip"])
+if "nosqldb" in groups:
+    for i in groups["nosqldb"]["hosts"]:
+        inventory["nuxeo"]["vars"]["nosqldb_hosts"].append(hostvars[i]["private_ip"])
 if "es" in groups:
     for i in groups["es"]["hosts"]:
         inventory["nuxeo"]["vars"]["es_hosts"].append(hostvars[i]["private_ip"])

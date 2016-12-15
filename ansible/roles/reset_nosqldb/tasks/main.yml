@@ -1,0 +1,34 @@
+---
+#- name: Create temporary dir for unzip
+#  file: path=ansible_tmp state=directory
+#- name: Unzip distribution
+#  shell: unzip -q -d ansible_tmp ../deploy/nuxeo-distribution.zip
+#- name: Find out distribution directory
+#  shell: ls ansible_tmp/
+#  register: distrib_dir
+#- name: Extract Quartz SQL setup file
+#  copy:
+#    src: ansible_tmp/{{distrib_dir.stdout}}/{{quartz_sql[dbprofile]}}
+#    dest: dbsetup/create-quartz-tables.sql
+#- name: Remove temporary directory
+#  file: path=ansible_tmp state=absent
+- name: Execute NoSQL database setup
+  shell: mvn clean initialize -Paddons,{{nosqldbprofile}}
+  args:
+    chdir: dbsetup
+  environment:
+    NX_NOSQLDB_HOST: groups["nosqldb"][0]
+    NX_NOSQLDB_PORT: dbparams[nosqldbprofile]["port"]
+    NX_NOSQLDB_ADMINNAME: dbparams[nosqldbprofile]["adminname"]
+    NX_NOSQLDB_ADMINUSER: dbparams[nosqldbprofile]["adminuser"]
+    NX_NOSQLDB_ADMINPASS: dbparams[nosqldbprofile]["adminpass"]
+    NX_NOSQLDB_NAME: dbparams[nosqldbprofile]["name"]
+    NX_NOSQLDB_USER: dbparams[nosqldbprofile]["user"]
+    NX_NOSQLDB_PASS: dbparams[nosqldbprofile]["pass"]
+  when: nosqldbprofile is defined
+#- name: Cleanup - delete sql file
+#  file: path=dbsetup/create-quartz-tables.sql state=absent
+- name: Cleanup - delete target dir
+  file: path=dbsetup/target state=absent
+  when: nosqldbprofile is defined
+

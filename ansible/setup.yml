@@ -20,6 +20,7 @@
   roles:
   - reset_s3
   - reset_db
+  - reset_nosqldb
 
 - hosts: mongodb
   gather_facts: no

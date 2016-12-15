@@ -4,6 +4,7 @@ cd $(dirname $0)
 HERE=`readlink -e .`
 
 db="pgsql"
+nosqldb=""
 mongo="false"
 distrib="lastbuild"
 keypair="Jenkins"
@@ -42,7 +43,8 @@ while getopts ":P:md:k:n:h" opt; do
                     db="mysql"
                     ;;
                 marklogic)
-                    db="marklogic"
+                    db="pgsql"
+                    nosqldb="marklogic"
                     ;;
                 *)
                     echo "Invalid db profile: $OPTARG" >&2
@@ -83,10 +85,16 @@ sudo apt-get -q -y install python-lxml python-requests
 ./bin/get-nuxeo-distribution.py -v $distrib -o $HERE/deploy/nuxeo-distribution.zip
 cp /opt/build/hudson/instance.clid $HERE/deploy/
 echo "nuxeo-platform-importer" > $HERE/deploy/mp-list
+if [ "$nosqldb" -eq "marklogic" ]; then
+  echo "nuxeo-marklogic-connector" >> $HERE/deploy/mp-list
+fi
 
 # Set db options
 echo "---" > ansible/group_vars/all/custom.yml
 echo "dbprofile: $db" >> ansible/group_vars/all/custom.yml
+if [ "$nosqldb" -ne "" ]; then
+  echo "nosqldbprofile: $nosqldb" >> ansible/group_vars/all/custom.yml
+fi
 echo "mongo: $mongo" >> ansible/group_vars/all/custom.yml
 echo "keypair: $keypair" >> ansible/group_vars/all/custom.yml
 

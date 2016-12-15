@@ -117,7 +117,7 @@
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?nuxeo\.templates\s*='
-    line: "nuxeo.templates={{dbparams[dbprofile]['template'] + (',mongodb' if mongo else '') + ',perf'}}"
+    line: "nuxeo.templates={{dbparams[dbprofile]['template'] + (',' + dbparams[nosqldbprofile]['template'] if nosqldbprofile is defined else '') + (',mongodb' if mongo else '') + ',perf'}}"
 - name: Config - nuxeo.db.host
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
@@ -156,6 +156,38 @@
     regexp: '^#?nuxeo\.mongodb\.dbname\s*='
     line: "nuxeo.mongodb.dbname=bench"
   when: mongo
+# Add marklogic config
+# TODO make generic nosql db params
+- name: Config - nuxeo.marklogic.host
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.marklogic\.host\s*='
+    line: "nuxeo.marklogic.host={{nosqldb_hosts[0]}}"
+  when: nosqldbprofile is defined and nosqldbprofile == "marklogic"
+- name: Config - nuxeo.marklogic.port
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.marklogic\.port\s*='
+    line: "nuxeo.marklogic.port={{dbparams[nosqldbprofile]['port']}}"
+  when: nosqldbprofile is defined and nosqldbprofile == "marklogic"
+- name: Config - nuxeo.marklogic.dbname
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.marklogic\.dbname\s*='
+    line: "nuxeo.marklogic.dbname={{dbparams[nosqldbprofile]['name']}}"
+  when: nosqldbprofile is defined and nosqldbprofile == "marklogic"
+- name: Config - nuxeo.marklogic.user
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.marklogic\.user\s*='
+    line: "nuxeo.marklogic.user={{dbparams[nosqldbprofile]['user']}}"
+  when: nosqldbprofile is defined and nosqldbprofile == "marklogic"
+- name: Config - nuxeo.marklogic.password
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.marklogic\.password\s*='
+    line: "nuxeo.marklogic.password={{dbparams[nosqldbprofile]['pass']}}"
+  when: nosqldbprofile is defined and nosqldbprofile == "marklogic"
 # Add redis config
 - name: Config - nuxeo.redis.enabled
   lineinfile:
