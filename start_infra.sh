@@ -5,6 +5,7 @@ HERE=`readlink -e .`
 
 db="pgsql"
 mongo="false"
+marklogic="false"
 distrib="lastbuild"
 keypair="Jenkins"
 
@@ -28,6 +29,10 @@ while getopts ":P:md:k:n:h" opt; do
                 mongodb)
                     db="pgsql"
                     mongo="true"
+                    ;;
+                marklogic)
+                    db="pgsql"
+                    marklogic="true"
                     ;;
                 pgsql)
                     db="pgsql"
@@ -80,6 +85,9 @@ sudo apt-get -q -y install python-lxml python-requests
 ./bin/get-nuxeo-distribution.py -v $distrib -o $HERE/deploy/nuxeo-distribution.zip
 cp /opt/build/hudson/instance.clid $HERE/deploy/
 echo "nuxeo-platform-importer" > $HERE/deploy/mp-list
+if [ "marklogic" -eq "true" ]; then
+  echo "nuxeo-marklogic-connector" >> $HERE/deploy/mp-list
+fi
 
 # Set db options
 echo "---" > ansible/group_vars/all/custom.yml
