@@ -55,6 +55,9 @@
     <profile>
       <id>mysql</id>
     </profile>
+    <profile>
+      <id>marklogic</id>
+    </profile>
   </profiles>
 
 </project>

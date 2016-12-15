@@ -48,4 +48,14 @@ dbparams:
     user: bench
     pass: bench
     template: mysql
+# TODO: fix properties
+  marklogic:
+    port: 8002
+    adminname: master
+    adminuser: sa
+    adminpass: nuxeo
+    name: bench
+    user: bench
+    pass: bench
+    template: marklogic
 

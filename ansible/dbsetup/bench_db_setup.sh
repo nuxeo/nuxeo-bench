@@ -24,3 +24,5 @@ export NX_PGSQL_DB_ADMINUSER=nxadmin
 export NX_PGSQL_DB_HOST=mypgsql.nuxeo.org
 export NX_PGSQL_DB_NAME=bench
 export NX_PGSQL_DB_PORT=5432
+# TODO: set marklogic env
+export NX_MARKLOGIC_DB_NAME=bench
