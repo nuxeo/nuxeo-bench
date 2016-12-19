@@ -93,7 +93,7 @@ if "nuxeo" not in inventory:
     inventory["nuxeo"] = {}
 if "es" not in inventory:
     inventory["es"] = {}
-inventory["nuxeo"]["vars"] = {"db_hosts": [], "es_hosts": [], "mongodb_hosts": [], "mgmt_hosts": []}
+inventory["nuxeo"]["vars"] = {"db_hosts": [], "nosqldb_hosts": [], "es_hosts": [], "mongodb_hosts": [], "mgmt_hosts": []}
 inventory["es"]["vars"] = {"mgmt_hosts": []}
 if "db" in groups:
     for i in groups["db"]["hosts"]:
