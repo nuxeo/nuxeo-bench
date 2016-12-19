@@ -66,9 +66,7 @@ for i in allinstances:
         pass
     else:
         groups[role]["hosts"].append(address)
-    if role == "db" and i.tags["dbprofile"].find(nosqldbprofile) == -1:
-        pass
-    else:
+    if role == "db" and i.tags["dbprofile"].find(nosqldbprofile) != -1:
         if "nosqldb" not in groups:
             groups["nosqldb"] = {"hosts": []}
         groups["nosqldb"]["hosts"].append(address)

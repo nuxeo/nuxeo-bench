@@ -4,10 +4,12 @@
 - include: db.yml
   vars:
     tagdb: "{{dbprofile}}"
+    groupname: "db"
   when: type == "db"
 - include: db.yml
   vars:
     tagdb: "{{nosqldbprofile}}"
+    groupname: "nosqldb"
   when: type == "db" and nosqldbprofile != "none"
 - include: mongodb.yml
   when: type == "mongodb"
