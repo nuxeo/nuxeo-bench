@@ -4,7 +4,7 @@ cd $(dirname $0)
 HERE=`readlink -e .`
 
 db="pgsql"
-nosqldb=""
+nosqldb="none"
 mongo="false"
 distrib="lastbuild"
 keypair="Jenkins"
@@ -92,9 +92,7 @@ fi
 # Set db options
 echo "---" > ansible/group_vars/all/custom.yml
 echo "dbprofile: $db" >> ansible/group_vars/all/custom.yml
-if [ "$nosqldb" -ne "" ]; then
-  echo "nosqldbprofile: $nosqldb" >> ansible/group_vars/all/custom.yml
-fi
+echo "nosqldbprofile: $nosqldb" >> ansible/group_vars/all/custom.yml
 echo "mongo: $mongo" >> ansible/group_vars/all/custom.yml
 echo "keypair: $keypair" >> ansible/group_vars/all/custom.yml
 

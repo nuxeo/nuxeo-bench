@@ -8,7 +8,7 @@
 - include: db.yml
   vars:
     tagdb: "{{nosqldbprofile}}"
-  when: type == "db" and nosqldbprofile is defined
+  when: type == "db" and nosqldbprofile != "none"
 - include: mongodb.yml
   when: type == "mongodb"
 - include: mgmt.yml

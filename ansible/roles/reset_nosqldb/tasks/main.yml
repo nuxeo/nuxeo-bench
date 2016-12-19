@@ -25,10 +25,10 @@
     NX_NOSQLDB_NAME: dbparams[nosqldbprofile]["name"]
     NX_NOSQLDB_USER: dbparams[nosqldbprofile]["user"]
     NX_NOSQLDB_PASS: dbparams[nosqldbprofile]["pass"]
-  when: nosqldbprofile is defined
+  when: nosqldbprofile != "none"
 #- name: Cleanup - delete sql file
 #  file: path=dbsetup/create-quartz-tables.sql state=absent
 - name: Cleanup - delete target dir
   file: path=dbsetup/target state=absent
-  when: nosqldbprofile is defined
+  when: nosqldbprofile != "none"
 

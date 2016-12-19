@@ -33,7 +33,7 @@
   - name: Wait for Marklogic to be available
     wait_for: host={{item}} port=8002 delay=5 timeout=320 state=started
     with_items: groups["db"]
-    when: nosqldbprofile is defined and nosqldbprofile == "marklogic"
+    when: nosqldbprofile == "marklogic"
 
 - hosts: localhost
   gather_facts: no
