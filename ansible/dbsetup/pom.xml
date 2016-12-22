@@ -10,6 +10,14 @@
   <name>Test DB setup</name>
   <description>Initializes databases for Nuxeo tests</description>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.nuxeo.ecm.core</groupId>
+      <artifactId>nuxeo-core-test</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
   <build>
     <plugins>
       <plugin>
@@ -57,6 +65,13 @@
     </profile>
     <profile>
       <id>marklogic</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.nuxeo.ecm.core</groupId>
+          <artifactId>nuxeo-core-storage-marklogic</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+      </dependencies>
     </profile>
   </profiles>
 
