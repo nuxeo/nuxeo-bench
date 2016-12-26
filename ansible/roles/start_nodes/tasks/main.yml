@@ -2,14 +2,8 @@
 - include: dynamic.yml
   when: type in ["es", "nuxeo"]
 - include: db.yml
-  vars:
-    tagdb: "{{dbprofile}}"
-    groupname: "db"
   when: type == "db"
-- include: db.yml
-  vars:
-    tagdb: "{{nosqldbprofile}}"
-    groupname: "nosqldb"
+- include: nosqldb.yml
   when: type == "db" and nosqldbprofile != "none"
 - include: mongodb.yml
   when: type == "mongodb"
