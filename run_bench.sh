@@ -71,10 +71,13 @@ function load_data_into_redis() {
   echo "Load bench data into Redis"
   pushd $SCRIPT_PATH
   echo flushdb | redis-cli -n $REDIS_DB
+  set +e
+  wget -nc https://maven-eu.nuxeo.org/nexus/service/local/repositories/public-releases/content/org/nuxeo/tools/testing/data-test-les-arbres/1.1/data-test-les-arbres-1.1.zip -O data.zip
+  unzip -o data.zip
+  set -e
   # redis-cli don't like unbuffered input
   unset PYTHONUNBUFFERED
-  python ./scripts/inject-arbres.py -d > /dev/null
-  python ./scripts/inject-arbres.py -d | redis-cli -n $REDIS_DB --pipe
+  cat data-test*.csv | python ./scripts/inject-arbres.py | redis-cli -n $REDIS_DB --pipe
   export PYTHONUNBUFFERED=1
   popd
 }
