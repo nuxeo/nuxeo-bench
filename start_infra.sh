@@ -85,7 +85,7 @@ sudo apt-get -q -y install python-lxml python-requests
 ./bin/get-nuxeo-distribution.py -v $distrib -o $HERE/deploy/nuxeo-distribution.zip
 cp /opt/build/hudson/instance.clid $HERE/deploy/
 echo "nuxeo-jsf-ui" > $HERE/deploy/mp-list
-echo "nuxeo-platform-importer" > $HERE/deploy/mp-list
+echo "nuxeo-platform-importer" >> $HERE/deploy/mp-list
 if [ "$nosqldb" == "marklogic" ]; then
   echo "nuxeo-marklogic-connector" >> $HERE/deploy/mp-list
 fi
