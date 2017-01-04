@@ -50,6 +50,7 @@ dbparams:
     template: mysql
   marklogic:
     port: 8010
+    adminport: 8002
     adminname: admin
     adminuser: admin
     adminpass: nuxeo

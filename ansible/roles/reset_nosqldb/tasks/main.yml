@@ -19,6 +19,7 @@
   environment:
     NX_NOSQLDB_HOST: groups["nosqldb"][0]
     NX_NOSQLDB_PORT: dbparams[nosqldbprofile]["port"]
+    NX_NOSQLDB_ADMINPORT: dbparams[nosqldbprofile]["adminport"]
     NX_NOSQLDB_ADMINNAME: dbparams[nosqldbprofile]["adminname"]
     NX_NOSQLDB_ADMINUSER: dbparams[nosqldbprofile]["adminuser"]
     NX_NOSQLDB_ADMINPASS: dbparams[nosqldbprofile]["adminpass"]
