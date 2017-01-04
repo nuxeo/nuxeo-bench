@@ -32,8 +32,3 @@
   file: path=dbsetup/target state=absent
   when: nosqldbprofile != "none"
 
-# Setup Diamond
-- name: Add Diamond config
-  template: src=diamond.j2 dest=/etc/diamond/diamond.conf
-- name: Start Diamond
-  shell: service diamond restart
