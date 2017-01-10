@@ -36,8 +36,8 @@
   <target name="mssql-quartz" depends="_init,setup-mssql-driver">
     <parallel threadCount="1" timeout="120000" failonany="true">
       <sequential>
-        <sql driver="net.sourceforge.jtds.jdbc.Driver"
-             url="jdbc:jtds:sqlserver://${nuxeo.db.host}:${nuxeo.db.port}/${nuxeo.db.name}"
+        <sql driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+             url="jdbc:sqlserver://${nuxeo.db.host}:${nuxeo.db.port};database=${nuxeo.db.name}"
              userid="${nuxeo.db.user}"
              password="${nuxeo.db.pass}"
              src="quartz/create-quartz-tables-mssql.sql"
