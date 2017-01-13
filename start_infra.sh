@@ -8,6 +8,7 @@ nosqldb="none"
 mongo="false"
 distrib="lastbuild"
 keypair="Jenkins"
+addons=""
 
 function help {
     echo "Usage: $0 -P<dbprofile> -m -d<distribution>"
@@ -16,10 +17,11 @@ function help {
     echo "  -d distribution : nuxeo distribution (default: lastbuild) (see bin/get-nuxeo-distribution.py for details)"
     echo "  -k keypair      : use this keypair instead of jenkins"
     echo "  -n nodes        : the number of Nuxeo nodes in the cluster, default=2"
+    echo "  -i addons       : a list of addons separated by comma to install on Nuxeo nodes"
     exit 0
 }
 
-while getopts ":P:md:k:n:h" opt; do
+while getopts ":P:md:k:n:i:h" opt; do
     case $opt in
         h)
             help
@@ -64,6 +66,9 @@ while getopts ":P:md:k:n:h" opt; do
         n)
             nbnodes=$OPTARG
             ;;
+        i)
+            addons=$OPTARG
+            ;;
         :)
             echo "Option -$OPTARG requires an argument" >&2
             exit 1
@@ -89,6 +94,10 @@ echo "nuxeo-platform-importer" >> $HERE/deploy/mp-list
 if [ "$nosqldb" == "marklogic" ]; then
   echo "nuxeo-marklogic-connector" >> $HERE/deploy/mp-list
 fi
+for addon in $(echo $addons | tr "," "\n")
+do
+    echo $addon >> $HERE/deploy/mp-list
+done
 
 # Set db options
 echo "---" > ansible/group_vars/all/custom.yml
