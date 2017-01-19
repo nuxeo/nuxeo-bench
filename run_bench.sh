@@ -93,7 +93,7 @@ function run_simulations() {
   gatling "org.nuxeo.cap.bench.Sim00Setup"
   # init user ws and give some chance to graphite to init all metrics before mass import
   gatling "org.nuxeo.cap.bench.Sim25WarmUsersJsf"
-  gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=1000000
+  gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=5000000
   #gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=1000000 -Dusers=32
   gatling "org.nuxeo.cap.bench.Sim10CreateFolders"
   gatling "org.nuxeo.cap.bench.Sim20CreateDocuments" -Dusers=32
