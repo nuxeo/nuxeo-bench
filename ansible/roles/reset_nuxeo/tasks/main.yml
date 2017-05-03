@@ -283,6 +283,11 @@
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?JAVA_OPTS\s*(.*)FlightRecorder'
     line: "JAVA_OPTS=$JAVA_OPTS -Dcom.sun.management.jmxremote.autodiscovery=true -Dcom.sun.management.jdp.name=Nuxeo -XX:+UnlockCommercialFeatures -XX:+FlightRecorder"
+- name: Config - limit soft ref usage
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?JAVA_OPTS\s*(.*)SoftRefLRUPolicy(.*)'
+    line: "JAVA_OPTS=$JAVA_OPTS -XX:SoftRefLRUPolicyMSPerMB=2"
 # Graphite
 - name: Config - metrics.graphite.enabled
   lineinfile:
