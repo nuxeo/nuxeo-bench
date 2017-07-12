@@ -148,7 +148,7 @@
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?nuxeo\.mongodb\.server\s*='
-    line: "nuxeo.mongodb.server={{mongodb_hosts[0]}}"
+    line: "nuxeo.mongodb.server=mongodb://{{mongodb_hosts[0]}}/bench%3FmaxPoolSize%3D200"
   when: mongo
 - name: Config - nuxeo.mongodb.dbname
   lineinfile:
