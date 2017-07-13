@@ -22,6 +22,7 @@ parser.add_argument('-v', dest='version', type=str, default='lastbuild',
                     'URL ((http:// or https://): downloads that URL, no resolving done), ' + \
                     'FILE ((file:// or starts with /): uses that local file)'  + \
                     'BRANCH (build Nuxeo distribution from a git branch fallback on master)' +\
+                    'BRANCH@DATE (build Nuxeo distribution from a git branch as it was the date, the date format yyyy-mm-dd)' +\
                     'BRANCH/FALLBACK (build Nuxeo distribution from a git branch fallback on FALLBACK branch)')
 parser.add_argument('-o', dest='output', type=str, default='nuxeo-distribution.zip',
     help='output file')
@@ -79,8 +80,12 @@ elif re.match('^[0-9\.]+-SNAPSHOT$', arg):
 else:
     cmd = os.path.join(os.path.dirname(os.path.realpath(__file__)), "build-distribution.sh")
     branches = arg.split('/')
-    param = [cmd, "-b", branches[0], "-o", output]
-    if (len(branches) > 1):
+    if '@' in branches[0]:
+        branch_date = branches[0].split('@')
+        param = [cmd, "-b", branch_date[0], "-d", branch_date[1], "-o", output]
+    else:
+        param = [cmd, "-b", branches[0], "-o", output]
+    if len(branches) > 1:
         param.extend(["-f", branches[1]])
     subprocess.check_call(param)
     sys.exit(0)

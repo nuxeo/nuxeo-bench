@@ -14,6 +14,7 @@ set -e
 function help {
   echo "Usage: $0 -b<branch> -f<fallback> -o<zipfile>"
   echo "  -b branch       : the git branch to build the distrib"
+  echo "  -d date         : the branch as it was at the date"
   echo "  -f fallback     : the breanch to falls back, default is master"
   echo "  -o zipfile      : the nuxeo zip archive output file"
   echo "  -t tempdir      : where to checkout the src to build"
@@ -44,6 +45,31 @@ function clean_tmp {
   mkdir -p $TMP/nuxeo
 }
 
+# TODO: Refactor once clone.py support date checkout NXP-1799
+function git_checkout_at_date {
+  local dir=$(basename $PWD)
+  local branch_name=$1
+  local branch_date=$2
+  local sub_cmd="git rev-list -n 1 --before=\"${branch_date}\" ${branch_name}"
+  set -e
+  if [ -e .git ]; then
+    echo "[$dir]"
+    git checkout $($sub_cmd)
+  fi
+  for dir in $(ls -d */); do
+    dir=${dir%%/};
+    if [ -e "$dir"/.git ]; then
+      (  set -e
+         cd "$dir"
+         git_checkout_at_date ${branch_name} ${branch_date}
+      )
+    else
+      echo "[$dir]"
+      git checkout $($sub_cmd)
+    fi
+  done
+}
+
 function clone_src {
   echo "### Cloning nuxeo source in: $TMP/nuxeo"
   time {
@@ -54,8 +80,11 @@ function clone_src {
     echo "### Switch to branch $BRANCH if exists else falls back on $PARENT_BRANCH"
     ./clone.py $BRANCH -f $PARENT_BRANCH
     (! (gitfa status --porcelain | grep -e "^U"))
+    if [ ! -z $BRANCH_DATE ]; then
+      git_checkout_at_date $BRANCH $BRANCH_DATE
+    fi
     popd
-  }
+    }
   echo "### Clone done"
 }
 
@@ -76,13 +105,16 @@ function copy_zip {
     echo "### zip ready: $OUTPUT"
 }
 
-while getopts "b:f:t:j:o:h" opt; do
+while getopts "b:f:t:j:o:d:h" opt; do
     case $opt in
         h)
             help
             ;;
         b)
             BRANCH=$OPTARG
+            ;;
+        d)
+            BRANCH_DATE=$OPTARG
             ;;
         f)
             PARENT_BRANCH=$OPTARG
