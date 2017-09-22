@@ -31,13 +31,13 @@ args = parser.parse_args()
 ec2 = boto.ec2.connect_to_region(region)
 reservations = ec2.get_all_instances(filters={"tag:bench": bench, "tag-key": "bench_role"})
 instances = [i for r in reservations for i in r.instances]
-dbreservations = ec2.get_all_instances(filters={"tag:bench_role": "db", "tag:dbprofile": "*" + dbprofile + "*"})
+dbreservations = ec2.get_all_instances(filters={"tag:bench": bench, "tag:bench_role": "db", "tag:dbprofile": "*" + dbprofile + "*"})
 dbinstances = [i for r in dbreservations for i in r.instances]
-nosqldbreservations = ec2.get_all_instances(filters={"tag:bench_role": "nosqldb", "tag:dbprofile": "*" + nosqldbprofile + "*"})
+nosqldbreservations = ec2.get_all_instances(filters={"tag:bench": bench, "tag:bench_role": "nosqldb", "tag:dbprofile": "*" + nosqldbprofile + "*"})
 nosqldbinstances = [i for r in nosqldbreservations for i in r.instances]
-mongodbreservations = ec2.get_all_instances(filters={"tag:bench_role": "db", "tag:dbprofile": "*mongodb*"})
+mongodbreservations = ec2.get_all_instances(filters={"tag:bench": bench, "tag:bench_role": "db", "tag:dbprofile": "*mongodb*"})
 mongodbinstances = [i for r in mongodbreservations for i in r.instances]
-mgmtreservations = ec2.get_all_instances(filters={"tag:bench_role": "mgmt"})
+mgmtreservations = ec2.get_all_instances(filters={"tag:bench": bench, "tag:bench_role": "mgmt"})
 mgmtinstances = [i for r in mgmtreservations for i in r.instances]
 
 hostvars = {}

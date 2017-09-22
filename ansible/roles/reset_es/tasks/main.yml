@@ -49,7 +49,7 @@
 # Get ES
 - name: Get ES
   get_url:
-    url: https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-{{es_version}}.zip
+    url: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{{es_version}}.zip
     dest: /tmp/elasticsearch-{{es_version}}.zip
 
 # Extract and setup ES
