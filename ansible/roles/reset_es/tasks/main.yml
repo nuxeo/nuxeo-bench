@@ -84,11 +84,11 @@
     dest: /opt/es/elasticsearch/config/elasticsearch.yml
     regexp: '^#?\s*cloud\.aws\.region:'
     line: "cloud.aws.region: {{aws_region}}"
-- name: Config - discovery type
+- name: Config - discovery zen
   lineinfile:
     dest: /opt/es/elasticsearch/config/elasticsearch.yml
-    regexp: '^#?\s*discovery\.type:'
-    line: "discovery.type: ec2"
+    regexp: '^#?\s*discovery\.zen\.hosts_provider:'
+    line: "discovery.zen.hosts_provider: ec2"
 - name: Config - discovery groups
   lineinfile:
     dest: /opt/es/elasticsearch/config/elasticsearch.yml
@@ -99,31 +99,26 @@
     dest: /opt/es/elasticsearch/config/elasticsearch.yml
     regexp: '^#?\s*cloud\.node\.auto_attributes:'
     line: "cloud.node.auto_attributes: true"
-- name: Config - mlockall
-  lineinfile:
-    dest: /opt/es/elasticsearch/config/elasticsearch.yml
-    regexp: '^#?\s*bootstrap\.mlockall:'
-    line: "bootstrap.mlockall: true"
 - name: Config - bulk queue size
   lineinfile:
     dest: /opt/es/elasticsearch/config/elasticsearch.yml
-    regexp: '^#?\s*threadpool\.bulk\.queue_size:'
-    line: "threadpool.bulk.queue_size: 1000"
+    regexp: '^#?\s*thread_pool\.bulk\.queue_size:'
+    line: "thread_pool.bulk.queue_size: 1000"
 - name: Config - Set network host
   lineinfile:
     dest: /opt/es/elasticsearch/config/elasticsearch.yml
     regexp: '^#?\s*network\.host:'
     line: "network.host: _ec2:privateIp_"
-- name: Config - Adapt translog durability
-  lineinfile:
-    dest: /opt/es/elasticsearch/config/elasticsearch.yml
-    regexp: '^#?\s*index\.translog\.durability:'
-    line: "index.translog.durability: async"
-- name: Config - Adapt translog sync interval
-  lineinfile:
-    dest: /opt/es/elasticsearch/config/elasticsearch.yml
-    regexp: '^#?\s*index\.translog\.sync_interval:'
-    line: "index.translog.sync_interval: 10s"
+#- name: Config - Adapt translog durability
+#  lineinfile:
+#    dest: /opt/es/elasticsearch/config/elasticsearch.yml
+#    regexp: '^#?\s*index\.translog\.durability:'
+#    line: "index.translog.durability: async"
+#- name: Config - Adapt translog sync interval
+#  lineinfile:
+#    dest: /opt/es/elasticsearch/config/elasticsearch.yml
+#    regexp: '^#?\s*index\.translog\.sync_interval:'
+#    line: "index.translog.sync_interval: 10s"
 
 #- name: Logging - debug
 #  lineinfile:
@@ -131,8 +126,9 @@
 #    regexp: '^#?\s*es\.logger\.level:'
 #    line: "es.logger.level: DEBUG"
 - name: EC2 plugin install
-  shell: /opt/es/elasticsearch/bin/plugin install discovery-ec2
+  shell: /opt/es/elasticsearch/bin/elasticsearch-plugin install discovery-ec2 --batch
   become_user: es
+
 - name: Init script
   copy:
     src: es_init.sh
