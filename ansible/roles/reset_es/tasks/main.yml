@@ -146,6 +146,10 @@
 - name: Start Diamond
   shell: service diamond restart
 
+# ReStart ES
+- name: ReStart ES
+  shell: /etc/init.d/elasticsearch restart
+
 ## Setup logstash shipper
 #- name: Kill old logstash container
 #  shell: docker kill logstash
