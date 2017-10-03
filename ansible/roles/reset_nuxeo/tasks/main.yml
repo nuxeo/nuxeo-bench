@@ -401,3 +401,7 @@
 - name: Start logstash shipper
   shell: docker run -d -t -i --name=logstash -h nuxeo{{nodenum.stdout}} -v /logstash.conf:/logstash.conf:ro -v /opt/nuxeo/logs:/opt/nuxeo/logs:ro logstash:2.1 logstash -f /logstash.conf
 
+
+# Disable audit for testing
+- name: disable audit contrib
+  copy: src=disable-audit-config.xml dest=/opt/nuxeo/server/templates/common-base/nxserver/config mode=0644
