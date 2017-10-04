@@ -13,6 +13,10 @@ volsizes:
 
 dbparams:
   mongodb:
+    port: 27017
+    name: bench
+    user: bench
+    pass: bench
     template: mongodb
   pgsql:
     port: 5432
