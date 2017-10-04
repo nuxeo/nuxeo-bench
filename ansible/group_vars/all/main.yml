@@ -12,6 +12,8 @@ volsizes:
   es: 250
 
 dbparams:
+  mongodb:
+    template: mongodb
   pgsql:
     port: 5432
     adminname: template1

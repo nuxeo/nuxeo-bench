@@ -13,7 +13,6 @@ addons=""
 function help {
     echo "Usage: $0 -P<dbprofile> -m -d<distribution>"
     echo "  -P dbprofile    : one of pgsql,mssql,oracle12c,mysql,marklogic (default: pgsql)"
-    echo "  -m              : use mongodb"
     echo "  -d distribution : nuxeo distribution (default: lastbuild) (see bin/get-nuxeo-distribution.py for details)"
     echo "  -k keypair      : use this keypair instead of jenkins"
     echo "  -n nodes        : the number of Nuxeo nodes in the cluster, default=2"
@@ -29,7 +28,7 @@ while getopts ":P:md:k:n:i:h" opt; do
         P)
             case $OPTARG in
                 mongodb)
-                    db="pgsql"
+                    db="mongodb"
                     mongo="true"
                     ;;
                 pgsql)
@@ -53,9 +52,6 @@ while getopts ":P:md:k:n:i:h" opt; do
                     exit 1
                     ;;
             esac
-            ;;
-        m)
-            mongo="true"
             ;;
         d)
             distrib=$OPTARG
