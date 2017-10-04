@@ -293,6 +293,11 @@
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?JAVA_OPTS\s*(.*)SoftRefLRUPolicy(.*)'
     line: "JAVA_OPTS=$JAVA_OPTS -XX:SoftRefLRUPolicyMSPerMB=0"
+- name: Config - Prevent truncated stack trace
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?JAVA_OPTS\s*(.*)OmitStackTraceInFastThrow(.*)'
+    line: "JAVA_OPTS=$JAVA_OPTS -XX:-OmitStackTraceInFastThrow"
 # Graphite
 - name: Config - metrics.graphite.enabled
   lineinfile:
