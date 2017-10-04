@@ -117,32 +117,37 @@
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?nuxeo\.templates\s*='
-    line: "nuxeo.templates={{dbparams[dbprofile]['template'] + ',perf'}}"
+    line: "nuxeo.templates={{dbparams[dbprofile]['template'] + (',default' if mongo else '') + ',perf'}}"
 - name: Config - nuxeo.db.host
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?nuxeo\.db\.host\s*='
     line: "nuxeo.db.host={{db_hosts[0]}}"
+    when: not mongo
 - name: Config - nuxeo.db.port
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?nuxeo\.db\.port\s*='
     line: "nuxeo.db.port={{dbparams[dbprofile]['port']}}"
+    when: not mongo
 - name: Config - nuxeo.db.name
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?nuxeo\.db\.name\s*='
     line: "nuxeo.db.name={{dbparams[dbprofile]['name']}}"
+    when: not mongo
 - name: Config - nuxeo.db.user
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?nuxeo\.db\.user\s*='
     line: "nuxeo.db.user={{dbparams[dbprofile]['user']}}"
+    when: not mongo
 - name: Config - nuxeo.db.password
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?nuxeo\.db\.password\s*='
     line: "nuxeo.db.password={{dbparams[dbprofile]['pass']}}"
+    when: not mongo
 # Add mongodb config
 - name: Config - nuxeo.mongodb.server
   lineinfile:
