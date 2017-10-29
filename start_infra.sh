@@ -110,6 +110,7 @@ if [ ! -d venv ]; then
     virtualenv venv
 fi
 . venv/bin/activate
+pip install --upgrade setuptools
 pip install -r ansible/requirements.txt
 
 # Run ansible scripts
