@@ -205,6 +205,11 @@
     regexp: '^#?nuxeo\.redis\.host\s*='
     line: "nuxeo.redis.host={{redis_host}}"
 # Add ES config
+- name: Config - elasticsearch.client
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?elasticsearch\.client\s*='
+    line: "elasticsearch.client=RestClient"
 - name: Config - elasticsearch.clusterName
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
@@ -229,7 +234,7 @@
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?elasticsearch\.addressList\s*='
-    line: "elasticsearch.addressList={{ es_hosts | map('regex_replace', '^(.*)$', '\\\\1:9300') | join(',') }}"
+    line: "elasticsearch.addressList={{ es_hosts | map('regex_replace', '^(.*)$', '\\\\1:9200') | join(',') }}"
 - name: Config - elasticsearch.httpReadOnly.baseUrl
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
