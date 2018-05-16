@@ -175,14 +175,14 @@ function build_report() {
 function build_reports() {
   echo "Building reports"
   download_gatling_report_tool
-  for report in `find ${SCRIPT_PATH}/target/gatling/results -name simulation.log`; do
+  for report in `find ${SCRIPT_PATH}/target/gatling -name simulation.log`; do
     build_report `dirname ${report}`
   done
 }
 
 function move_reports() {
   echo "Moving reports"
-  mv ${SCRIPT_PATH}/target/gatling/results/* ${REPORT_PATH}
+  mv ${SCRIPT_PATH}/target/gatling/* ${REPORT_PATH}
 }
 
 function build_stat() {
