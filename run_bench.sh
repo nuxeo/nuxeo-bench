@@ -60,9 +60,8 @@ function optimized_update_bench_scripts() {
 
 function clone_bench_scripts() {
   echo "Cloning bench script using $SCRIPT_BRANCH"
-  mkdir ${SCRIPT_ROOT}
+  git clone ${NUXEO_GIT} ${SCRIPT_ROOT}
   pushd ${SCRIPT_ROOT}
-  git clone ${NUXEO_GIT}
   git checkout ${SCRIPT_BRANCH}
   popd
 }
