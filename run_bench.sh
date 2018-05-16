@@ -83,13 +83,22 @@ function load_data_into_redis() {
 }
 
 function gatling() {
-  mvn -nsu test gatling:execute -Pbench -Durl=$TARGET -Dgatling.simulationClass=$@
+  if [ -n "$GATLING_2_1" ]; then
+    mvn -nsu test gatling:execute -Pbench -Durl=$TARGET -Dgatling.simulationClass=$@
+  else
+    mvn -nsu gatling:test -Pbench -Durl=$TARGET -Dgatling.simulationClass=$@
+  fi
+}
+
+function find_gatling_version() {
+  (mvn -nsu dependency:tree | grep gatling-core | grep 2.1.) && export GATLING_2_1="true"
 }
 
 function run_simulations() {
   echo "Run simulations"
   pushd $SCRIPT_PATH || exit 2
   mvn -nsu clean
+  find_gatling_version
   gatling "org.nuxeo.cap.bench.Sim00Setup"
   # init user ws and give some chance to graphite to init all metrics before mass import
   gatling "org.nuxeo.cap.bench.Sim25WarmUsersJsf"
