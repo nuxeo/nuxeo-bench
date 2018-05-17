@@ -182,7 +182,12 @@ function build_reports() {
 
 function move_reports() {
   echo "Moving reports"
-  mv ${SCRIPT_PATH}/target/gatling/* ${REPORT_PATH}
+  if [ -d ${SCRIPT_PATH}/target/gatling/results ]; then
+    # Gatling 2.1 use a different path for reports
+    mv ${SCRIPT_PATH}/target/gatling/results/* ${REPORT_PATH}
+  else
+    mv ${SCRIPT_PATH}/target/gatling/* ${REPORT_PATH}
+  fi
 }
 
 function build_stat() {
