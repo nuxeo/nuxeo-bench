@@ -115,7 +115,7 @@ function gatling() {
   if [ -n "$GATLING_2_1" ]; then
     mvn -nsu test gatling:execute -Pbench -Durl=${TARGET} -Dgatling.simulationClass=$@
   else
-    mvn -nsu gatling:test -Pbench -Durl=${TARGET} -Dgatling.simulationClass=$@
+    mvn -nsu test gatling:test -Pbench -Durl=${TARGET} -Dgatling.simulationClass=$@
   fi
 }
 
