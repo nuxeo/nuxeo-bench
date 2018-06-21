@@ -54,7 +54,7 @@
   sudo: yes
 - name: EC2 plugin install
   shell: /usr/share/elasticsearch/bin/elasticsearch-plugin install discovery-ec2 --batch
-  become_user: elasticsearch
+  when: not stes.stat.exists
 
 # Prepare EBS volume in /opt
 - name: Check if EBS volume is mounted
