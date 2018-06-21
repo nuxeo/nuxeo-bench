@@ -16,25 +16,47 @@
     regexp: '^127.0.0.1.*$'
     line: "127.0.0.1 localhost es{{nodenum.stdout}}"
 
-# Install tools
-- name: Update apt cache
-  apt: update_cache=yes cache_valid_time=7200
-- name: Upgrade/install tools
-  apt: state=latest name={{item}}
+- name: Check if elastic is already setup
+  stat: path=/etc/elasticsearch/elasticsearch.yml
+  register: stes
+
+# install open jdk 8
+- name: Add Open JDK Repository
+  apt_repository: repo='ppa:openjdk-r/ppa'
+  when: not stes.stat.exists
+- name: Install Open JDK 8
+  apt: name={{item}} state=latest
   with_items:
-  - unzip
+    - openjdk-8-jdk
+  when: not stes.stat.exists
 
-# Ensure instance is clean
-- name: Check for ES init script
-  stat: path=/etc/init.d/elasticsearch
-  register: esinit
-- name: Stop ES
-  shell: /etc/init.d/elasticsearch stop
-  when: esinit.stat.exists
-- name: Delete /opt/es
-  file: path=/opt/es state=absent
+# install elastic
+- name: Add elastic repo key
+  shell: wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+  sudo: yes
+  when: not stes.stat.exists
+#- name: Add elastic repo 5.x
+#  shell: echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
+#  sudo: yes
+#  when: not stes.stat.exists
+- name: Add elastic repo 6.x
+  shell: echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
+  sudo: yes
+  when: not stes.stat.exists
+- name: Install Elasticsearch
+  apt:
+    name={{item}}
+    state=latest
+    force=yes
+    update_cache=yes
+  with_items:
+  - elasticsearch
+  sudo: yes
+- name: EC2 plugin install
+  shell: /usr/share/elasticsearch/bin/elasticsearch-plugin install discovery-ec2 --batch
+  become_user: elasticsearch
 
-# Prepare EBS volume
+# Prepare EBS volume in /opt
 - name: Check if EBS volume is mounted
   shell: cat /proc/mounts | grep /dev/xvdf
   changed_when: False
@@ -45,128 +67,25 @@
   when: mounted.stdout == ""
 - name: Mount EBS volume
   mount: src=/dev/xvdf name=/opt fstype=ext4 state=mounted
+  when: mounted.stdout == ""
+- name: Create elastic dir
+  file: path=/opt/es state=directory owner=elasticsearch group=elasticsearch
 
-# Get ES
-- name: Get ES
-  get_url:
-    url: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{{es_version}}.zip
-    dest: /tmp/elasticsearch-{{es_version}}.zip
-
-# Extract and setup ES
-- name: es user
-  user:
-    name: es
-    shell: /bin/bash
-    home: /opt/es
-    createhome: yes
-    state: present
-- name: Limits - nofile
-  lineinfile:
-    dest: /etc/security/limits.conf
-    line: "es - nofile 65536"
-- name: Limits - memlock
-  lineinfile:
-    dest: /etc/security/limits.conf
-    line: "es - memlock unlimited"
-- name: Unzip ES
-  shell: unzip -q -d /opt/es /tmp/elasticsearch-{{es_version}}.zip
-  become_user: es
-- name: Add symlink to ES
-  file: path=/opt/es/elasticsearch src=/opt/es/elasticsearch-{{es_version}} state=link
-  become_user: es
-- name: Config - cluster name
-  lineinfile:
-    dest: /opt/es/elasticsearch/config/elasticsearch.yml
-    regexp: '^#?\s*cluster\.name:'
-    line: "cluster.name: {{es_cluster}}"
-- name: Config - aws region
-  lineinfile:
-    dest: /opt/es/elasticsearch/config/elasticsearch.yml
-    regexp: '^#?\s*cloud\.aws\.region:'
-    line: "cloud.aws.region: {{aws_region}}"
-- name: Config - discovery zen
-  lineinfile:
-    dest: /opt/es/elasticsearch/config/elasticsearch.yml
-    regexp: '^#?\s*discovery\.zen\.hosts_provider:'
-    line: "discovery.zen.hosts_provider: ec2"
-- name: Config - discovery groups
-  lineinfile:
-    dest: /opt/es/elasticsearch/config/elasticsearch.yml
-    regexp: '^#?\s*discovery\.ec2\.groups:'
-    line: "discovery.ec2.groups: {{security_group}}"
-- name: Config - auto attributes
-  lineinfile:
-    dest: /opt/es/elasticsearch/config/elasticsearch.yml
-    regexp: '^#?\s*cloud\.node\.auto_attributes:'
-    line: "cloud.node.auto_attributes: true"
-- name: Config - bulk queue size
-  lineinfile:
-    dest: /opt/es/elasticsearch/config/elasticsearch.yml
-    regexp: '^#?\s*thread_pool\.bulk\.queue_size:'
-    line: "thread_pool.bulk.queue_size: 1000"
-- name: Config - Set network host
-  lineinfile:
-    dest: /opt/es/elasticsearch/config/elasticsearch.yml
-    regexp: '^#?\s*network\.host:'
-    line: "network.host: _ec2:privateIp_"
-#- name: Config - Adapt translog durability
-#  lineinfile:
-#    dest: /opt/es/elasticsearch/config/elasticsearch.yml
-#    regexp: '^#?\s*index\.translog\.durability:'
-#    line: "index.translog.durability: async"
-#- name: Config - Adapt translog sync interval
-#  lineinfile:
-#    dest: /opt/es/elasticsearch/config/elasticsearch.yml
-#    regexp: '^#?\s*index\.translog\.sync_interval:'
-#    line: "index.translog.sync_interval: 10s"
-
-#- name: Logging - debug
-#  lineinfile:
-#    dest: /opt/es/elasticsearch/config/logging.yml
-#    regexp: '^#?\s*es\.logger\.level:'
-#    line: "es.logger.level: DEBUG"
-
-- name: EC2 plugin install
-  shell: /opt/es/elasticsearch/bin/elasticsearch-plugin install discovery-ec2 --batch
-  become_user: es
-
-- name: Init script
-  copy:
-    src: es_init.sh
-    dest: /etc/init.d/elasticsearch
-    mode: 0755
-  register: es_init
-
-# Start ES
-- name: Start ES
-  shell: /etc/init.d/elasticsearch start
-
-# buggy first start stop without error
-- name: Stop ES
-  shell: /etc/init.d/elasticsearch stop
+# Setup elastic config
+- name: Get heap size
+  shell: echo "$(( $(grep MemTotal /proc/meminfo | awk '{print $2}') / 1024 / 1024 / 2 ))g"
+  register: es_heap
+  when: not stes.stat.exists
+- name: Setup elastic configuration
+  template: src=elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml
+  when: not stes.stat.exists
+- name: Setup elastic default configuration
+  template: src=elasticsearch.j2 dest=/etc/default/elasticsearch
+  when: not stes.stat.exists
+  notify: Restart elasticsearch
 
 # Setup Diamond
 - name: Add Diamond config
   template: src=diamond.j2 dest=/etc/diamond/diamond.conf
 - name: Start Diamond
   shell: service diamond restart
-
-# ReStart ES
-- name: ReStart ES
-  shell: /etc/init.d/elasticsearch start
-
-- name: Wait for es to open 9200
-  wait_for: host="{{ private_ip }}" port=9200 timeout=60
-
-## Setup logstash shipper
-#- name: Kill old logstash container
-#  shell: docker kill logstash
-#  failed_when: false
-#- name: Remove old logstash container
-#  shell: docker rm logstash
-#  failed_when: false
-#- name: Add logstash config
-#  template: src=logstash.j2 dest=/logstash.conf
-#- name: Start logstash shipper
-#  shell: docker run -d -t -i --name=logstash -h es{{nodenum.stdout}} -v /logstash.conf:/logstash.conf:ro -v /opt/es/elasticsearch/log:/opt/es/elasticsearch/log:ro logstash:2.1 logstash -f /logstash.conf
-#
