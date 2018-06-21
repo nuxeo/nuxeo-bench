@@ -3,7 +3,7 @@ path.data: /opt/es/data
 path.logs: /opt/es/log
 
 network.host: _ec2:privateIp_
-cloud.aws.region: {{aws_region}}
+
 discovery.zen.hosts_provider: ec2
 discovery.ec2.groups: {{security_group}}
 cloud.node.auto_attributes: true
@@ -11,25 +11,7 @@ cloud.node.auto_attributes: true
 http.cors.enabled: true
 http.cors.allow-origin: "*"
 
-thread_pool.bulk.queue_size: 500
+thread_pool.write.queue_size: 500
 
 monitor.jvm.gc.overhead.warn: 50
-
-# slow logs
-index.search.slowlog.threshold.query.warn: 20s
-index.search.slowlog.threshold.query.info: 10s
-index.search.slowlog.threshold.query.debug: 2s
-index.search.slowlog.threshold.query.trace: 500ms
-index.search.slowlog.threshold.fetch.warn: 5s
-index.search.slowlog.threshold.fetch.info: 1s
-index.search.slowlog.threshold.fetch.debug: 500ms
-index.search.slowlog.threshold.fetch.trace: 200ms
-index.search.slowlog.level: info
-
-index.indexing.slowlog.threshold.index.warn: 10s
-index.indexing.slowlog.threshold.index.info: 5s
-index.indexing.slowlog.threshold.index.debug: 2s
-index.indexing.slowlog.threshold.index.trace: 500ms
-index.indexing.slowlog.level: warn
-index.indexing.slowlog.source: 1000
 
