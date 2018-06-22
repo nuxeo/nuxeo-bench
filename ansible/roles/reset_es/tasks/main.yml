@@ -1,4 +1,7 @@
 ---
+# need python2 not setup on 16.04
+- name: install python 2
+  raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
 # Set better hostname
 - name: Reset node numbers
   shell: redis-cli -h {{redis_host}} --csv del es_node_number
