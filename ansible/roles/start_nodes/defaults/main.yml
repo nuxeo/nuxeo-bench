@@ -8,7 +8,7 @@ dbprofile: pgsql
 mongo: false
 amis:
   nuxeo: ami-cc1473b5
-  es: ami-7a187c03
+  es: ami-cc1473b5
 types:
   nuxeo: c4.xlarge
   es: c4.xlarge
