@@ -54,7 +54,7 @@ keys = rotated_file
 ### Options for GraphiteHandler
 
 # Graphite server host
-host = {{hostvars[groups['monitor'][0]].private_ip}}
+host = {{mgmt_hosts[0]}}
 
 # Port to send metrics to
 port = 2030
@@ -142,7 +142,7 @@ enabled = True
 #req_port = 8180
 #enabled = True
 
-{% if groups['es']|length > 0 %}
+{% if hostname.stdout == 'es1' %}
 [[ElasticSearchCollector]]
 enabled = True
 cluster = True
@@ -156,7 +156,7 @@ instances = {{ mshosts }}
 {% endif %}
 {% endfor %}
 {% endif %}
-
+{% endif %}
 
 ################################################################################
 ### Options for logging
