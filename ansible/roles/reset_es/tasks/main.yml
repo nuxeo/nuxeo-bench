@@ -2,6 +2,29 @@
 # need python2 not setup on 16.04
 - name: install python 2
   raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+
+- name: Check if elastic is already setup
+  stat: path=/etc/elasticsearch/elasticsearch.yml
+  register: stes
+
+# install open jdk
+- name: Add Open JDK Repository
+  apt_repository: repo='ppa:openjdk-r/ppa'
+  when: not stes.stat.exists
+- name: Install Open JDK
+  apt:
+    name={{item}}
+    state=latest
+  with_items:
+    - openjdk-{{ java_version }}-jdk
+    - redis-server
+  when: not stes.stat.exists
+- name: Set default JVM
+  alternatives:
+    name: java
+    path: "/usr/lib/jvm/java-{{ java_version }}-openjdk-amd64/jre/bin/java"
+  when: not stes.stat.exists
+
 # Set better hostname
 - name: Reset node numbers
   shell: redis-cli -h {{redis_host}} --csv del es_node_number
@@ -19,26 +42,6 @@
     regexp: '^127.0.0.1.*$'
     line: "127.0.0.1 localhost es{{nodenum.stdout}}"
 
-- name: Check if elastic is already setup
-  stat: path=/etc/elasticsearch/elasticsearch.yml
-  register: stes
-
-# install open jdk
-- name: Add Open JDK Repository
-  apt_repository: repo='ppa:openjdk-r/ppa'
-  when: not stes.stat.exists
-- name: Install Open JDK
-  apt:
-    name={{item}}
-    state=latest
-  with_items:
-    - openjdk-{{ java_version }}-jdk
-  when: not stes.stat.exists
-- name: Set default JVM
-  alternatives:
-    name: java
-    path: "/usr/lib/jvm/java-{{ java_version }}-openjdk-amd64/jre/bin/java"
-  when: not stes.stat.exists
 
 # install elastic
 - name: Add elastic repo key
