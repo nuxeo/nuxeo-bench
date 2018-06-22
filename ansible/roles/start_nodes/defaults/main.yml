@@ -7,8 +7,8 @@ instance_profile: JenkinsRole
 dbprofile: pgsql
 mongo: false
 amis:
-  nuxeo: ami-910fa9e2
-  es: ami-910fa9e2
+  nuxeo: ami-cc1473b5
+  es: ami-7a187c03
 types:
   nuxeo: c4.xlarge
   es: c4.xlarge
@@ -18,4 +18,3 @@ counts:
 volsizes:
   nuxeo: 10
   es: 10
-
