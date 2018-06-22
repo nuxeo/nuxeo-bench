@@ -93,8 +93,5 @@
   when: not stes.stat.exists
   notify: Restart elasticsearch
 
-# Setup Diamond
-- name: Add Diamond config
-  template: src=diamond.j2 dest=/etc/diamond/diamond.conf
 - name: Start Diamond
   shell: service diamond restart
