@@ -20,14 +20,21 @@
   stat: path=/etc/elasticsearch/elasticsearch.yml
   register: stes
 
-# install open jdk 8
+# install open jdk
 - name: Add Open JDK Repository
   apt_repository: repo='ppa:openjdk-r/ppa'
   when: not stes.stat.exists
-- name: Install Open JDK 8
-  apt: name={{item}} state=latest
+- name: Install Open JDK
+  apt:
+    name={{item}}
+    state=latest
   with_items:
-    - openjdk-8-jdk
+    - openjdk-{{ java_version }}-jdk
+  when: not stes.stat.exists
+- name: Set default JVM
+  alternatives:
+    name: java
+    path: "/usr/lib/jvm/java-{{ java_version }}-openjdk-amd64/jre/bin/java"
   when: not stes.stat.exists
 
 # install elastic
@@ -35,12 +42,8 @@
   shell: wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
   sudo: yes
   when: not stes.stat.exists
-#- name: Add elastic repo 5.x
-#  shell: echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
-#  sudo: yes
-#  when: not stes.stat.exists
-- name: Add elastic repo 6.x
-  shell: echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
+- name: Add elastic repo
+  shell: echo "deb https://artifacts.elastic.co/packages/{{ es_major_version }}/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-{{ es_major_version }}.list
   sudo: yes
   when: not stes.stat.exists
 - name: Install Elasticsearch
@@ -50,11 +53,12 @@
     force=yes
     update_cache=yes
   with_items:
-  - elasticsearch
+  - elasticsearch={{ es_version }}
   sudo: yes
 - name: EC2 plugin install
   shell: /usr/share/elasticsearch/bin/elasticsearch-plugin install discovery-ec2 --batch
   when: not stes.stat.exists
+  sudo: yes
 
 # Prepare EBS volume in /opt
 - name: Check if EBS volume is mounted
