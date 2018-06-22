@@ -49,7 +49,6 @@
 - name: Install Elasticsearch
   apt:
     name={{item}}
-    state=latest
     force=yes
     update_cache=yes
   with_items:
