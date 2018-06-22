@@ -54,7 +54,7 @@ keys = rotated_file
 ### Options for GraphiteHandler
 
 # Graphite server host
-host = {{mgmt_hosts[0]}}
+host = {{hostvars[groups['monitor'][0]].private_ip}}
 
 # Port to send metrics to
 port = 2030
@@ -111,7 +111,7 @@ batch = 1
 # instance_prefix = instances
 
 # Default Poll Interval (seconds)
-interval = 15
+interval = 30
 
 ################################################################################
 # Default enabled collectors
@@ -134,6 +134,29 @@ enabled = True
 
 [[VMStatCollector]]
 enabled = True
+
+[[NetworkCollector]]
+enabled = True
+
+#[[NginxCollector]]
+#req_port = 8180
+#enabled = True
+
+{% if groups['es']|length > 0 %}
+[[ElasticSearchCollector]]
+enabled = True
+cluster = True
+{% set mshosts = '' %}
+{% for host in groups['es'] %}
+{% if loop.last %}
+{% set mshosts = mshosts ~ 'es' ~ loop.index ~ '@' ~ hostvars[host].private_ip %}
+instances = {{ mshosts }}
+{% else %}
+{% set mshosts = mshosts ~ 'es' ~ loop.index + '@' ~ hostvars[host].private_ip ~ ','  %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
 
 ################################################################################
 ### Options for logging

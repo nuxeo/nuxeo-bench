@@ -49,6 +49,7 @@
   user: ubuntu
   become: yes
   roles:
+  - diamond
   - reset_es
 
 - hosts: nuxeo
@@ -57,6 +58,7 @@
   become: yes
   roles:
   - reset_redis
+  - diamond
   - reset_nuxeo
 
 - hosts: nuxeo

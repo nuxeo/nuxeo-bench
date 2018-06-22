@@ -1,0 +1,40 @@
+---
+- name: Update ez setup
+  shell: wget https://bootstrap.pypa.io/ez_setup.py -O - | python2.7
+
+- name: Check if diamond is setup
+  stat:
+    path: /etc/diamond/diamond.conf
+  register: diamond_exists
+
+- name: Get diamond deb package
+  copy: src=diamond_4.0.809_all.deb dest=/tmp/diamond_4.0.809_all.deb force=no
+  when: not diamond_exists.stat.exists
+
+- name: Get diamond deb package
+  copy: src=python-support_1.0.15_all.deb dest=/tmp/python-support_1.0.15_all.deb force=no
+  when: not diamond_exists.stat.exists
+
+- name: Install diamond dep
+  apt: name={{item}} state=latest
+  with_items:
+    - python-pymongo
+    - python-configobj
+    - python-six
+    - python-redis
+
+- name: Install python-support
+  shell: dpkg -i /tmp/python-support_1.0.15_all.deb
+  when: not diamond_exists.stat.exists
+
+- name: Install package
+  shell: dpkg -i /tmp/diamond_4.0.809_all.deb
+  when: not diamond_exists.stat.exists
+
+- name: Get hostname
+  shell: hostname
+  register: hostname
+
+- name: Configure diamond
+  template: src=diamond.conf.j2 dest=/etc/diamond/diamond.conf
+  notify: Restart diamond
