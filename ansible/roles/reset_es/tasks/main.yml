@@ -93,5 +93,12 @@
   when: not stes.stat.exists
   notify: Restart elasticsearch
 
+- name: Start elastic
+  service:
+    name: elasticsearch
+    state: restarted
+
 - name: Start Diamond
-  shell: service diamond restart
+  service:
+    name: diamond
+    state: restarted
