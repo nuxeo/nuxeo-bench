@@ -8,7 +8,7 @@ dbprofile: pgsql
 mongo: false
 amis:
   nuxeo: ami-cc1473b5
-  es: ami-cc1473b5
+  es: ami-58d7e821
 types:
   nuxeo: c4.xlarge
   es: c4.xlarge
@@ -18,3 +18,5 @@ counts:
 volsizes:
   nuxeo: 10
   es: 10
+
+# xenial	server	release	20180522	ebs-ssd	amd64	eu-west-1	ami-58d7e821			hvm
