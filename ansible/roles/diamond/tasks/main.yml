@@ -1,4 +1,8 @@
 ---
+# need python2 not setup on 16.04
+- name: install python 2
+  raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+
 - name: Update ez setup
   shell: wget https://bootstrap.pypa.io/ez_setup.py -O - | python2.7
 
