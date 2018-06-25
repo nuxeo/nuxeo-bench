@@ -50,8 +50,8 @@
   become: yes
   roles:
   - flame
-  - diamond
   - reset_es
+  - diamond
 
 - hosts: nuxeo
   gather_facts: no
@@ -59,8 +59,8 @@
   become: yes
   roles:
   - reset_redis
-  - diamond
   - reset_nuxeo
+  - diamond
 
 - hosts: nuxeo
   gather_facts: no

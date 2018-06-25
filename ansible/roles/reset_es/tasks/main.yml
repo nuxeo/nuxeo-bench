@@ -98,7 +98,3 @@
     name: elasticsearch
     state: restarted
 
-- name: Start Diamond
-  service:
-    name: diamond
-    state: restarted
