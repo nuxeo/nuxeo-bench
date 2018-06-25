@@ -1,10 +1,11 @@
-#!/bin/bash
+#!/bin/bash -x
 
 cd $(dirname $0)
 . aws.ini
 
 # Prepare instance
 instance=$(aws ec2 run-instances --image-id ${AMI} --count 1 --instance-type ${TYPE} --key-name ${KEYNAME} --subnet-id ${SUBNET} --security-group-ids ${SECGROUP} --region ${REGION} --user-data file://$(pwd)/bootstrap.sh --query "Instances[0].InstanceId")
+#instance=$(aws ec2 run-instances --image-id ${AMI} --count 1 --instance-type ${TYPE} --key-name ${KEYNAME} --security-group-ids ${SECGROUP} --region ${REGION} --user-data file://$(pwd)/bootstrap.sh --query "Instances[0].InstanceId")
 instance_id=$(echo -n $instance | tr -d '"')
 
 # Wait for shutdown

@@ -7,8 +7,8 @@ instance_profile: JenkinsRole
 dbprofile: pgsql
 mongo: false
 amis:
-  nuxeo: ami-cc1473b5
-  es: ami-58d7e821
+  nuxeo: ami-50f8f6ba
+  es: ami-50f8f6ba
 types:
   nuxeo: c4.xlarge
   es: c4.xlarge
@@ -21,3 +21,6 @@ volsizes:
 
 # xenial	server	release	20180522	ebs-ssd	amd64	eu-west-1	ami-58d7e821			hvm
 # bionic	server	release	20180613	ebs-ssd	amd64	eu-west-1	ami-477b773e			hvm
+
+# ami-cc1473b5 based on ?
+# ami-50f8f6ba based on  ami-58d7e821

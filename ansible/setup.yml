@@ -49,6 +49,7 @@
   user: ubuntu
   become: yes
   roles:
+  - flame
   - diamond
   - reset_es
 

@@ -1,0 +1,62 @@
+---
+- name: Check if already setup
+  stat: path=/usr/local/bin/flame.sh
+  register: stf
+
+- name: get kernel
+  shell: uname -r
+  register: kernel
+
+- name: Install package dependencies
+  apt: name={{item}} state=latest
+  with_items:
+    - git
+    - cmake
+    - build-essential
+    - linux-tools-common
+    - linux-tools-generic
+    - linux-cloud-tools-generic
+    - "linux-tools-{{kernel.stdout}}"
+    - "linux-cloud-tools-{{kernel.stdout}}"
+  when: not stf.stat.exists
+
+- name: Clone perf map agent
+  shell: git clone https://github.com/jrudolph/perf-map-agent.git /usr/local/perf-map-agent
+  when: not stf.stat.exists
+
+- name: Compile perf map agent
+  shell: "cd /usr/local/perf-map-agent; JAVA_HOME=/usr/lib/jvm/java-8-oracle /usr/bin/cmake ."
+  when: not stf.stat.exists
+
+- name: Compile perf map agent
+  shell: "cd /usr/local/perf-map-agent; make "
+  when: not stf.stat.exists
+
+- name: Get jmaps
+  command: "{{ item }}"
+  with_items:
+    - wget -O /usr/local/bin/jmaps https://raw.githubusercontent.com/brendangregg/Misc/master/java/jmaps
+    - chmod +x /usr/local/bin/jmaps
+  when: not stf.stat.exists
+
+- name: Config jmaps JVM
+  lineinfile:
+    dest: /usr/local/bin/jmaps
+    regexp: '^#?JAVA_HOME\s*='
+    line: "JAVA_HOME=/usr/lib/jvm/java-8-oracle"
+  when: not stf.stat.exists
+
+- name: Config jmaps AGENT
+  lineinfile:
+    dest: /usr/local/bin/jmaps
+    regexp: '^#?AGENT_HOME\s*='
+    line: "AGENT_HOME=/usr/local/perf-map-agent"
+  when: not stf.stat.exists
+
+- name: Clone flame graph
+  shell: git clone https://github.com/brendangregg/FlameGraph.git /usr/local/FlameGraph
+  when: not stf.stat.exists
+
+- name: Add script
+  copy: src=flame.sh dest=/usr/local/bin/flame.sh owner=root force=no mode=u+rwx
+  when: not stf.stat.exists
