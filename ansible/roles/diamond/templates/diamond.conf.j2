@@ -145,16 +145,8 @@ enabled = True
 {% if hostname.stdout == 'es1' %}
 [[ElasticSearchCollector]]
 enabled = True
-cluster = True
-{% set mshosts = '' %}
-{% for host in groups['es'] %}
-{% if loop.last %}
-{% set mshosts = mshosts ~ 'es' ~ loop.index ~ '@' ~ hostvars[host].private_ip %}
-instances = {{ mshosts }}
-{% else %}
-{% set mshosts = mshosts ~ 'es' ~ loop.index + '@' ~ hostvars[host].private_ip ~ ','  %}
-{% endif %}
-{% endfor %}
+#cluster = True
+instances={{private_ip}}
 {% endif %}
 
 ################################################################################

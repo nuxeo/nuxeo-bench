@@ -114,34 +114,34 @@ graphs:
         vtitleRight: Bytes
     - /render?width=500&from=-20minutes&until=now&height=400&colorList=red%2Corange%2Cblue%2Cdarkblue%2Cgreen&vtitle=%25&title=sys%2FMemory%20DB&target=alias(secondYAxis(servers.mypgsql.memory.SwapCached)%2C%22swap%22)&target=alias(secondYAxis(servers.mypgsql.memory.Dirty)%2C%22dirty%22)&target=alias(asPercent(servers.mypgsql.memory.Buffers%2Cservers.mypgsql.memory.MemTotal)%2C%22buffers%22)&target=alias(asPercent(servers.mypgsql.memory.Cached%2Cservers.mypgsql.memory.MemTotal)%2C%22cached%22)&target=alias(asPercent(servers.mypgsql.memory.MemFree%2Cservers.mypgsql.memory.MemTotal)%2C%22free%22)&lineMode=connected&vtitleRight=Bytes
 -
-    -   - aliasByNode(servers.*.elasticsearch.process.cpu.percent,1)
-        - aliasByNode(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size),1)
+    -   - aliasByNode(servers.*.elasticsearch.default.process.cpu.percent,1)
+        - aliasByNode(secondYAxis(servers.*.elasticsearch.default.indices._all.datastore.size),1)
     -   lineMode: connected
         target:
-        - aliasByNode(servers.*.elasticsearch.process.cpu.percent,1)
-        - aliasByNode(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size),1)
+        - aliasByNode(servers.*.elasticsearch.default.process.cpu.percent,1)
+        - aliasByNode(secondYAxis(servers.*.elasticsearch.default.indices._all.datastore.size),1)
         title: es/CPU and size
         vtitle: '%'
         vtitleRight: Bytes
         yMaxLeft: '100'
         yMinLeft: '0'
-    - /render?width=500&from=-20minutes&until=now&height=400&vtitle=%25&yMinLeft=0&title=es%2FCPU%20and%20size&yMaxLeft=100&target=aliasByNode(servers.*.elasticsearch.process.cpu.percent%2C1)&target=aliasByNode(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size)%2C1)&vtitleRight=Bytes&lineMode=connected
+    - /render?width=500&from=-20minutes&until=now&height=400&vtitle=%25&yMinLeft=0&title=es%2FCPU%20and%20size&yMaxLeft=100&target=aliasByNode(servers.*.elasticsearch.default.process.cpu.percent%2C1)&target=aliasByNode(secondYAxis(servers.*.elasticsearch.default.indices._all.datastore.size)%2C1)&vtitleRight=Bytes&lineMode=connected
 -
-    -   - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),"total")
-        - alias(maxSeries(servers.*.elasticsearch.indices.nuxeo.docs.count),"docs")
-        - alias(maxSeries(servers.*.elasticsearch.indices.nuxeo-audit.docs.count),"audit")
-        - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),"total")
-        - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted),"deleted")
+    -   - alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.count),"total")
+        - alias(maxSeries(servers.*.elasticsearch.default.indices.nuxeo.docs.count),"docs")
+        - alias(maxSeries(servers.*.elasticsearch.default.indices.nuxeo-audit.docs.count),"audit")
+        - alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.count),"total")
+        - alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.deleted),"deleted")
     -   lineMode: connected
         target:
-        - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),"total")
-        - alias(maxSeries(servers.*.elasticsearch.indices.nuxeo.docs.count),"docs")
-        - alias(maxSeries(servers.*.elasticsearch.indices.nuxeo-audit.docs.count),"audit")
-        - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),"total")
-        - alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted),"deleted")
+        - alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.count),"total")
+        - alias(maxSeries(servers.*.elasticsearch.default.indices.nuxeo.docs.count),"docs")
+        - alias(maxSeries(servers.*.elasticsearch.default.indices.nuxeo-audit.docs.count),"audit")
+        - alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.count),"total")
+        - alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.deleted),"deleted")
         title: es/docs
         vtitle: docs
-    - /render?width=500&from=-20minutes&until=now&height=400&title=es%2Fdocs&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count)%2C%22total%22)&target=alias(maxSeries(servers.*.elasticsearch.indices.nuxeo.docs.count)%2C%22docs%22)&target=alias(maxSeries(servers.*.elasticsearch.indices.nuxeo-audit.docs.count)%2C%22audit%22)&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count)%2C%22total%22)&target=alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted)%2C%22deleted%22)&vtitle=docs&lineMode=connected
+    - /render?width=500&from=-20minutes&until=now&height=400&title=es%2Fdocs&target=alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.count)%2C%22total%22)&target=alias(maxSeries(servers.*.elasticsearch.default.indices.nuxeo.docs.count)%2C%22docs%22)&target=alias(maxSeries(servers.*.elasticsearch.default.indices.nuxeo-audit.docs.count)%2C%22audit%22)&target=alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.count)%2C%22total%22)&target=alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.deleted)%2C%22deleted%22)&vtitle=docs&lineMode=connected
 -
     -   - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_deleted),1),"tup_deleted")
         - alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_inserted),1),"tup_inserted")

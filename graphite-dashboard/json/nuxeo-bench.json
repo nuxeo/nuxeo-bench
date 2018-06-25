@@ -100,8 +100,8 @@
     "title": "es/CPU and size",
     "yMaxLeft": "100",
     "target": [
-      "aliasByNode(servers.*.elasticsearch.process.cpu.percent,1)",
-      "aliasByNode(secondYAxis(servers.*.elasticsearch.indices._all.datastore.size),1)"
+      "aliasByNode(servers.*.elasticsearch.default.process.cpu.percent,1)",
+      "aliasByNode(secondYAxis(servers.*.elasticsearch.default.indices._all.datastore.size),1)"
     ],
     "vtitleRight": "Bytes",
     "lineMode": "connected"
@@ -109,11 +109,11 @@
   {
     "title": "es/docs",
     "target": [
-      "alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),\"total\")",
-      "alias(maxSeries(servers.*.elasticsearch.indices.nuxeo.docs.count),\"docs\")",
-      "alias(maxSeries(servers.*.elasticsearch.indices.nuxeo-audit.docs.count),\"audit\")",
-      "alias(maxSeries(servers.*.elasticsearch.indices._all.docs.count),\"total\")",
-      "alias(maxSeries(servers.*.elasticsearch.indices._all.docs.deleted),\"deleted\")"
+      "alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.count),\"total\")",
+      "alias(maxSeries(servers.*.elasticsearch.default.indices.nuxeo.docs.count),\"docs\")",
+      "alias(maxSeries(servers.*.elasticsearch.default.indices.nuxeo-audit.docs.count),\"audit\")",
+      "alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.count),\"total\")",
+      "alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.deleted),\"deleted\")"
     ],
     "vtitle": "docs",
     "lineMode": "connected"
