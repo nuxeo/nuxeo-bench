@@ -338,6 +338,11 @@
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?metrics\.tomcat\.enabled\s*='
     line: "metrics.tomcat.enabled=true"
+- name: Config - Increase db timeout
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.db\.transactiontimeout\s*='
+    line: "nuxeo.db.transactiontimeout=3600"
 
 # Add distribution packages
 - name: Add distribution packages
