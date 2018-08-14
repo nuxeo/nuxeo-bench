@@ -6,7 +6,8 @@
 
 # TODO: remove this once NXP-25597 is merged
 - name: Ensure es translog to async on uidgen
-  shell: curl -H "Content-Type: application/json" -XPUT "http://{{es_hosts[0]}}:9200/nuxeo-uidgen/_settings?pretty" -d '{"index.translog.durability" : "async"}'
+  shell: "curl -H \"Content-Type: application/json\" -XPUT http://{{es_hosts[0]}}:9200/nuxeo-uidgen/_settings -d '{\"index.translog.durability\" : \"async\"}'"
 
 - name: Ensure es translog to async on audit
-  shell: curl -H "Content-Type: application/json" -XPUT "http://{{es_hosts[0]}}:9200/nuxeo-audit/_settings?pretty" -d '{"index.translog.durability" : "async"}'
+  shell: "curl -H \"Content-Type: application/json\" -XPUT http://{{es_hosts[0]}}:9200/nuxeo-audit/_settings -d '{\"index.translog.durability\" : \"async\"}'"
+
