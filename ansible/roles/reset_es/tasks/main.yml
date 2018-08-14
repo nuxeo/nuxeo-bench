@@ -7,6 +7,11 @@
   stat: path=/etc/elasticsearch/elasticsearch.yml
   register: stes
 
+# drop existing indexes
+- name: Drop existing indexes
+  shell: curl -XDELETE "http://{{private_ip}}:9200/nuxeo*"
+  when: stes.stat.exists
+
 # install open jdk
 - name: Add Open JDK Repository
   apt_repository: repo='ppa:openjdk-r/ppa'
@@ -58,7 +63,7 @@
     force=yes
     update_cache=yes
   with_items:
-  - elasticsearch={{ es_version }}
+  - elasticsearch-oss={{ es_version }}
   sudo: yes
 - name: EC2 plugin install
   shell: /usr/share/elasticsearch/bin/elasticsearch-plugin install discovery-ec2 --batch

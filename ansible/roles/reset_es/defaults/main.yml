@@ -2,8 +2,8 @@
 aws_region: eu-west-1
 security_group: jenkins-vpc
 es_major_version: "6.x"
-es_version: "6.3.0"
-ec2_plugin_version: "6.3.0"
+es_version: "6.3.2"
+ec2_plugin_version: "6.3.2"
 es_cluster: nuxeo
 java_version: 8
 
