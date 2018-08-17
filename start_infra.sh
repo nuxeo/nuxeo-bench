@@ -6,6 +6,7 @@ HERE=`readlink -e .`
 db="pgsql"
 nosqldb="none"
 mongo="false"
+kafka="false"
 distrib="lastbuild"
 keypair="Jenkins"
 addons=""
@@ -17,10 +18,11 @@ function help {
     echo "  -k keypair      : use this keypair instead of jenkins"
     echo "  -n nodes        : the number of Nuxeo nodes in the cluster, default=2"
     echo "  -i addons       : a list of addons separated by comma to install on Nuxeo nodes"
+    echo "  -K <boolean>    : use Kafka"
     exit 0
 }
 
-while getopts ":P:md:k:n:i:h" opt; do
+while getopts ":P:md:k:n:i:K:h" opt; do
     case $opt in
         h)
             help
@@ -65,6 +67,11 @@ while getopts ":P:md:k:n:i:h" opt; do
         i)
             addons=$OPTARG
             ;;
+        K)
+            if [ "$OPTARG" == "true" ]; then
+                kafka="true"
+            fi
+            ;;
         :)
             echo "Option -$OPTARG requires an argument" >&2
             exit 1
@@ -101,6 +108,7 @@ echo "dbprofile: $db" >> ansible/group_vars/all/custom.yml
 echo "nosqldbprofile: $nosqldb" >> ansible/group_vars/all/custom.yml
 echo "mongo: $mongo" >> ansible/group_vars/all/custom.yml
 echo "keypair: $keypair" >> ansible/group_vars/all/custom.yml
+echo "kafka: $kafka" >> ansible/group_vars/all/custom.yml
 
 # Set nb of Nuxeo nodes
 perl -pi -e "s,counts\:\n\s+nuxeo\:[^\n]+\n,counts\:\n  nuxeo: ${nbnodes}\n,igs" -0777 ansible/group_vars/all/main.yml

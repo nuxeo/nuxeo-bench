@@ -343,6 +343,32 @@
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?nuxeo\.db\.transactiontimeout\s*='
     line: "nuxeo.db.transactiontimeout=3600"
+# Kafka
+# setup nuxeo conf
+- name: Config - Activate kafka
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?kafka.enabled\s*(.*)'
+    line: "kafka.enabled=true"
+  when: kafka
+- name: Config - Kafka brokers
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?kafka.bootstrap.servers\s*(.*)'
+    line: "kafka.bootstrap.servers={% for host in groups['kafka'] -%}{{ hostvars[host]['private_ip'] }}:9092{%- if not loop.last %},{% endif -%}{%- endfor %}"
+  when: kafka
+- name: Config - Kafka over provisionning
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo.stream.work.over.provisioning.factor\s*(.*)'
+    line: "nuxeo.stream.work.over.provisioning.factor=4"
+  when: kafka
+- name: Config - Kafka Stream WorkManager
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo.stream.work.enabled\s*(.*)'
+    line: "nuxeo.stream.work.enabled=true"
+  when: kafka
 
 # Add distribution packages
 - name: Add distribution packages

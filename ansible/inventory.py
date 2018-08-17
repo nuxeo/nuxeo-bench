@@ -89,8 +89,11 @@ if "nuxeo" not in inventory:
     inventory["nuxeo"] = {}
 if "es" not in inventory:
     inventory["es"] = {}
-inventory["nuxeo"]["vars"] = {"db_hosts": [], "nosqldb_hosts": [], "es_hosts": [], "mongodb_hosts": [], "mgmt_hosts": []}
+if "kafka" not in inventory:
+    inventory["kafka"] = {}
+inventory["nuxeo"]["vars"] = {"db_hosts": [], "nosqldb_hosts": [], "es_hosts": [], "mongodb_hosts": [], "mgmt_hosts": [], "kafka_hosts": []}
 inventory["es"]["vars"] = {"mgmt_hosts": []}
+inventory["kafka"]["vars"] = {"mgmt_hosts": []}
 if "db" in groups:
     for i in groups["db"]["hosts"]:
         inventory["nuxeo"]["vars"]["db_hosts"].append(hostvars[i]["private_ip"])
@@ -107,6 +110,9 @@ if "mgmt" in groups:
     for i in groups["mgmt"]["hosts"]:
         inventory["nuxeo"]["vars"]["mgmt_hosts"].append(hostvars[i]["private_ip"])
         inventory["es"]["vars"]["mgmt_hosts"].append(hostvars[i]["private_ip"])
+if "kafka" in groups:
+    for i in groups["kafka"]["hosts"]:
+        inventory["nuxeo"]["vars"]["kafka_hosts"].append(hostvars[i]["private_ip"])
 
 #print inventory
 

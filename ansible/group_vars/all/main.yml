@@ -8,9 +8,11 @@ bench: test
 counts:
   nuxeo: 2
   es: 3
+  kafka: 1
 volsizes:
   nuxeo: 50
   es: 250
+  kafka: 250
 
 dbparams:
   mongodb:

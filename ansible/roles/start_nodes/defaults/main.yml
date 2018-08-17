@@ -12,12 +12,15 @@ amis:
 types:
   nuxeo: c4.xlarge
   es: c4.xlarge
+  kafka: c4.xlarge
 counts:
   nuxeo: 2
   es: 3
+  kafka: 1
 volsizes:
   nuxeo: 10
   es: 10
+  kafka: 250
 
 # xenial	server	release	20180522	ebs-ssd	amd64	eu-west-1	ami-58d7e821			hvm
 # bionic	server	release	20180613	ebs-ssd	amd64	eu-west-1	ami-477b773e			hvm

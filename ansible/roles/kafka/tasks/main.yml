@@ -1,0 +1,90 @@
+---
+# install java 8
+- name: Install add-apt-repostory
+  apt: name=software-properties-common state=latest
+
+- name: Add Oracle Java Repository
+  apt_repository: repo='ppa:webupd8team/java'
+  when: use_oracle_jdk
+
+- name: Accept Java 8 License
+  debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
+  when: use_oracle_jdk
+
+- name: Install Oracle Java 8
+  apt: name={{item}} state=latest
+  with_items:
+    - oracle-java8-installer
+    - oracle-java8-set-default
+  when: use_oracle_jdk
+
+- name: Add Open JDK Repository
+  apt_repository: repo='ppa:openjdk-r/ppa'
+  when: not use_oracle_jdk
+
+- name: Install Open JDK 8
+  apt: name={{item}} state=latest
+  with_items:
+    - openjdk-8-jdk
+  when: not use_oracle_jdk
+
+# Prepare EBS volume in /opt
+- name: Check if EBS volume is mounted
+  shell: cat /proc/mounts | grep /dev/xvdf
+  changed_when: False
+  failed_when: False
+  register: mounted
+
+- name: Format EBS volume
+  shell: mkfs.ext4 /dev/xvdf
+  when: mounted.stdout == ""
+
+- name: Mount EBS volume
+  mount: src=/dev/xvdf name=/opt fstype=ext4 state=mounted
+  when: mounted.stdout == ""
+
+- name: Install Zookeeper
+  apt: name={{item}} state=latest
+  with_items:
+    - ca-certificates
+    - zookeeperd
+
+# Install kafka
+- name: Check if already installed
+  stat: path=/opt/kafka
+  register: stkafka
+
+- name: Download Kafka
+  get_url: url=http://mirror.netcologne.de/apache.org/kafka/1.0.0/kafka_2.12-1.0.0.tgz dest=/tmp/kafka_2.12-1.0.0.tgz
+  when: not stkafka.stat.exists
+
+- name: Untar Kafka
+  shell: chdir=/tmp creates=/opt/kafka_2.12-1.0.0 tar -zxf kafka_2.12-1.0.0.tgz -C /opt
+  when: not stkafka.stat.exists
+
+- name: Move Kafka
+  shell: mv /opt/kafka_2.12-1.0.0 /opt/kafka
+  when: not stkafka.stat.exists
+
+- name: Copy kafkad init
+  copy: src=kafkad dest=/etc/init.d/kafkad mode=0755
+
+- name: Copy kafka server conf
+  copy: src=server.properties dest=/etc/kafka-server.properties
+
+- name: Copy kafka server conf
+  copy: src=log4j.properties dest=/etc/kafka-log4j.properties
+
+- name: Download mx4j to get jmx exposed as http
+  get_url: url=http://central.maven.org/maven2/mx4j/mx4j-tools/3.0.1/mx4j-tools-3.0.1.jar dest=/opt/kafka/libs
+  when: not stkafka.stat.exists
+
+- name: Create a kafka user
+  user: name=kafka
+
+- name: Create a kafka directory
+  file: path=/opt/kafka state=directory owner=kafka group=kafka mode=0755
+
+- name: Start kafka
+  shell: /etc/init.d/kafkad start
+#  service: name=kafkad state=started
