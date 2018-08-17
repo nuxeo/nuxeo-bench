@@ -64,3 +64,4 @@ dbparams:
     pass: nuxeo
     template: marklogic
 
+use_oracle_jdk: false
