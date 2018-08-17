@@ -2,7 +2,7 @@
 - include: dynamic.yml
   when: type in ["es", "nuxeo"]
 - include: dynamic.yml
-  when: kafka and type in ["kafka"]
+  when: kafkaflag and type == "kafka"
 - include: db.yml
   when: type == "db"
 - include: nosqldb.yml

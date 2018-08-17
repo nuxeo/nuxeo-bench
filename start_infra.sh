@@ -108,7 +108,7 @@ echo "dbprofile: $db" >> ansible/group_vars/all/custom.yml
 echo "nosqldbprofile: $nosqldb" >> ansible/group_vars/all/custom.yml
 echo "mongo: $mongo" >> ansible/group_vars/all/custom.yml
 echo "keypair: $keypair" >> ansible/group_vars/all/custom.yml
-echo "kafka: $kafka" >> ansible/group_vars/all/custom.yml
+echo "kafkaflag: $kafka" >> ansible/group_vars/all/custom.yml
 
 # Set nb of Nuxeo nodes
 perl -pi -e "s,counts\:\n\s+nuxeo\:[^\n]+\n,counts\:\n  nuxeo: ${nbnodes}\n,igs" -0777 ansible/group_vars/all/main.yml
