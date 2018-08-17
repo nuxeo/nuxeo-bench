@@ -52,7 +52,6 @@
   roles:
   - kafka
   - diamond
-  when: kafka
 
 - hosts: es
   gather_facts: no
