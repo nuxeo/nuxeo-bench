@@ -6,9 +6,11 @@ subnet_id: subnet-dbac2a82
 instance_profile: JenkinsRole
 dbprofile: pgsql
 mongo: false
+kafkaflag: false
 amis:
   nuxeo: ami-50f8f6ba
   es: ami-50f8f6ba
+  kafka: ami-50f8f6ba
 types:
   nuxeo: c4.xlarge
   es: c4.xlarge

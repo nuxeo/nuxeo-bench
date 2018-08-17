@@ -24,7 +24,7 @@
   add_host: hostname={{item.private_ip if keypair == "Jenkins" else item.public_ip}} groupname={{type}}
   with_items: started_instances.instances
 
-- name: Create/destroy instances
+- name: Create/destroy dynamic instances
   ec2:
     region: "{{aws_region}}"
     key_name: "{{keypair}}"
