@@ -6,6 +6,7 @@
   - {role: start_nodes, type: mgmt}
   - {role: start_nodes, type: db}
   - {role: start_nodes, type: mongodb}
+  - {role: start_nodes, type: kafka}
   - {role: start_nodes, type: es}
   - {role: start_nodes, type: nuxeo}
 

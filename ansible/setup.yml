@@ -35,6 +35,7 @@
   become: yes
   roles:
   - reset_mgmt
+
 - hosts: localhost
   gather_facts: no
   become: no
@@ -43,6 +44,15 @@
     wait_for: host={{groups["mgmt"][0]}} port=80 delay=10 timeout=320 state=started
   - name: Install Graphite dashboard
     shell: graphite-dashboardcli copy nuxeo-bench ../graphite-dashboard/yml http://{{groups["mgmt"][0]}}
+
+- hosts: kafka
+  gather_facts: no
+  user: ubuntu
+  become: yes
+  roles:
+  - kafka
+  - diamond
+  when: kafka
 
 - hosts: es
   gather_facts: no
