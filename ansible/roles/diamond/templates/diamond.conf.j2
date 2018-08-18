@@ -149,6 +149,15 @@ enabled = True
 instances={{private_ip}}
 {% endif %}
 
+{% if hostname.stdout == 'kafka1' %}
+[[KafkaCollector]]
+enabled = True
+host = 127.0.0.1
+port = 8082
+path = kafka
+metrics_whitelist = Log.LogEndOffset.topic|BrokerTopicMetrics.MessagesInPerSec|BrokerTopicMetrics.TotalProduceRequestsPerSec|GarbageCollector
+{% endif %}
+
 ################################################################################
 ### Options for logging
 # for more information on file format syntax:

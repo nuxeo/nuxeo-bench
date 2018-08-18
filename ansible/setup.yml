@@ -51,6 +51,7 @@
   become: yes
   roles:
   - kafka
+  - diamond
 
 - hosts: es
   gather_facts: no

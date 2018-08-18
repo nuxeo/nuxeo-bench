@@ -1,4 +1,19 @@
 ---
+---
+# need python2 not setup on 16.04
+- name: install python 2
+  raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+
+- name: Set hostname
+  shell: hostname kafka1
+- name: Update /etc/hostname
+  shell: echo -n kafka1 > /etc/hostname
+- name: Update /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '^127.0.0.1.*$'
+    line: "127.0.0.1 localhost kafka1"
+
 # install java 8
 - name: Install add-apt-repostory
   apt: name=software-properties-common state=latest

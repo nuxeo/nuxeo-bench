@@ -110,6 +110,7 @@ if "mgmt" in groups:
     for i in groups["mgmt"]["hosts"]:
         inventory["nuxeo"]["vars"]["mgmt_hosts"].append(hostvars[i]["private_ip"])
         inventory["es"]["vars"]["mgmt_hosts"].append(hostvars[i]["private_ip"])
+        inventory["kafka"]["vars"]["mgmt_hosts"].append(hostvars[i]["private_ip"])
 if "kafka" in groups:
     for i in groups["kafka"]["hosts"]:
         inventory["nuxeo"]["vars"]["kafka_hosts"].append(hostvars[i]["private_ip"])
