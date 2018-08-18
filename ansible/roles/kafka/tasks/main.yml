@@ -97,7 +97,7 @@
   user: name=kafka
 
 - name: Create a kafka directory
-  file: path=/opt/kafka state=directory owner=kafka group=kafka mode=0755
+  file: path=/opt/kafka-data state=directory owner=kafka group=kafka mode=0755
 
 - name: Start kafka
   shell: /etc/init.d/kafkad start

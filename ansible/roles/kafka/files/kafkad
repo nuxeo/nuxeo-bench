@@ -11,7 +11,7 @@ case "$1" in
   start)
         # Start daemon.
         echo "Starting $DAEMON_NAME";
-        su kafka -c "JMX_PORT=1089 KAFKA_HEAP_OPTS=\"-Xmx4G -Xms4G -Dkafka_mx4jenable=true\" LOG_DIR=\"/opt/kafka\" nohup $DAEMON_PATH/kafka-server-start.sh -daemon /etc/kafka-server.properties > /opt/kafka/kafka.log 2>&1 &"
+        su kafka -c "JMX_PORT=1089 KAFKA_HEAP_OPTS=\"-Xmx4G -Xms4G -Dkafka_mx4jenable=true\" LOG_DIR=\"/opt/kafka\" nohup $DAEMON_PATH/kafka-server-start.sh -daemon /etc/kafka-server.properties > /opt/kafka-data/kafka.log 2>&1 &"
         ;;
   stop)
         # Stop daemons.

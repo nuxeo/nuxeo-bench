@@ -1,7 +1,7 @@
 ---
 
 - name: Erase all kafka data
-  shell: rm -rf /opt/kafka/*
+  shell: rm -rf /opt/kafka-data/*
 
 - name: Erase all zookeeper
   shell: rm -rf /var/lib/zookeeper/*
