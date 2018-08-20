@@ -69,22 +69,22 @@
   register: stkafka
 
 - name: Download Kafka
-  get_url: url=http://mirror.netcologne.de/apache.org/kafka/1.0.0/kafka_2.12-1.0.0.tgz dest=/tmp/kafka_2.12-1.0.0.tgz
+  get_url: url=http://mirror.netcologne.de/apache.org/kafka/1.1.1/kafka_2.12-1.1.1.tgz dest=/tmp/kafka_2.12-1.1.1.tgz
   when: not stkafka.stat.exists
 
 - name: Untar Kafka
-  shell: chdir=/tmp creates=/opt/kafka_2.12-1.0.0 tar -zxf kafka_2.12-1.0.0.tgz -C /opt
+  shell: chdir=/tmp creates=/opt/kafka_2.12-1.1.1 tar -zxf kafka_2.12-1.1.1.tgz -C /opt
   when: not stkafka.stat.exists
 
 - name: Move Kafka
-  shell: mv /opt/kafka_2.12-1.0.0 /opt/kafka
+  shell: mv /opt/kafka_2.12-1.1.1 /opt/kafka
   when: not stkafka.stat.exists
 
 - name: Copy kafkad init
   copy: src=kafkad dest=/etc/init.d/kafkad mode=0755
 
-- name: Copy kafka server conf
-  copy: src=server.properties dest=/etc/kafka-server.properties
+- name: Setup kafka server conf
+  template: src=server.properties.j2 dest=/etc/kafka-server.properties
 
 - name: Copy kafka server conf
   copy: src=log4j.properties dest=/etc/kafka-log4j.properties
