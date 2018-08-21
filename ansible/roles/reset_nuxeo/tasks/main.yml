@@ -369,6 +369,13 @@
     regexp: '^#?nuxeo.stream.work.enabled\s*(.*)'
     line: "nuxeo.stream.work.enabled=true"
   when: kafkaflag
+- name: Config - Kafka PubSub
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo.pubsub.provider\s*(.*)'
+    line: "nuxeo.pubsub.provider=stream"
+  when: kafkaflag
+
 
 # Add distribution packages
 - name: Add distribution packages
