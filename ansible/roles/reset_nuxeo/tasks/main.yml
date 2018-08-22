@@ -375,6 +375,20 @@
     regexp: '^#?nuxeo.pubsub.provider\s*(.*)'
     line: "nuxeo.pubsub.provider=stream"
   when: kafkaflag
+- name: Config - Kafka PubSub codec
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo.stream.pubsub.log.codec\s*(.*)'
+    line: "nuxeo.stream.pubsub.log.codec=avroBinary"
+  when: kafkaflag
+- name: Config - Kafka audit codec
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo.stream.pubsub.log.codec\s*(.*)'
+    line: "nuxeo.stream.audit.log.codec=avro"
+  when: kafkaflag
+
+
 
 
 # Add distribution packages
