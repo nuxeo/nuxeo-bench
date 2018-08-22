@@ -7,7 +7,7 @@ esinstances=$(aws ec2 describe-instances --filters "Name=tag:bench,Values=test" 
 nuxeoinstances=$(aws ec2 describe-instances --filters "Name=tag:bench,Values=test" "Name=tag:bench_role,Values=nuxeo" --region=eu-west-1 --no-paginate --query "Reservations[*].Instances[*].InstanceId" | grep "i-" | tr -d '" ,')
 kafkainstances=$(aws ec2 describe-instances --filters "Name=tag:bench,Values=test" "Name=tag:bench_role,Values=kafka" --region=eu-west-1 --no-paginate --query "Reservations[*].Instances[*].InstanceId" | grep "i-" | tr -d '" ,')
 
-for i in $(echo -n $esinstances" "$nuxeoinstances" "$kafkainstance); do
+for i in $(echo -n $esinstances" "$nuxeoinstances" "$kafkainstances); do
     aws ec2 terminate-instances --instance-ids $i --region=eu-west-1
 done
 
