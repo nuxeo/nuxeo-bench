@@ -217,6 +217,14 @@ function build_stat() {
   echo "distribution: \"$distribution\"" >> ${REPORT_PATH}/data.yml
   echo "default_category: \"$category\"" >> ${REPORT_PATH}/data.yml
   echo "kafka: $kafka" >> ${REPORT_PATH}/data.yml
+  # Calculate benchmark duration between import and reindex
+  d1=$(grep import_date ${REPORT_PATH}/data.yml| sed -e 's,^[a-z\_]*\:\s,,g')
+  d2=$(grep reindex_date ${REPORT_PATH}/data.yml | sed -e 's,^[a-z\_]*\:\s,,g')
+  dd=$(grep reindex_duration ${REPORT_PATH}/data.yml | sed -e 's,^[a-z\_]*\:\s,,g')
+  t1=$(date -d "$d1" +%s)
+  t2=$(date -d "$d2" +%s)
+  benchmark_duration=$(echo "($t2 - $t1) + $dd" | bc)
+  echo "benchmark_duration: $benchmark_duration" >> ${REPORT_PATH}/data.yml
   echo "" >> ${REPORT_PATH}/data.yml
   set +x
 }
