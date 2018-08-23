@@ -384,11 +384,15 @@
 - name: Config - Kafka audit codec
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
-    regexp: '^#?nuxeo.stream.pubsub.log.codec\s*(.*)'
+    regexp: '^#?nuxeo.stream.audit.log.codec\s*(.*)'
     line: "nuxeo.stream.audit.log.codec=avro"
   when: kafkaflag
-
-
+- name: Config - Disable Redis when using Mongo and Kafka
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.redis\.enabled\s*='
+    line: "nuxeo.redis.enabled=false"
+  when: kafkaflag and mongo
 
 
 # Add distribution packages
