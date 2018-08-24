@@ -1,4 +1,9 @@
 ---
+- name: Stop kafka
+  shell: /etc/init.d/kafkad stop
+
+- name: Stop zookeeper
+  shell: systemctl stop zookeeper.service
 
 - name: Erase all kafka data
   shell: rm -rf /opt/kafka-data/*
@@ -6,3 +11,8 @@
 - name: Erase all zookeeper
   shell: rm -rf /var/lib/zookeeper/*
 
+- name: Start zookeeper
+  shell: systemctl start zookeeper.service
+
+- name: Start Kafka
+  shell: /etc/init.d/kafkad start
