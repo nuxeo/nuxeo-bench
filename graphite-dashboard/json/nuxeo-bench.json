@@ -1,89 +1,88 @@
 [
   {
-    "colorList": "darkgray,red,blue,green",
-    "vtitle": "load",
-    "title": "sys/Load1min Nuxeo nodes",
+    "vtitleRight": "process",
+    "lineMode": "connected",
     "target": [
       "alias(secondYAxis(sumSeries(servers.nuxeo*.loadavg.processes_running)),\"process running\")",
       "aliasByNode(servers.nuxeo*.loadavg.01,1)"
     ],
-    "lineMode": "connected",
-    "vtitleRight": "process"
+    "title": "sys/Load1min Nuxeo nodes",
+    "vtitle": "load",
+    "colorList": "darkgray,red,blue,green"
   },
   {
-    "colorList": "darkgray,red,orange,yellow",
-    "vtitle": "load",
-    "title": "sys/Load1min DB",
+    "vtitleRight": "process",
+    "lineMode": "connected",
     "target": [
       "alias(secondYAxis(servers.mypgsql.loadavg.processes_running),\"process running\")",
       "alias(servers.mypgsql.loadavg.01,\"1min\")"
     ],
-    "lineMode": "connected",
-    "vtitleRight": "process"
+    "title": "sys/Load1min DB",
+    "vtitle": "load",
+    "colorList": "darkgray,red,orange,yellow"
   },
   {
-    "colorList": "darkgray,red,blue,green",
-    "vtitle": "load",
-    "title": "sys/Load1min Elasticsearch",
+    "vtitleRight": "process",
+    "lineMode": "connected",
     "target": [
       "alias(secondYAxis(sumSeries(servers.es*.loadavg.processes_running)),\"process running\")",
       "aliasByNode(servers.es*.loadavg.01,1)"
     ],
-    "lineMode": "connected",
-    "vtitleRight": "process"
+    "title": "sys/Load1min Elasticsearch",
+    "vtitle": "load",
+    "colorList": "darkgray,red,blue,green"
   },
   {
-    "title": "sys/CPU Idle",
+    "vtitle": "% Idle",
+    "lineMode": "connected",
     "target": [
       "aliasByNode(servers.*.cpu.total.idle,1)"
     ],
-    "lineMode": "connected",
-    "vtitle": "% Idle"
+    "title": "sys/CPU Idle"
   },
   {
-    "title": "sys/CPU User",
+    "vtitle": "% User",
+    "lineMode": "connected",
     "target": [
       "aliasByNode(servers.*.cpu.total.user,1)"
     ],
-    "lineMode": "connected",
-    "vtitle": "% User"
+    "title": "sys/CPU User"
   },
   {
-    "title": "sys/CPU IoWait",
+    "vtitle": "% iowait",
+    "lineMode": "connected",
     "target": [
       "aliasByNode(servers.*.cpu.total.iowait,1)"
     ],
-    "lineMode": "connected",
-    "vtitle": "% iowait"
+    "title": "sys/CPU IoWait"
   },
   {
-    "title": "sys/CPU System",
+    "vtitle": "% System",
+    "lineMode": "connected",
     "target": [
       "aliasByNode(servers.*.cpu.total.system,1)"
     ],
-    "lineMode": "connected",
-    "vtitle": "% System"
+    "title": "sys/CPU System"
   },
   {
-    "title": "sys/Disk Usage xvdf",
+    "vtitle": "% usage",
+    "lineMode": "connected",
     "target": [
       "aliasByNode(servers.*.iostat.xvdf.util_percentage,1)"
     ],
-    "lineMode": "connected",
-    "vtitle": "% usage"
+    "title": "sys/Disk Usage xvdf"
   },
   {
-    "title": "sys/Disk Usage xvda",
+    "vtitle": "% usage",
+    "lineMode": "connected",
     "target": [
       "aliasByNode(servers.*.iostat.xvda.util_percentage,1)"
     ],
-    "lineMode": "connected",
-    "vtitle": "% usage"
+    "title": "sys/Disk Usage xvda"
   },
   {
-    "colorList": "red,orange,blue,darkblue,green",
-    "vtitle": "%",
-    "title": "sys/Memory DB",
+    "vtitleRight": "Bytes",
+    "lineMode": "connected",
     "target": [
       "alias(secondYAxis(servers.mypgsql.memory.SwapCached),\"swap\")",
       "alias(secondYAxis(servers.mypgsql.memory.Dirty),\"dirty\")",
@@ -91,23 +90,25 @@
       "alias(asPercent(servers.mypgsql.memory.Cached,servers.mypgsql.memory.MemTotal),\"cached\")",
       "alias(asPercent(servers.mypgsql.memory.MemFree,servers.mypgsql.memory.MemTotal),\"free\")"
     ],
-    "lineMode": "connected",
-    "vtitleRight": "Bytes"
+    "title": "sys/Memory DB",
+    "vtitle": "%",
+    "colorList": "red,orange,blue,darkblue,green"
   },
   {
-    "vtitle": "%",
-    "yMinLeft": "0",
-    "title": "es/CPU and size",
-    "yMaxLeft": "100",
+    "vtitleRight": "Bytes",
+    "lineMode": "connected",
     "target": [
       "aliasByNode(servers.*.elasticsearch.default.process.cpu.percent,1)",
       "aliasByNode(secondYAxis(servers.*.elasticsearch.default.indices._all.datastore.size),1)"
     ],
-    "vtitleRight": "Bytes",
-    "lineMode": "connected"
+    "yMaxLeft": "100",
+    "title": "es/CPU and size",
+    "yMinLeft": "0",
+    "vtitle": "%"
   },
   {
-    "title": "es/docs",
+    "vtitle": "docs",
+    "lineMode": "connected",
     "target": [
       "alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.count),\"total\")",
       "alias(maxSeries(servers.*.elasticsearch.default.indices.nuxeo.docs.count),\"docs\")",
@@ -115,12 +116,11 @@
       "alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.count),\"total\")",
       "alias(maxSeries(servers.*.elasticsearch.default.indices._all.docs.deleted),\"deleted\")"
     ],
-    "vtitle": "docs",
-    "lineMode": "connected"
+    "title": "es/docs"
   },
   {
-    "title": "db/Postgres",
-    "yMinRight": "0",
+    "lineMode": "connected",
+    "colorList": "red,orange,yellow,blue,green",
     "target": [
       "alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_deleted),1),\"tup_deleted\")",
       "alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.tup_inserted),1),\"tup_inserted\")",
@@ -128,22 +128,22 @@
       "alias(scaleToSeconds(nonNegativeDerivative(servers.*.postgres.database.*.xact_commit),1),\"xact_commit\")",
       "alias(secondYAxis(servers.*.postgres.database.*.connections),\"connections\")"
     ],
-    "colorList": "red,orange,yellow,blue,green",
+    "yMinRight": "0",
+    "title": "db/Postgres"
+  },
+  {
+    "vtitle": "op",
+    "target": [
+      "aliasByNode(servers.*.mongo.opcounters.*,4)",
+      "alias(secondYAxis(servers.*.mongo.connections.current),\"connections\")"
+    ],
+    "yMinRight": "0",
+    "title": "db/MongoDB throughput",
     "lineMode": "connected"
   },
   {
-    "title": "db/MongoDB throughput",
-    "yMinRight": "0",
-    "target": [
-      "aliasByNode(servers.*.mongo.opcounters_per_sec.*,4)",
-      "alias(secondYAxis(servers.*.mongo.connections.current),\"connections\")"
-    ],
+    "vtitle": "bytes",
     "lineMode": "connected",
-    "vtitle": "op/s"
-  },
-  {
-    "title": "db/MongoDB size",
-    "yMinRight": "0",
     "target": [
       "alias(servers.*.mongo.databases.bench.dataSize,\"data\")",
       "alias(servers.*.mongo.databases.bench.indexSize,\"index\")",
@@ -151,38 +151,39 @@
       "alias(secondYAxis(servers.*.mongo.connections.current),\"connections\")",
       "alias(secondYAxis(servers.*.mongo.databases.bench.indexes),\"nb indexes\")"
     ],
-    "lineMode": "connected",
-    "vtitle": "bytes"
+    "yMinRight": "0",
+    "title": "db/MongoDB size"
   },
   {
-    "title": "db/MongoDB more size",
-    "yMinRight": "0",
+    "lineMode": "connected",
     "target": [
       "alias(servers.*.mongo.databases.bench.objects,\"docs\")",
       "alias(secondYAxis(servers.*.mongo.databases.bench.avgObjSize),\"avg doc size\")"
     ],
-    "lineMode": "connected"
+    "yMinRight": "0",
+    "title": "db/MongoDB more size"
   },
   {
-    "title": "db/MongoDB memory",
-    "yMinRight": "0",
+    "lineMode": "connected",
     "target": [
       "alias(servers.*.mongo.mem.resident,\"resident size\")",
       "alias(secondYAxis(servers.*.mongo.network_per_sec.numRequests),\"network req/s\")"
     ],
-    "lineMode": "connected"
+    "yMinRight": "0",
+    "title": "db/MongoDB memory"
   },
   {
-    "title": "jvm/Threads all nodes",
+    "colorList": "darkgray,blue,green",
     "target": [
       "alias(secondYAxis(sumSeries(servers.*.nuxeo.jvm.files)),\"fd_usage\")",
       "alias(sumSeries(servers.*.nuxeo.jvm.threads.count),\"thread_count\")",
       "alias(sumSeries(servers.*.nuxeo.jvm.threads.daemon.count),\"daemond\")"
     ],
-    "colorList": "darkgray,blue,green"
+    "title": "jvm/Threads all nodes"
   },
   {
-    "title": "jvm/Thread state all nodes",
+    "areaMode": "stacked",
+    "colorList": "green,blue,red,orange,yellow,purple",
     "target": [
       "alias(sumSeries(servers.*.nuxeo.jvm.threads.runnable.count),\"runnable\")",
       "alias(sumSeries(servers.*.nuxeo.jvm.threads.new.count),\"new\")",
@@ -191,196 +192,194 @@
       "alias(sumSeries(servers.*.nuxeo.jvm.threads.timed_waiting.count),\"timed_waiting\")",
       "alias(sumSeries(servers.*.nuxeo.jvm.threads.terminated.count),\"terminated\")"
     ],
-    "colorList": "green,blue,red,orange,yellow,purple",
-    "areaMode": "stacked"
+    "title": "jvm/Thread state all nodes"
   },
   {
-    "title": "jvm/Heap used",
+    "vtitle": "size",
     "target": [
       "aliasByNode(servers.*.nuxeo.jvm.memory.heap.used,1,6)",
       "aliasByNode(servers.*.nuxeo.jvm.memory.heap.max,1,6)"
     ],
-    "vtitle": "size"
+    "title": "jvm/Heap used"
   },
   {
-    "title": "jvm/GC",
+    "lineMode": "staircase",
     "target": [
       "alias(asPercent(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.jvm.garbage.PS-Scavenge.time)),1),2000),\"minor\")",
       "alias(asPercent(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.jvm.garbage.PS-MarkSweep.time)),1),2000),\"major\")"
     ],
-    "lineMode": "staircase",
-    "vtitle": "%",
+    "title": "jvm/GC",
     "areaMode": "first",
+    "vtitle": "%",
     "colorList": "orange,red"
   },
   {
-    "title": "tcat/Processing time and errors all nodes",
+    "colorList": "green,red,yellow",
     "target": [
       "alias(sumSeries(servers.*.nuxeo.tomcat.processingTime),\"processingTime\")",
       "alias(secondYAxis(sumSeries(servers.*.nuxeo.tomcat.errorCount)),\"requests in error\")"
     ],
-    "colorList": "green,red,yellow"
+    "title": "tcat/Processing time and errors all nodes"
   },
   {
-    "title": "tcat/Throughtput Threads and sessions",
     "target": [
       "alias(sumSeries(servers.*.nuxeo.tomcat.currentThreadBusy),\"threads busy\")",
       "alias(sumSeries(servers.*.nuxeo.tomcat.currentThreadCount),\"threads\")",
       "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.tomcat.requestCount)),1),\"requests/s\")",
       "alias(secondYAxis(sumSeries(servers.*.nuxeo.tomcat.activeSessions)),\"activeSessions\")"
-    ]
+    ],
+    "title": "tcat/Throughtput Threads and sessions"
   },
   {
-    "title": "nx/Repositories JDBC connections pool all nodes",
     "target": [
       "alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.count),\"total connection\")",
       "alias(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.count),sumSeries(servers.*.nuxeo.nuxeo.repositories.jdbc.*.connections.idle)),\"active\")"
-    ]
+    ],
+    "title": "nx/Repositories JDBC connections pool all nodes"
   },
   {
-    "title": "nx/Repositories sessions",
     "target": [
       "alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.sessions),\"sessions\")",
       "alias(sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.count),\"total connections\")",
       "alias(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.count),sumSeries(servers.*.nuxeo.nuxeo.repositories.repository.*.connections.idle)),\"active\")"
-    ]
+    ],
+    "title": "nx/Repositories sessions"
   },
   {
-    "title": "nx/Directories max sessions for all directories and nodes",
     "target": [
       "alias(sumSeries(servers.*.nuxeo.nuxeo.directories.*.sessions.max.count),\"count\")"
-    ]
+    ],
+    "title": "nx/Directories max sessions for all directories and nodes"
   },
   {
-    "title": "nx/Directories sessions and cache size",
     "target": [
       "alias(sumSeries(servers.*.nuxeo.nuxeo.directories.*.sessions.active.count),\"total active sessions\")",
       "alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.directories.*.cache.size.count)),\"cache size\"),",
       "alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.directories.*.cache.max.count)),\"max cache size\")"
-    ]
+    ],
+    "title": "nx/Directories sessions and cache size"
   },
   {
-    "title": "nx/Requests all nodes",
+    "vtitle": "Req/s",
+    "colorList": "blue,orange,red",
     "target": [
       "alias(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.count.m1_rate),\"1minRate\")",
       "alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.count.mean)),\"mean\")",
       "alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.count.p95)),\"95perc\")"
     ],
-    "colorList": "blue,orange,red",
-    "vtitle": "Req/s"
+    "title": "nx/Requests all nodes"
   },
   {
-    "title": "nx/Requests and logged all nodes",
     "target": [
       "alias(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.logged-users.count),\"logged\")",
       "alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.concurrent.count.count)),\"concurrent request\")",
       "alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.web.authentication.requests.concurrent.max.count)),\"max concurrent\")"
-    ]
+    ],
+    "title": "nx/Requests and logged all nodes"
   },
   {
-    "title": "nx/Transactions",
+    "vtitle": "Tx/s",
+    "colorList": "blue,orange,red",
     "target": [
       "alias(sumSeries(servers.*.nuxeo.nuxeo.transactions.duration.m1_rate),\"1minRate\")",
       "alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.transactions.duration.mean)),\"mean\")",
       "alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.transactions.duration.p95)),\"95perc\")"
     ],
-    "colorList": "blue,orange,red",
-    "vtitle": "Tx/s"
+    "title": "nx/Transactions"
   },
   {
-    "title": "nx/Transactions rollback all nodes",
+    "colorList": "red,blue,orange",
     "target": [
       "alias(drawAsInfinite(derivative(sumSeries(servers.*.nuxeo.nuxeo.transactions.rollbacks.count))),\"rollback\")",
       "alias(sumSeries(servers.*.nuxeo.nuxeo.transactions.concurrents.count.count),\"concurrent tx\")",
       "alias(sumSeries(servers.*.nuxeo.nuxeo.transactions.concurrents.max.count),\"max concurrent tx\")"
     ],
-    "colorList": "red,blue,orange"
+    "title": "nx/Transactions rollback all nodes"
   },
   {
-    "title": "nx/Up and log",
+    "vtitle": "log per second",
+    "colorList": "orange,red,green",
     "target": [
       "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.org.apache.log4j.Appender.warn.count),1),\"warnings\")",
       "alias(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.org.apache.log4j.Appender.error.count),1),\"errors\")",
       "alias(drawAsInfinite(absolute(derivative(transformNull(servers.*.nuxeo.nuxeo.instance-up.count,0)))),\"start or stop\")"
     ],
-    "colorList": "orange,red,green",
-    "vtitle": "log per second"
+    "title": "nx/Up and log"
   },
   {
-    "title": "nx/Documents all nodes",
+    "areaMode": "stacked",
+    "vtitle": "per second",
     "target": [
       "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.documents.create.count)),1),\"created\")",
       "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.documents.update.count)),1),\"updated\")",
       "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.documents.delete.count)),1),\"deleted\")"
     ],
-    "vtitle": "per second",
-    "areaMode": "stacked"
+    "title": "nx/Documents all nodes"
   },
   {
-    "title": "nx/SessionImpl all nodes",
+    "vtitle": "per second",
     "target": [
       "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.queries.count.count)),1),\"query\")",
       "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.repositories.*.saves.count)),1),\"save\")"
     ],
-    "vtitle": "per second"
+    "title": "nx/SessionImpl all nodes"
   },
   {
-    "title": "nx/Elasticsearch search all nodes",
+    "vtitle": "per second",
+    "colorList": "blue,darkblue,orange,red",
     "target": [
       "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.count)),1),\"search\")",
       "alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.m1_rate),\"1minRate\")",
       "alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.mean)),\"mean\")",
       "alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.search.p95)),\"95perc\")"
     ],
-    "colorList": "blue,darkblue,orange,red",
-    "vtitle": "per second"
+    "title": "nx/Elasticsearch search all nodes"
   },
   {
-    "title": "nx/Elasticsearch index",
+    "vtitle": "per second",
+    "colorList": "blue,darkblue,orange,red",
     "target": [
       "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.count)),1),\"index\")",
       "alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.m1_rate),\"1minRate\")",
       "alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.mean)),\"mean\")",
       "alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.index.p95)),\"95perc\")"
     ],
-    "colorList": "blue,darkblue,orange,red",
-    "vtitle": "per second"
+    "title": "nx/Elasticsearch index"
   },
   {
-    "title": "nx/Elasticsearch bulk index",
+    "vtitle": "per second",
+    "colorList": "blue,darkblue,orange,red",
     "target": [
       "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.count)),1),\"bulkIndex\")",
       "alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.m1_rate),\"1minRate\")",
       "alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.mean)),\"mean\")",
       "alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.bulkIndex.p95)),\"95perc\")"
     ],
-    "colorList": "blue,darkblue,orange,red",
-    "vtitle": "per second"
+    "title": "nx/Elasticsearch bulk index"
   },
   {
-    "title": "nx/Elasticsearch delete",
+    "vtitle": "per second",
+    "colorList": "blue,darkblue,orange,red",
     "target": [
       "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.count)),1),\"delete\")",
       "alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.m1_rate),\"1minRate\")",
       "alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.mean)),\"mean\")",
       "alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.delete.p95)),\"95perc\")"
     ],
-    "colorList": "blue,darkblue,orange,red",
-    "vtitle": "per second"
+    "title": "nx/Elasticsearch delete"
   },
   {
-    "title": "nx/Elasticsearch fetch docs",
+    "vtitle": "per second",
+    "colorList": "blue,darkblue,orange,red",
     "target": [
       "alias(scaleToSeconds(nonNegativeDerivative(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.count)),1),\"fetch\")",
       "alias(sumSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.m1_rate),\"1minRate\")",
       "alias(secondYAxis(averageSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.mean)),\"mean\")",
       "alias(secondYAxis(maxSeries(servers.*.nuxeo.nuxeo.elasticsearch.service.fetch.p95)),\"95perc\")"
     ],
-    "colorList": "blue,darkblue,orange,red",
-    "vtitle": "per second"
+    "title": "nx/Elasticsearch fetch docs"
   },
   {
-    "title": "nx/VCS cache",
     "target": [
       "alias(asPercent(sumSeries(servers.*.nuxeo.nuxeo.repositories.default.caches.hit.count),sumSeries(servers.*.nuxeo.nuxeo.repositories.default.caches.count.count)),\"Total hit-ratio\")",
       "alias(asPercent(sumSeries(servers.*.nuxeo.nuxeo.repositories.default.caches.soft-ref.hits.count),sumSeries(servers.*.nuxeo.nuxeo.repositories.default.caches.soft-ref.get.count)),\"Soft ref hit-ratio\")",
@@ -388,51 +387,137 @@
       "alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.repositories.default.caches.hit.count)),\"Total hit-count\")",
       "alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.repositories.default.caches.soft-ref.hits.count)),\"Soft ref hit-count\")",
       "alias(secondYAxis(sumSeries(servers.*.nuxeo.nuxeo.repositories.default.caches.selections.hit.count)),\"Selection hit-count\")"
-    ]
+    ],
+    "title": "nx/VCS cache"
   },
   {
-    "title": "nx/Workers count total",
+    "vtitle": "count",
     "target": [
       "alias(sumSeries(servers.*.nuxeo.nuxeo.works.*.scheduled.count.count),\"scheduled\")",
       "alias(sumSeries(servers.*.nuxeo.nuxeo.works.*.completed.count),\"completed\")"
     ],
-    "vtitle": "count"
+    "title": "nx/Workers count total"
   },
   {
-    "title": "nx/Workers scheduled not completed",
     "target": [
       "alias(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.works.*.scheduled.count.count), sumSeries(servers.*.nuxeo.nuxeo.works.*.completed.count)),\"to process\")"
-    ]
+    ],
+    "title": "nx/Workers scheduled not completed"
   },
   {
-    "title": "nx/Workers deviant scheduled throughtput",
+    "vtitle": "per second",
     "target": [
       "mostDeviant(6,aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.works.*.scheduled.count.count),1),1,5))"
     ],
-    "vtitle": "per second"
+    "title": "nx/Workers deviant scheduled throughtput"
   },
   {
-    "title": "nx/Workers deviant completed throughtput",
+    "vtitle": "per second",
     "target": [
       "mostDeviant(6,aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.works.*.completed.count),1),1,5))"
     ],
-    "vtitle": "per second"
+    "title": "nx/Workers deviant completed throughtput"
   },
   {
-    "title": "nx/Workers deviant completed count",
+    "vtitle": "count",
     "target": [
       "mostDeviant(6,aliasByNode(servers.*.nuxeo.nuxeo.works.*.completed.count,1,5))"
     ],
-    "vtitle": "count"
+    "title": "nx/Workers deviant completed count"
   },
   {
-    "title": "nx/Audit throughput",
+    "width": "586",
+    "height": "308",
+    "_salt": "1535097346.817",
+    "title": "kafka/Messages IN",
+    "lineMode": "connected",
     "target": [
-            "aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.audit.drained.count),1),1,5)",
-            "aliasByNode(scaleToSeconds(nonNegativeDerivative(servers.*.nuxeo.nuxeo.audit.scheduled.count),1),1,5)",
-            "alias(secondYAxis(diffSeries(sumSeries(servers.*.nuxeo.nuxeo.audit.queued.count), sumSeries(servers.*.nuxeo.nuxeo.audit.drained.count))),\"queue size\")"
-
-    ],
-    "vtitle": "count"
+      "alias(servers.kafka1.kafka.BrokerTopicMetrics.MessagesInPerSec.OneMinuteRate,\"msg/s 1min rate\")",
+      "alias(secondYAxis(servers.kafka1.kafka.BrokerTopicMetrics.MessagesInPerSec.Count),\"count\")"
+    ]
+  },
+  {
+    "width": "586",
+    "height": "308",
+    "_salt": "1535097517.124",
+    "title": "kafka/Messages OUT",
+    "lineMode": "connected",
+    "target": [
+      "alias(servers.kafka1.kafka.BrokerTopicMetrics.TotalProduceRequestsPerSec.OneMinuteRate,\"msg/s 1min rate\")",
+      "alias(secondYAxis(servers.kafka1.kafka.BrokerTopicMetrics.TotalProduceRequestsPerSec.Count),\"count\")"
+    ]
+  },
+  {
+    "width": "586",
+    "height": "308",
+    "_salt": "1535097860.215",
+    "title": "kafka/Messages OUT top 5",
+    "lineMode": "connected",
+    "target": [
+      "highestCurrent(aliasByNode(secondYAxis(servers.kafka1.kafka.BrokerTopicMetrics.TotalProduceRequestsPerSec.topic.*.Count),6),5)"
+    ]
+  },
+  {
+    "width": "586",
+    "height": "308",
+    "_salt": "1535098101.048",
+    "title": "kafka/Messages IN top 5",
+    "lineMode": "connected",
+    "target": [
+      "highestCurrent(aliasByNode(secondYAxis(servers.kafka1.kafka.BrokerTopicMetrics.MessagesInPerSec.topic.*.Count),6),5)"
+    ]
+  },
+  {
+    "width": "586",
+    "height": "308",
+    "_salt": "1535098472.51",
+    "title": "kafka/Messages count",
+    "lineMode": "connected",
+    "target": [
+      "alias(servers.kafka1.kafka.Log.LogEndOffset.topic.nuxeo-audit.partition.0.Value,\"audit\")",
+      "alias(servers.kafka1.kafka.Log.LogEndOffset.topic.nuxeo-pubsub.partition.0.Value,\"pubsub\")"
+    ]
+  },
+  {
+    "width": "586",
+    "height": "308",
+    "_salt": "1535098807.276",
+    "title": "kafka/Disk",
+    "lineMode": "connected",
+    "target": [
+      "alias(servers.kafka1.diskspace._opt.byte_used,\"usage\")",
+      "alias(secondYAxis(servers.kafka1.iostat.xvdf.util_percentage),\"%util\")"
+    ]
+  },
+  {
+    "width": "586",
+    "height": "308",
+    "_salt": "1535100354.011",
+    "title": "work/completed scheduled",
+    "lineMode": "connected",
+    "target": [
+      "alias(sumSeries(servers.nuxeo1.nuxeo.nuxeo.works.total.*.scheduled),\"scheduled\")",
+      "secondYAxis(alias(sumSeries(servers.nuxeo1.nuxeo.nuxeo.works.total.*.completed),\"completed\"))"
+    ]
+  },
+  {
+    "width": "586",
+    "height": "308",
+    "_salt": "1535101639.346",
+    "title": "work/completed TOP 5",
+    "lineMode": "connected",
+    "target": [
+      "highestCurrent(aliasByNode(servers.nuxeo1.nuxeo.nuxeo.works.total.*.completed,6),5)"
+    ]
+  },
+  {
+    "width": "586",
+    "height": "308",
+    "_salt": "1535101792.281",
+    "title": "work/scheduled TOP 5",
+    "lineMode": "connected",
+    "target": [
+      "highestMax(aliasByNode(servers.nuxeo1.nuxeo.nuxeo.works.total.*.scheduled,6),5)"
+    ]
   }
 ]
