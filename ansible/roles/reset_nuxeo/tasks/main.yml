@@ -336,8 +336,13 @@
 - name: Config - metrics.tomcat.enabled
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
-    regexp: '^#?metrics\.tomcat\.enabled\s*='
+    regexp: '^#?metrics.tomcat.enabled\s*='
     line: "metrics.tomcat.enabled=true"
+- name: Config - metrics.log4j.enabled
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?metrics.log4j.enabled\s*='
+    line: "metrics.log4j.enabled=true"
 - name: Config - Increase db timeout
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
