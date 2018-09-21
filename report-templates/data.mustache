@@ -20,8 +20,8 @@ bulk_count: {{bulk.simStat.count}}
 bulk_percentError: {{bulk.simStat.percentError}}
 bulk_error: {{bulk.simStat.errorCount}}
 {{#bulk.requests}}
-  bulk_{{requestId}}_name: "{{request}}"
-  bulk_{{requestId}}_avg: {{average}}
+bulk_{{requestId}}_name: "{{request}}"
+bulk_{{requestId}}_avg: {{average}}
 {{/bulk.requests}}
 
 create_avg: {{create.simStat.average}}
