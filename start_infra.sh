@@ -10,6 +10,8 @@ kafka="false"
 distrib="lastbuild"
 keypair="Jenkins"
 addons=""
+nbnodes=2
+esnodes=3
 
 function help {
     echo "Usage: $0 -P<dbprofile> -m -d<distribution>"
@@ -17,6 +19,7 @@ function help {
     echo "  -d distribution : nuxeo distribution (default: lastbuild) (see bin/get-nuxeo-distribution.py for details)"
     echo "  -k keypair      : use this keypair instead of jenkins"
     echo "  -n nodes        : the number of Nuxeo nodes in the cluster, default=2"
+    echo "  -e nodes        : the number of Elasticsearch nodes in the cluster, default=3"
     echo "  -i addons       : a list of addons separated by comma to install on Nuxeo nodes"
     echo "  -K <boolean>    : use Kafka"
     exit 0
@@ -63,6 +66,9 @@ while getopts ":P:md:k:n:i:K:h" opt; do
             ;;
         n)
             nbnodes=$OPTARG
+            ;;
+        e)
+            esnodes=$OPTARG
             ;;
         i)
             addons=$OPTARG
@@ -112,6 +118,7 @@ echo "kafkaflag: $kafka" >> ansible/group_vars/all/custom.yml
 
 # Set nb of Nuxeo nodes
 perl -pi -e "s,counts\:\n\s+nuxeo\:[^\n]+\n,counts\:\n  nuxeo: ${nbnodes}\n,igs" -0777 ansible/group_vars/all/main.yml
+perl -pi -e "s,counts\:\n\s+es\:[^\n]+\n,counts\:\n  es: ${esnodes}\n,igs" -0777 ansible/group_vars/all/main.yml
 
 # Setup virtualenv
 if [ ! -d venv ]; then

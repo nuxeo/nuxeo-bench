@@ -215,6 +215,7 @@ function build_stat() {
   echo "dbprofile: \"$dbprofile\"" >> ${REPORT_PATH}/data.yml
   echo "bench_suite: \"$benchsuite\"" >> ${REPORT_PATH}/data.yml
   echo "nuxeonodes: $nbnodes" >> ${REPORT_PATH}/data.yml
+  echo "esnodes: $esnodes" >> ${REPORT_PATH}/data.yml
   echo "classifier: \"$classifier\"" >> ${REPORT_PATH}/data.yml
   echo "distribution: \"$distribution\"" >> ${REPORT_PATH}/data.yml
   echo "default_category: \"$category\"" >> ${REPORT_PATH}/data.yml
