@@ -116,9 +116,8 @@ echo "mongo: $mongo" >> ansible/group_vars/all/custom.yml
 echo "keypair: $keypair" >> ansible/group_vars/all/custom.yml
 echo "kafkaflag: $kafka" >> ansible/group_vars/all/custom.yml
 
-# Set nb of Nuxeo nodes
-perl -pi -e "s,counts\:\n\s+nuxeo\:[^\n]+\n,counts\:\n  nuxeo: ${nbnodes}\n,igs" -0777 ansible/group_vars/all/main.yml
-perl -pi -e "s,counts\:\n\s+es\:[^\n]+\n,counts\:\n  es: ${esnodes}\n,igs" -0777 ansible/group_vars/all/main.yml
+# Set nb of Nuxeo and elastic nodes
+perl -pi -e "s,counts\:\n\s+nuxeo\:[^\n]+\n\s+es\:[^\n]+\n,counts\:\n  nuxeo: ${nbnodes}\n  es: ${esnodes}\n,igs" -0777 ansible/group_vars/all/main.yml
 
 # Setup virtualenv
 if [ ! -d venv ]; then
