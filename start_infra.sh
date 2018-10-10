@@ -1,9 +1,8 @@
-#!/bin/bash -e
+#!/bin/bash -e -x
 # Start the required infra to run a bench
 cd $(dirname $0)
 HERE=`readlink -e .`
 
-set -x
 db="pgsql"
 nosqldb="none"
 mongo="false"
