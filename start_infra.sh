@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -e -x
 # Start the required infra to run a bench
 cd $(dirname $0)
 HERE=`readlink -e .`
@@ -130,6 +130,7 @@ pip install -r ansible/requirements.txt
 
 # Run ansible scripts
 pushd ansible
+set | grep AWS
 ansible-playbook -i inventory.py start_nodes.yml -v
 ansible-playbook -i inventory.py setup.yml -v
 popd
