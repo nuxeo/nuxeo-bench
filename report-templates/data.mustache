@@ -12,6 +12,18 @@ import_{{requestId}}_name: "{{request}}"
 import_{{requestId}}_avg: {{average}}
 {{/import.requests}}
 
+exportcsv_duration: {{exportcsv.simStat.duration}}
+exportcsv_avg: {{exportcsv.simStat.average}}
+exportcsv_rps: {{exportcsv.simStat.throughput}}
+exportcsv_date: {{exportcsv.simStat.startDate}}
+exportcsv_count: {{exportcsv.simStat.count}}
+exportcsv_percentError: {{exportcsv.simStat.percentError}}
+exportcsv_error: {{exportcsv.simStat.errorCount}}
+{{#exportcsv.requests}}
+  exportcsv_{{requestId}}_name: "{{request}}"
+  exportcsv_{{requestId}}_avg: {{average}}
+{{/exportcsv.requests}}
+
 bulk_duration: {{bulk.simStat.duration}}
 bulk_avg: {{bulk.simStat.average}}
 bulk_rps: {{bulk.simStat.throughput}}

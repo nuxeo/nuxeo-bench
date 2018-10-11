@@ -137,6 +137,7 @@ function run_simulations() {
   # init user ws and give some chance to graphite to init all metrics before mass import
   gatling "org.nuxeo.cap.bench.Sim25WarmUsersJsf"
   gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=100000
+  gatling "org.nuxeo.cap.bench.Sim20CSVExport"
   gatling "org.nuxeo.cap.bench.Sim15BulkUpdateDocuments"
   #gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=1000000 -Dusers=32
   gatling "org.nuxeo.cap.bench.Sim10CreateFolders"
@@ -195,9 +196,10 @@ function build_stat() {
   # create a yml file with all the stats
   set -x
   java -jar ${GAT_REPORT_JAR} -f -o ${REPORT_PATH} -n data.yml -t ${MUSTACHE_TEMPLATE} \
-    -m import,bulk,create,createasync,nav,navjsf,search,update,updateasync,bench,crud,crudasync,reindex \
+    -m import,bulk,exportcsv,create,createasync,nav,navjsf,search,update,updateasync,bench,crud,crudasync,reindex \
     ${REPORT_PATH}/sim10massimport/detail/simulation.log.gz \
     ${REPORT_PATH}/sim15bulkupdatedocuments/detail/simulation.log.gz \
+    ${REPORT_PATH}/sim20csvexport/detail/simulation.log.gz \
     ${REPORT_PATH}/sim20createdocuments/detail/simulation.log.gz \
     ${REPORT_PATH}/sim25waitforasync/detail/simulation.log.gz \
     ${REPORT_PATH}/sim30navigation/detail/simulation.log.gz \
