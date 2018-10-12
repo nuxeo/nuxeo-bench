@@ -143,7 +143,7 @@ function run_simulations() {
   gatling "org.nuxeo.cap.bench.Sim10CreateFolders"
   gatling "org.nuxeo.cap.bench.Sim20CreateDocuments" -Dusers=32
   gatling "org.nuxeo.cap.bench.Sim25WaitForAsync"
-  gatling "org.nuxeo.cap.bench.Sim25BulkUpdateFolders" -Dusers=16
+  gatling "org.nuxeo.cap.bench.Sim25BulkUpdateFolders" -Dusers=32 -Dduration=180 -Dpause_ms=0
   gatling "org.nuxeo.cap.bench.Sim30UpdateDocuments" -Dusers=32 -Dduration=180
   #gatling "org.nuxeo.cap.bench.Sim30UpdateDocuments" -Dusers=32 -Dduration=400
   gatling "org.nuxeo.cap.bench.Sim35WaitForAsync"
