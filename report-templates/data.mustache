@@ -12,18 +12,6 @@ import_{{requestId}}_name: "{{request}}"
 import_{{requestId}}_avg: {{average}}
 {{/import.requests}}
 
-exportcsv_duration: {{exportcsv.simStat.duration}}
-exportcsv_avg: {{exportcsv.simStat.average}}
-exportcsv_rps: {{exportcsv.simStat.throughput}}
-exportcsv_date: {{exportcsv.simStat.startDate}}
-exportcsv_count: {{exportcsv.simStat.count}}
-exportcsv_percentError: {{exportcsv.simStat.percentError}}
-exportcsv_error: {{exportcsv.simStat.errorCount}}
-{{#exportcsv.requests}}
-  exportcsv_{{requestId}}_name: "{{request}}"
-  exportcsv_{{requestId}}_avg: {{average}}
-{{/exportcsv.requests}}
-
 bulk_duration: {{bulk.simStat.duration}}
 bulk_avg: {{bulk.simStat.average}}
 bulk_rps: {{bulk.simStat.throughput}}
@@ -35,6 +23,42 @@ bulk_error: {{bulk.simStat.errorCount}}
 bulk_{{requestId}}_name: "{{request}}"
 bulk_{{requestId}}_avg: {{average}}
 {{/bulk.requests}}
+
+mbulk_avg: {{mbulk.simStat.average}}
+mbulk_rps: {{mbulk.simStat.throughput}}
+mbulk_std: {{mbulk.simStat.stddev}}
+mbulk_min: {{mbulk.simStat.min}}
+mbulk_p50: {{mbulk.simStat.p50}}
+mbulk_p95: {{mbulk.simStat.p95}}
+mbulk_max: {{mbulk.simStat.max}}
+mbulk_user: {{mbulk.simStat.maxUsers}}
+mbulk_date: {{mbulk.simStat.startDate}}
+mbulk_duration: {{mbulk.simStat.duration}}
+mbulk_count: {{mbulk.simStat.count}}
+mbulk_percentError: {{mbulk.simStat.percentError}}
+mbulk_error: {{mbulk.simStat.errorCount}}
+{{#mbulk.requests}}
+mbulk_{{requestId}}_name: "{{request}}"
+mbulk_{{requestId}}_avg: {{average}}
+mbulk_{{requestId}}_std: {{stddev}}
+mbulk_{{requestId}}_min: {{min}}
+mbulk_{{requestId}}_p50: {{p50}}
+mbulk_{{requestId}}_p95: {{p95}}
+mbulk_{{requestId}}_max: {{max}}
+mbulk_{{requestId}}_rps: {{throughput}}
+{{/mbulk.requests}}
+
+exportcsv_duration: {{exportcsv.simStat.duration}}
+exportcsv_avg: {{exportcsv.simStat.average}}
+exportcsv_rps: {{exportcsv.simStat.throughput}}
+exportcsv_date: {{exportcsv.simStat.startDate}}
+exportcsv_count: {{exportcsv.simStat.count}}
+exportcsv_percentError: {{exportcsv.simStat.percentError}}
+exportcsv_error: {{exportcsv.simStat.errorCount}}
+{{#exportcsv.requests}}
+exportcsv_{{requestId}}_name: "{{request}}"
+exportcsv_{{requestId}}_avg: {{average}}
+{{/exportcsv.requests}}
 
 create_avg: {{create.simStat.average}}
 create_rps: {{create.simStat.throughput}}

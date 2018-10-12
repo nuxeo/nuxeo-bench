@@ -143,6 +143,7 @@ function run_simulations() {
   gatling "org.nuxeo.cap.bench.Sim10CreateFolders"
   gatling "org.nuxeo.cap.bench.Sim20CreateDocuments" -Dusers=32
   gatling "org.nuxeo.cap.bench.Sim25WaitForAsync"
+  gatling "org.nuxeo.cap.bench.Sim25BulkUpdateFolders" -Dusers=16
   gatling "org.nuxeo.cap.bench.Sim30UpdateDocuments" -Dusers=32 -Dduration=180
   #gatling "org.nuxeo.cap.bench.Sim30UpdateDocuments" -Dusers=32 -Dduration=400
   gatling "org.nuxeo.cap.bench.Sim35WaitForAsync"
@@ -196,9 +197,10 @@ function build_stat() {
   # create a yml file with all the stats
   set -x
   java -jar ${GAT_REPORT_JAR} -f -o ${REPORT_PATH} -n data.yml -t ${MUSTACHE_TEMPLATE} \
-    -m import,bulk,exportcsv,create,createasync,nav,navjsf,search,update,updateasync,bench,crud,crudasync,reindex \
+    -m import,bulk,mbulk,exportcsv,create,createasync,nav,navjsf,search,update,updateasync,bench,crud,crudasync,reindex \
     ${REPORT_PATH}/sim10massimport/detail/simulation.log.gz \
     ${REPORT_PATH}/sim15bulkupdatedocuments/detail/simulation.log.gz \
+    ${REPORT_PATH}/sim25bulkupdatefolders/detail/simulation.log.gz \
     ${REPORT_PATH}/sim20csvexport/detail/simulation.log.gz \
     ${REPORT_PATH}/sim20createdocuments/detail/simulation.log.gz \
     ${REPORT_PATH}/sim25waitforasync/detail/simulation.log.gz \
