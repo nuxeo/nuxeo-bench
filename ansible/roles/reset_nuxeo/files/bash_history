@@ -1,0 +1,10 @@
+tail -f /opt/nuxeo/server/nxserver/*.csv
+less /opt/nuxeo/logs/server.log
+jcmd Bootstrap JFR.start duration=60s filename=/opt/nuxeo/logs/record-00.jfr
+/opt/nuxeo/server/bin/stream.sh lag -k -l audit
+/opt/nuxeo/server/bin/stream.sh cat -k -l bulk-done --codec avro --schema-store /opt/nuxeo/data/avro/
+curl -s -X POST 'http://localhost:8080/nuxeo/site/automation/Bulk.RunAction' -u Administrator:Administrator -H 'content-type: application/json+nxrequest' -d '{"context": {}, "params": { "action": "csvExport", "query": "SELECT * FROM Folder", "parameters": {} } }' | tee /tmp/bulk-command.txt
+commandId=$(cat /tmp/bulk-command.txt | jq .commandId | tr -d '"')
+curl -s -X GET "http://localhost:8080/nuxeo/api/v1/bulk/$commandId"  -u Administrator:Administrator  -H 'content-type: application/json' | jq .
+redis-cli -h nuxeo1
+mongo --host nuxeo1

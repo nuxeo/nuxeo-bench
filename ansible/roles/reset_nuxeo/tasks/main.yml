@@ -1,7 +1,13 @@
 ---
 # need python2 not setup on 16.04
 - name: install python 2
-  raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+  raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal jq)
+
+- name: Add screen conf
+  copy: src=screenrc dest=/home/ubuntu/.screenrc owner=ubuntu force=no
+
+- name: Add history
+  copy: src=bash_history dest=/opt/nuxeo/.bash_history owner=nuxeo force=no
 
 # Set better hostname
 - name: Reset node numbers
@@ -93,6 +99,8 @@
   become_user: nuxeo
 - name: Make nuxeoctl executable
   file: path=/opt/nuxeo/server/bin/nuxeoctl mode=0755
+- name: Make stream.sh executable
+  file: path=/opt/nuxeo/server/bin/stream.sh mode=0755
 - name: Check for instance.clid
   stat: path=/deploy/instance.clid
   register: instanceclid
@@ -399,6 +407,10 @@
     line: "nuxeo.redis.enabled=false"
   when: kafkaflag and mongo
 
+# Add a custom transient store when not using redis
+- name: Config - Add a KV store transient store
+  copy: src=transient-store-kv-config.xml dest=/opt/nuxeo/server/templates/perf/nxserver/config/transient-store-kv-config.xml
+  when: kafkaflag and mongo
 
 # Add distribution packages
 - name: Add distribution packages
@@ -463,3 +475,5 @@
   shell: cat /deploy/conf >> /opt/nuxeo/conf/nuxeo.conf
   when: customconf.stat.exists
 
+- name: Add history
+  copy: src=bash_history dest=/opt/nuxeo/.bash_history owner=nuxeo force=no
