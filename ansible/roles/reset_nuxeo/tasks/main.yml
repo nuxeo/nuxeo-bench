@@ -6,9 +6,6 @@
 - name: Add screen conf
   copy: src=screenrc dest=/home/ubuntu/.screenrc owner=ubuntu force=no
 
-- name: Add history
-  copy: src=bash_history dest=/opt/nuxeo/.bash_history owner=nuxeo force=no
-
 # Set better hostname
 - name: Reset node numbers
   shell: redis-cli -h {{redis_host}} --csv del nuxeo_node_number
