@@ -15,6 +15,7 @@
       <property name="connection.retry">3</property>
       <property name="connection.timeout">50000</property>
       <property name="socket.timeout">50000</property>
+      <property name="transient">true</property>
     </blobprovider>
   </extension>
 
