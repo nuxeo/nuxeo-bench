@@ -15,7 +15,7 @@ esnodes=3
 
 function help {
     echo "Usage: $0 -P<dbprofile> -m -d<distribution>"
-    echo "  -P dbprofile    : one of pgsql,mssql,oracle12c,mysql,marklogic (default: pgsql)"
+    echo "  -P dbprofile    : one of pgsql,mssql,oracle12c,mysql (default: pgsql)"
     echo "  -d distribution : nuxeo distribution (default: lastbuild) (see bin/get-nuxeo-distribution.py for details)"
     echo "  -k keypair      : use this keypair instead of jenkins"
     echo "  -n nodes        : the number of Nuxeo nodes in the cluster, default=2"
@@ -47,10 +47,6 @@ while getopts ":P:md:k:n:e:i:K:h" opt; do
                     ;;
                 mysql)
                     db="mysql"
-                    ;;
-                marklogic)
-                    db="pgsql"
-                    nosqldb="marklogic"
                     ;;
                 *)
                     echo "Invalid db profile: $OPTARG" >&2
@@ -100,9 +96,6 @@ sudo apt-get -q -y install python-lxml python-requests
 cp /opt/build/hudson/instance.clid $HERE/deploy/
 echo "nuxeo-jsf-ui" > $HERE/deploy/mp-list
 echo "nuxeo-platform-importer" >> $HERE/deploy/mp-list
-if [ "$nosqldb" == "marklogic" ]; then
-  echo "nuxeo-marklogic-connector" >> $HERE/deploy/mp-list
-fi
 for addon in $(echo $addons | tr "," "\n")
 do
     echo $addon >> $HERE/deploy/mp-list
