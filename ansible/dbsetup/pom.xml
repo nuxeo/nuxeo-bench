@@ -63,16 +63,6 @@
     <profile>
       <id>mysql</id>
     </profile>
-    <profile>
-      <id>marklogic</id>
-      <dependencies>
-        <dependency>
-          <groupId>org.nuxeo.ecm.core</groupId>
-          <artifactId>nuxeo-core-storage-marklogic</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-      </dependencies>
-    </profile>
   </profiles>
 
 </project>
