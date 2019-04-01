@@ -2,7 +2,7 @@
 aws_region: eu-west-1
 elb_name: bench-elb
 redis_host: bench.xsn1jx.0001.euw1.cache.amazonaws.com
-bucket: nuxeo-bench
+bucket: nuxeo-devtools-bench
 # do not change the bench tag or update stop/terminate scripts
 bench: test
 counts:
