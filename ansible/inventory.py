@@ -56,7 +56,7 @@ for i in allinstances:
     if state != "running":
         continue
     role = i.tags["bench_role"]
-    if keypair == "Jenkins":
+    if keypair == "jenkins-pub":
         address = i.private_ip_address
     else:
         address = i.ip_address

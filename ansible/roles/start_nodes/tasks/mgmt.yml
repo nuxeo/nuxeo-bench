@@ -16,6 +16,6 @@
     started_instances: {"instances": []}
   when: stopped_instances.stdout == ""
 - name: Add started mgmt instances to group
-  add_host: hostname={{item.private_ip if keypair == "Jenkins" else item.public_ip}} groupname=mgmt
+  add_host: hostname={{item.private_ip if keypair == "jenkins-pub" else item.public_ip}} groupname=mgmt
   with_items: started_instances.instances
 

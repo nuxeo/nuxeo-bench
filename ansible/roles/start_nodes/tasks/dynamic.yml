@@ -21,7 +21,7 @@
     started_instances: {"instances": []}
   when: stopped_instances.stdout == ""
 - name: Add started instances to group
-  add_host: hostname={{item.private_ip if keypair == "Jenkins" else item.public_ip}} groupname={{type}}
+  add_host: hostname={{item.private_ip if keypair == "jenkins-pub" else item.public_ip}} groupname={{type}}
   with_items: started_instances.instances
 
 - name: Create/destroy dynamic instances
@@ -78,11 +78,11 @@
     - created_volumes.results
     - volumes
 - name: Add new instances to group
-  add_host: hostname={{item.private_ip if keypair == "Jenkins" else item.public_ip}} groupname={{type}}
+  add_host: hostname={{item.private_ip if keypair == "jenkins-pub" else item.public_ip}} groupname={{type}}
   with_items: created_instances.instances
   when: created_instances.changed
 
 - name: Wait for SSH to be available on all instances
-  wait_for: host={{item.private_ip if keypair == "Jenkins" else item.public_ip}} port=22 delay=10 timeout=320 state=started
+  wait_for: host={{item.private_ip if keypair == "jenkins-pub" else item.public_ip}} port=22 delay=10 timeout=320 state=started
   with_items: started_instances.instances + created_instances.instances
 
