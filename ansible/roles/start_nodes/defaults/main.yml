@@ -1,9 +1,9 @@
 ---
 keypair: Jenkins
 aws_region: eu-west-1
-security_group: jenkins-vpc
-subnet_id: subnet-dbac2a82
-instance_profile: JenkinsRole
+security_group: RefBench
+subnet_id: subnet-03ef8fb8ec85e5e0a
+instance_profile: RefBench_role
 dbprofile: pgsql
 mongo: false
 kafkaflag: false
