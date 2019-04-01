@@ -12,10 +12,10 @@ dirname = os.path.dirname(abspath)
 os.chdir(dirname)
 
 f = open("group_vars/all/main.yml", "r")
-default = yaml.load(f)
+default = yaml.load(f, Loader=yaml.FullLoader)
 f.close()
 f = open("group_vars/all/custom.yml", "r")
-custom = yaml.load(f)
+custom = yaml.load(f, Loader=yaml.FullLoader)
 f.close()
 region = default["aws_region"]
 bench = default["bench"]
