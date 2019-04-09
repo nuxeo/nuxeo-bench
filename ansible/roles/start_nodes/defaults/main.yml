@@ -2,7 +2,7 @@
 keypair: jenkins-pub
 aws_region: eu-west-1
 security_group: RefBench
-subnet_id: subnet-03ef8fb8ec85e5e0a
+subnet_id: subnet-0512c36d7e8ff64ef
 instance_profile: RefBench_role
 dbprofile: pgsql
 mongo: false
