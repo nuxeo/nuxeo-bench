@@ -33,7 +33,6 @@
     vpc_subnet_id: "{{subnet_id}}"
     group: "{{security_group}}"
     instance_profile_name: "{{instance_profile}}"
-    assign_public_ip: yes
     ebs_optimized: true
     instance_tags:
       Name: bench-{{bench}}-{{type}}
