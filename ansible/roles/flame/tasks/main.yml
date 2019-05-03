@@ -1,4 +1,7 @@
 ---
+- name: Disable automatic update
+  shell: "systemctl disable --now apt-daily{,-upgrade}.{timer,service}"
+
 - name: Check if already setup
   stat: path=/usr/local/bin/flame.sh
   register: stf
@@ -6,9 +9,6 @@
 - name: get kernel
   shell: uname -r
   register: kernel
-
-- name: Wait for automatic system updates
-  shell: "while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 1; done;"
 
 - name: Install package dependencies
   apt: name={{item}} state=latest
