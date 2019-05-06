@@ -3,20 +3,20 @@
 cd $(dirname $0)
 HERE=`readlink -e .`
 
-TARGET=http://nuxeo-bench.nuxeo.org/nuxeo
-NUXEO_GIT=https://github.com/nuxeo/nuxeo.git
-SCRIPT_ROOT="./bench-scripts"
-SCRIPT_DIR="nuxeo-distribution/nuxeo-jsf-ui-gatling-tests"
-SCRIPT_PATH="$SCRIPT_ROOT/$SCRIPT_DIR"
-SCRIPT_BRANCH=10.10
-REDIS_DB=7
-REDIS_HOST=127.0.0.1
-REDIS_PORT=6379
-REPORT_PATH="./reports"
-GAT_REPORT_VERSION=3.0-SNAPSHOT
-GAT_REPORT_JAR=~/.m2/repository/org/nuxeo/tools/gatling-report/${GAT_REPORT_VERSION}/gatling-report-${GAT_REPORT_VERSION}-capsule-fat.jar
-GRAPHITE_DASH=http://bench-mgmt.nuxeo.org/dashboard/#nuxeo-bench
-MUSTACHE_TEMPLATE=./report-templates/data.mustache
+TARGET=${TARGET:-"http://nuxeo-bench.nuxeo.org/nuxeo"}
+NUXEO_GIT=${NUXEO_GIT:-"https://github.com/nuxeo/nuxeo.git"}
+SCRIPT_ROOT=${SCRIPT_ROOT:-"./bench-scripts"}
+SCRIPT_DIR=${SCRIPT_DIR:-"nuxeo-distribution/nuxeo-jsf-ui-gatling-tests"}
+SCRIPT_PATH=${SCRIPT_PATH:-"$SCRIPT_ROOT/$SCRIPT_DIR"}
+SCRIPT_BRANCH=${SCRIPT_BRANCH:-"10.10"}
+REDIS_DB=${REDIS_DB:-"7"}
+REDIS_HOST=${REDIS_HOST:-"127.0.0.1"}
+REDIS_PORT=${REDIS_PORT:-"6379"}
+REPORT_PATH=${REPORT_PATH:-"./reports"}
+GAT_REPORT_VERSION=${GAT_REPORT_VERSION:-"3.0-SNAPSHOT"}
+GAT_REPORT_JAR=${GAT_REPORT_JAR:-"~/.m2/repository/org/nuxeo/tools/gatling-report/${GAT_REPORT_VERSION}/gatling-report-${GAT_REPORT_VERSION}-capsule-fat.jar"}
+GRAPHITE_DASH=${GRAPHITE_DASH:-"http://bench-mgmt.nuxeo.org/dashboard/#nuxeo-bench"}
+MUSTACHE_TEMPLATE=${MUSTACHE_TEMPLATE:-"./report-templates/data.mustache"}
 # fail on any command error
 set -e
 
