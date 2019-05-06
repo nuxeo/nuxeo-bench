@@ -9,6 +9,8 @@ SCRIPT_ROOT="./bench-scripts"
 SCRIPT_DIR_10="nuxeo-distribution/nuxeo-jsf-ui-gatling-tests"
 SCRIPT_DIR="nuxeo-distribution/nuxeo-server-gatling-tests"
 REDIS_DB=7
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
 REPORT_PATH="./reports"
 GAT_REPORT_VERSION=4.1-SNAPSHOT
 GAT_REPORT_JAR=~/.m2/repository/org/nuxeo/tools/gatling-report/${GAT_REPORT_VERSION}/gatling-report-${GAT_REPORT_VERSION}-capsule-fat.jar
@@ -126,14 +128,14 @@ function clone_or_update_bench_scripts() {
 function load_data_into_redis() {
   echo "Load bench data into Redis"
   pushd ${SCRIPT_PATH}
-  echo flushdb | redis-cli -n ${REDIS_DB}
+  echo flushdb | redis-cli -n ${REDIS_DB} -h ${REDIS_HOST} -p ${REDIS_PORT}
   set +e
   wget -nc https://maven-eu.nuxeo.org/nexus/service/local/repositories/public-releases/content/org/nuxeo/tools/testing/data-test-les-arbres/1.1/data-test-les-arbres-1.1.zip -O data.zip
   unzip -o data.zip
   set -e
   # redis-cli don't like unbuffered input
   unset PYTHONUNBUFFERED
-  cat data-test*.csv | python ./scripts/inject-arbres.py | redis-cli -n ${REDIS_DB} --pipe
+  cat data-test*.csv | python ./scripts/inject-arbres.py | redis-cli -n ${REDIS_DB} -h ${REDIS_HOST} -p ${REDIS_PORT} --pipe
   export PYTHONUNBUFFERED=1
   popd
 }
