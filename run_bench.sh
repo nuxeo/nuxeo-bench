@@ -114,10 +114,12 @@ function load_data_into_redis() {
 }
 
 function gatling() {
+  local MVN_OPTS="-Pbench -Durl=${TARGET} -DredisHost=${REDIS_HOST} -DredisPort=${REDIS_PORT} -DredisDb=${REDIS_DB} -Dgatling.simulationClass=$@"
+
   if [ -n "$GATLING_2_1" ]; then
-    mvn -nsu test gatling:execute -Pbench -Durl=${TARGET} -Dgatling.simulationClass=$@
+    mvn -nsu test gatling:execute ${MVN_OPTS}
   else
-    mvn -nsu test gatling:test -Pbench -Durl=${TARGET} -Dgatling.simulationClass=$@
+    mvn -nsu test gatling:test ${MVN_OPTS}
   fi
 }
 
