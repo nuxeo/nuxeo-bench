@@ -15,6 +15,7 @@ REPORT_PATH=${REPORT_PATH:-"./reports"}
 GAT_REPORT_VERSION=${GAT_REPORT_VERSION:-"4.1-SNAPSHOT"}
 GAT_REPORT_JAR=${GAT_REPORT_JAR:-"~/.m2/repository/org/nuxeo/tools/gatling-report/${GAT_REPORT_VERSION}/gatling-report-${GAT_REPORT_VERSION}-capsule-fat.jar"}
 GRAPHITE_DASH=${GRAPHITE_DASH:-"http://bench-mgmt.nuxeo.org/dashboard/#nuxeo-bench"}
+WITH_MONITORING=${WITH_MONITORING:-true}
 MUSTACHE_TEMPLATE=${MUSTACHE_TEMPLATE:-"./report-templates/data.mustache"}
 
 # fail on any command error
@@ -208,7 +209,9 @@ function build_report() {
   fi
   mkdir ${report_root} || true
   mv $1 ${report_root}/detail
-  java -jar ${GAT_REPORT_JAR} -o ${report_root}/overview -g ${GRAPHITE_DASH} ${report_root}/detail/simulation.log
+  if [[ "${WITH_MONITORING}" = true ]]; then
+    java -jar ${GAT_REPORT_JAR} -o ${report_root}/overview -g ${GRAPHITE_DASH} ${report_root}/detail/simulation.log
+  fi
   find ${report_root} -name simulation.log -exec gzip {} \;
 }
 
