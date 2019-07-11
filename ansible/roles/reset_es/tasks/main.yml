@@ -1,6 +1,6 @@
 ---
-- name: Disable automatic update
-  shell: "systemctl disable --now apt-daily{,-upgrade}.{timer,service}"
+- name: Wait for automatic system updates
+  shell: "while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 1; done;"
 
 # need python2 not setup on 16.04
 - name: install python 2
