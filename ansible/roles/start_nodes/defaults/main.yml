@@ -8,9 +8,9 @@ dbprofile: pgsql
 mongo: false
 kafkaflag: false
 amis:
-  nuxeo: ami-50f8f6ba
-  es: ami-50f8f6ba
-  kafka: ami-50f8f6ba
+  nuxeo: ami-019f369bf74518b60
+  es: ami-019f369bf74518b60
+  kafka: ami-019f369bf74518b60
 types:
   nuxeo: c4.xlarge
   es: c4.xlarge
