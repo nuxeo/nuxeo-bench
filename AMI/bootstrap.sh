@@ -21,7 +21,7 @@ apt-get -q -y upgrade
 
 
 # Install Nuxeo dependencies & misc tools
-apt-get -q -y install openssh-server openssh-client vim postfix curl git atop sysstat screen tree bc \
+apt-get -q -y install openssh-server openssh-client vim postfix curl git atop sysstat screen tree bc jq \
     ffmpeg libav-tools x264 x265 \
     python python-requests python-lxml \
     imagemagick ufraw ffmpeg2theora \
