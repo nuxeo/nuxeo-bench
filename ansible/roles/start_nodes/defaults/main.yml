@@ -8,9 +8,9 @@ dbprofile: pgsql
 mongo: false
 kafkaflag: false
 amis:
-  nuxeo: ami-019f369bf74518b60
-  es: ami-019f369bf74518b60
-  kafka: ami-019f369bf74518b60
+  nuxeo: ami-0369622a8804fc1ff
+  es: ami-0369622a8804fc1ff
+  kafka: ami-0369622a8804fc1ff
 types:
   nuxeo: c4.xlarge
   es: c4.xlarge
@@ -24,8 +24,4 @@ volsizes:
   es: 10
   kafka: 250
 
-# xenial	server	release	20180522	ebs-ssd	amd64	eu-west-1	ami-58d7e821			hvm
-# bionic	server	release	20180613	ebs-ssd	amd64	eu-west-1	ami-477b773e			hvm
-
-# ami-cc1473b5 based on ?
-# ami-50f8f6ba based on  ami-58d7e821
+# ami-0369622a8804fc1ff based on eu-west-1	xenial	16.04 LTS	amd64	hvm:ebs-ssd	20190628	ami-03746875d916becc0	hvm

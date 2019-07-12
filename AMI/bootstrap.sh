@@ -21,28 +21,22 @@ apt-get -q -y upgrade
 
 
 # Install Nuxeo dependencies & misc tools
-apt-get -q -y install openssh-server openssh-client vim postfix curl git atop sysstat screen tree \
+apt-get -q -y install openssh-server openssh-client vim postfix curl git atop sysstat screen tree bc \
     ffmpeg libav-tools x264 x265 \
     python python-requests python-lxml \
     imagemagick ufraw ffmpeg2theora \
     poppler-utils exiftool libwpd-tools \
     libreoffice zip unzip redis-tools \
     postgresql-client screen wget mongodb-org-shell \
-    redis-server
+    redis-server openjdk-8-jdk
+
+ln -s /usr/lib/jvm/java-8-openjdk-amd64 /usr/lib/jvm/java-8
 
 # editor
 update-alternatives --set editor /usr/bin/vim.basic
 
 # Secure postfix
 perl -p -i -e "s/^inet_interfaces\s*=.*$/inet_interfaces=127.0.0.1/" /etc/postfix/main.cf
-
-
-# Install Java 8
-apt-add-repository -y ppa:webupd8team/java
-apt-get update
-echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-apt-get -q -y install oracle-java8-installer
-ln -s /usr/lib/jvm/java-8-oracle /usr/lib/jvm/java-8
 
 # Prepare cleanup
 cat << EOF > /mnt/cleanup.sh
