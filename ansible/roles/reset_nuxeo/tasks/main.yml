@@ -125,11 +125,18 @@
     regexp: '^#?nuxeo\.log\.dir\s*='
     line: "nuxeo.log.dir=/opt/nuxeo/logs"
 # Add database config
-- name: Config - templates
+- name: Config - templates with redis
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.templates\s*='
+    line: "nuxeo.templates={{dbparams[dbprofile]['template'] + (',default' if mongo else '') + ',redis,perf'}}"
+  when: not kafkaflag or not mongo
+- name: Config - template without redis
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?nuxeo\.templates\s*='
     line: "nuxeo.templates={{dbparams[dbprofile]['template'] + (',default' if mongo else '') + ',perf'}}"
+  when: kafkaflag and mongo
 - name: Config - nuxeo.db.host
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
