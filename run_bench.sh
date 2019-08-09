@@ -230,7 +230,7 @@ function build_stat() {
   dd=$(grep reindex_duration ${REPORT_PATH}/data.yml | sed -e 's,^[a-z\_]*\:\s,,g')
   t1=$(date -d "$d1" +%s)
   t2=$(date -d "$d2" +%s)
-  benchmark_duration=$(echo $(( ($t2 - $t1) + $dd )) )
+  benchmark_duration=$(echo $(( ($t2 - $t1) + ${dd%.*} )) )
   echo "benchmark_duration: $benchmark_duration" >> ${REPORT_PATH}/data.yml
   echo "" >> ${REPORT_PATH}/data.yml
   set +x
