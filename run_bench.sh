@@ -140,6 +140,8 @@ function run_simulations() {
   gatling "org.nuxeo.cap.bench.Sim20CSVExport"
   gatling "org.nuxeo.cap.bench.Sim15BulkUpdateDocuments"
   #gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=1000000 -Dusers=32
+  # TODO: remove this is for debug
+  sleep 14400
   gatling "org.nuxeo.cap.bench.Sim10CreateFolders"
   gatling "org.nuxeo.cap.bench.Sim20CreateDocuments" -Dusers=32
   gatling "org.nuxeo.cap.bench.Sim25WaitForAsync"
