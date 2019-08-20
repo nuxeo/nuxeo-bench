@@ -17,7 +17,7 @@
 - name: Set default JVM to JAVA11
   alternatives:
     name: java
-    path: "/usr/lib/jvm/java-11-openjdk-amd64/jre/bin/java"
+    path: "/usr/lib/jvm/java-11-openjdk-amd64/bin/java"
 
 - name: Add screen conf
   copy: src=screenrc dest=/home/ubuntu/.screenrc owner=ubuntu force=no
