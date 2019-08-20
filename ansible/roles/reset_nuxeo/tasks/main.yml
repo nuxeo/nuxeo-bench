@@ -6,6 +6,18 @@
 - name: install python 2
   raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal jq)
 
+
+- name: Install Open JDK 11
+  apt:
+    name={{item}}
+    state=latest
+  with_items:
+    - openjdk-11-jdk
+- name: Set default JVM to JAVA11
+  alternatives:
+    name: java
+    path: "/usr/lib/jvm/java-11-openjdk-amd64/jre/bin/java"
+
 - name: Add screen conf
   copy: src=screenrc dest=/home/ubuntu/.screenrc owner=ubuntu force=no
 
@@ -280,7 +292,7 @@
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?JAVA_OPTS\s*(.*)FlightRecorder'
     #line: "JAVA_OPTS=$JAVA_OPTS -Dcom.sun.management.jmxremote.autodiscovery=true -Dcom.sun.management.jdp.name=Nuxeo -XX:+UnlockCommercialFeatures -XX:+FlightRecorder"
-    line: "JAVA_OPTS=$JAVA_OPTS -Dcom.sun.management.jmxremote.autodiscovery=true -Dcom.sun.management.jdp.name=Nuxeo"
+    line: "JAVA_OPTS=$JAVA_OPTS -Dcom.sun.management.jmxremote.autodiscovery=true -Dcom.sun.management.jdp.name=Nuxeo -XX:+FlightRecorder"
 - name: Config - limit soft ref usage
   lineinfile:
     dest: /opt/nuxeo/conf/nuxeo.conf
