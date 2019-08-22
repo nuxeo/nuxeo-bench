@@ -251,6 +251,16 @@
     dest: /opt/nuxeo/conf/nuxeo.conf
     regexp: '^#?repository\.clustering\.id\s*='
     line: "repository.clustering.id={{nodenum.stdout}}"
+- name: Config - nuxeo.cluster.enabled since 11.1
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.cluster\.enabled\s*='
+    line: "nuxeo.cluster.enabled=true"
+- name: Config - nuxeo.cluster.nodeid since 11.1
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?nuxeo\.cluster\.nodeid\s*='
+    line: "nuxeo.cluster.nodeid={{nodenum.stdout}}"
 # Add nuxeoctl wrapper
 - name: nuxeoctl wrapper
   copy: src=nuxeoctl dest=/usr/bin/nuxeoctl mode=0755
