@@ -3,7 +3,8 @@
 cd $(dirname $0)
 HERE=`readlink -e .`
 
-TARGET=http://nuxeo-bench.nuxeo.org/nuxeo
+#TARGET=http://nuxeo-bench.nuxeo.org/nuxeo
+TARGET=http://bench-elb-124801097.eu-west-1.elb.amazonaws.com/nuxeo
 NUXEO_GIT=https://github.com/nuxeo/nuxeo.git
 SCRIPT_ROOT="./bench-scripts"
 SCRIPT_DIR="nuxeo-distribution/nuxeo-jsf-ui-gatling-tests"
