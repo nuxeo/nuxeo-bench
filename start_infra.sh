@@ -12,6 +12,7 @@ keypair="jenkins-pub"
 addons=""
 nbnodes=2
 esnodes=3
+jdk=/usr/lib/jvm/java-11
 
 function help {
     echo "Usage: $0 -P<dbprofile> -m -d<distribution>"
@@ -25,7 +26,7 @@ function help {
     exit 0
 }
 
-while getopts ":P:md:k:n:e:i:K:h" opt; do
+while getopts ":P:md:k:n:e:i:K:j:h" opt; do
     case $opt in
         h)
             help
@@ -69,6 +70,9 @@ while getopts ":P:md:k:n:e:i:K:h" opt; do
         i)
             addons=$OPTARG
             ;;
+        j)
+            jdk=$OPTARG
+            ;;
         K)
             if [ "$OPTARG" == "true" ]; then
                 kafka="true"
@@ -92,7 +96,7 @@ fi
 mkdir $HERE/deploy
 sudo apt-get update
 sudo apt-get -q -y install python-lxml python-requests
-./bin/get-nuxeo-distribution.py -v $distrib -o $HERE/deploy/nuxeo-distribution.zip
+./bin/get-nuxeo-distribution.py -v $distrib -o $HERE/deploy/nuxeo-distribution.zip -j $jdk
 cp /opt/build/hudson/instance.clid $HERE/deploy/
 echo "nuxeo-jsf-ui" > $HERE/deploy/mp-list
 echo "nuxeo-platform-importer" >> $HERE/deploy/mp-list
