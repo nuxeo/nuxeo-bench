@@ -26,11 +26,14 @@ parser.add_argument('-v', dest='version', type=str, default='lastbuild',
                     'BRANCH/FALLBACK (build Nuxeo distribution from a git branch fallback on FALLBACK branch)')
 parser.add_argument('-o', dest='output', type=str, default='nuxeo-distribution.zip',
     help='output file')
+parser.add_argument('-j', dest='jdk', type=str, default='/usr/lib/jvm/java-11',
+    help='JDK HOME to use when building a distribution from a branch')
 
 args = parser.parse_args()
 
 arg = args.version
 output = args.output
+jdk = args.jdk
 
 print 'Looking for version %s ...' % arg
 
@@ -87,6 +90,7 @@ else:
         param = [cmd, "-b", branches[0], "-o", output]
     if len(branches) > 1:
         param.extend(["-f", branches[1]])
+    param.extend(["-j", jdk])
     subprocess.check_call(param)
     sys.exit(0)
 

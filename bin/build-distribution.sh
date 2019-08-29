@@ -24,9 +24,9 @@ function help {
 
 
 function setup_env {
-  if [ ! -z $JDK_PATH ]; then
-    export JAVA_HOME=$JDK_PATH
-    export PATH=$JDK_PATH/bin:$PATH
+  if [ ! -z $JDK_HOME ]; then
+    export JAVA_HOME=$JDK_HOME
+    export PATH=$JDK_HOME/bin:$PATH
   fi
   if [ -d $MAVEN_HOME/bin ]; then
     export PATH=$MVN_HOME/bin:$PATH
