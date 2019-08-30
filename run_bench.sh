@@ -143,6 +143,11 @@ function run_simulations() {
   pushd ${SCRIPT_PATH} || exit 2
   mvn -nsu clean
   find_gatling_version
+  if [ -n "$DEBUG_MODE" ]; then
+    echo "### DEBUG mode sleeping 1h for manual intervention ...."
+    # just kill the sleep to continue
+    sleep 3600 || true
+  fi
   gatling "org.nuxeo.cap.bench.Sim00Setup"
   # init user ws and give some chance to graphite to init all metrics before mass import
   gatling "org.nuxeo.cap.bench.Sim25WarmUsersJsf"
