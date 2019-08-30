@@ -12,8 +12,8 @@ keypair="jenkins-pub"
 addons=""
 nbnodes=2
 esnodes=3
-if [ -n "$NUXEO_10" ]; then
-   echo "Nuxeo 10.10 detected"
+if [ "$NUXEO_10" == "true" ]; then
+   echo "Nuxeo 10.10 use java 8 to build"
    jdk=/usr/lib/jvm/java-8
 else
    jdk=/usr/lib/jvm/java-11

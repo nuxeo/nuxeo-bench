@@ -18,7 +18,7 @@ MUSTACHE_TEMPLATE=./report-templates/data.mustache
 set -e
 
 function find_nuxeo_version() {
-  if [ -n "$NUXEO_10" ]; then
+  if [ "$NUXEO_10" == "true" ]; then
     echo "Nuxeo 10.10 detected"
     SCRIPT_BRANCH=10.10
     SCRIPT_PATH="$SCRIPT_ROOT/$SCRIPT_DIR_10"
@@ -143,14 +143,14 @@ function run_simulations() {
   pushd ${SCRIPT_PATH} || exit 2
   mvn -nsu clean
   find_gatling_version
-  if [ -n "$DEBUG_MODE" ]; then
+  if [ "$DEBUG_MODE" == "true" ]; then
     echo "### DEBUG mode sleeping 1h for manual intervention ...."
     # just kill the sleep to continue
     sleep 3600 || true
   fi
   gatling "org.nuxeo.cap.bench.Sim00Setup"
   # init user ws and give some chance to graphite to init all metrics before mass import
-  gatling "org.nuxeo.cap.bench.Sim25WarmUsersJsf"
+  # gatling "org.nuxeo.cap.bench.Sim25WarmUsersJsf"
   gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=100000
   gatling "org.nuxeo.cap.bench.Sim20CSVExport"
   gatling "org.nuxeo.cap.bench.Sim15BulkUpdateDocuments"
@@ -165,7 +165,7 @@ function run_simulations() {
   gatling "org.nuxeo.cap.bench.Sim30Navigation" -Dusers=48 -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim30Search" -Dusers=48 -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim30NavigationJsf" -Dduration=180
-  gatling "org.nuxeo.cap.bench.Sim50Bench" -Dnav.users=80 -Dnavjsf=5 -Dupd.user=15 -Dnavjsf.pause_ms=1000 -Dduration=180
+  gatling "org.nuxeo.cap.bench.Sim50Bench" -Dnav.users=80 -Dupd.user=15 -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim50CRUD" -Dusers=32 -Dduration=120
   gatling "org.nuxeo.cap.bench.Sim55WaitForAsync"
   gatling "org.nuxeo.cap.bench.Sim80ReindexAll"
@@ -212,7 +212,7 @@ function build_stat() {
   # create a yml file with all the stats
   set -x
   java -jar ${GAT_REPORT_JAR} -f -o ${REPORT_PATH} -n data.yml -t ${MUSTACHE_TEMPLATE} \
-    -m import,bulk,mbulk,exportcsv,create,createasync,nav,navjsf,search,update,updateasync,bench,crud,crudasync,reindex \
+    -m import,bulk,mbulk,exportcsv,create,createasync,nav,search,update,updateasync,bench,crud,crudasync,reindex \
     ${REPORT_PATH}/sim10massimport/detail/simulation.log.gz \
     ${REPORT_PATH}/sim15bulkupdatedocuments/detail/simulation.log.gz \
     ${REPORT_PATH}/sim25bulkupdatefolders/detail/simulation.log.gz \
@@ -220,7 +220,6 @@ function build_stat() {
     ${REPORT_PATH}/sim20createdocuments/detail/simulation.log.gz \
     ${REPORT_PATH}/sim25waitforasync/detail/simulation.log.gz \
     ${REPORT_PATH}/sim30navigation/detail/simulation.log.gz \
-    ${REPORT_PATH}/sim30navigationjsf/detail/simulation.log.gz \
     ${REPORT_PATH}/sim30search/detail/simulation.log.gz \
     ${REPORT_PATH}/sim30updatedocuments/detail/simulation.log.gz \
     ${REPORT_PATH}/sim35waitforasync/detail/simulation.log.gz \
