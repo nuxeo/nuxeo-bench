@@ -12,7 +12,13 @@ keypair="jenkins-pub"
 addons=""
 nbnodes=2
 esnodes=3
-jdk=/usr/lib/jvm/java-11
+if [ -n "$NUXEO_10" ]; then
+   echo "Nuxeo 10.10 detected"
+   jdk=/usr/lib/jvm/java-8
+else
+   jdk=/usr/lib/jvm/java-11
+fi
+
 
 function help {
     echo "Usage: $0 -P<dbprofile> -m -d<distribution>"
@@ -129,4 +135,3 @@ pushd ansible
 ansible-playbook -i inventory.py start_nodes.yml -v
 ansible-playbook -i inventory.py setup.yml -v
 popd
-

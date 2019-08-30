@@ -3,13 +3,11 @@
 cd $(dirname $0)
 HERE=`readlink -e .`
 
-#TARGET=http://nuxeo-bench.nuxeo.org/nuxeo
-TARGET=http://bench-elb-124801097.eu-west-1.elb.amazonaws.com/nuxeo
+TARGET=http://nuxeo-bench.nuxeo.org/nuxeo
 NUXEO_GIT=https://github.com/nuxeo/nuxeo.git
 SCRIPT_ROOT="./bench-scripts"
-SCRIPT_DIR="nuxeo-distribution/nuxeo-jsf-ui-gatling-tests"
-SCRIPT_PATH="$SCRIPT_ROOT/$SCRIPT_DIR"
-SCRIPT_BRANCH=10.10
+SCRIPT_DIR_10="nuxeo-distribution/nuxeo-jsf-ui-gatling-tests"
+SCRIPT_DIR="nuxeo-distribution/nuxeo-server-gatling-tests"
 REDIS_DB=7
 REPORT_PATH="./reports"
 GAT_REPORT_VERSION=3.0-SNAPSHOT
@@ -18,6 +16,17 @@ GRAPHITE_DASH=http://bench-mgmt.nuxeo.org/dashboard/#nuxeo-bench
 MUSTACHE_TEMPLATE=./report-templates/data.mustache
 # fail on any command error
 set -e
+
+function find_nuxeo_version() {
+  if [ -n "$NUXEO_10" ]; then
+    echo "Nuxeo 10.10 detected"
+    SCRIPT_BRANCH=10.10
+    SCRIPT_PATH="$SCRIPT_ROOT/$SCRIPT_DIR_10"
+  else
+    SCRIPT_BRANCH=master
+    SCRIPT_PATH="$SCRIPT_ROOT/$SCRIPT_DIR"
+  fi
+}
 
 function find_bench_scripts_branch() {
   local build_dir="$HERE/bin/.build/nuxeo"
@@ -245,6 +254,7 @@ function clean() {
 # -------------------------------------------------------
 # main
 #
+find_nuxeo_version
 clean
 clone_or_update_bench_scripts
 load_data_into_redis
