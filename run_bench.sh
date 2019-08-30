@@ -130,7 +130,7 @@ function gatling() {
 }
 
 function find_gatling_version() {
-  (mvn -nsu dependency:tree | grep gatling-core | grep 2.1.) && export GATLING_2_1="true"
+  (mvn -nsu dependency:tree | grep gatling-core | grep "\:2.1.") && export GATLING_2_1="true"
   if [ -n "$GATLING_2_1" ]; then
     echo "Gatling 2.1 detected"
   else
