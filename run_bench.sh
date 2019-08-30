@@ -164,7 +164,7 @@ function run_simulations() {
   gatling "org.nuxeo.cap.bench.Sim35WaitForAsync"
   gatling "org.nuxeo.cap.bench.Sim30Navigation" -Dusers=48 -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim30Search" -Dusers=48 -Dduration=180
-  gatling "org.nuxeo.cap.bench.Sim30NavigationJsf" -Dduration=180
+  # gatling "org.nuxeo.cap.bench.Sim30NavigationJsf" -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim50Bench" -Dnav.users=80 -Dupd.user=15 -Dduration=180
   gatling "org.nuxeo.cap.bench.Sim50CRUD" -Dusers=32 -Dduration=120
   gatling "org.nuxeo.cap.bench.Sim55WaitForAsync"
