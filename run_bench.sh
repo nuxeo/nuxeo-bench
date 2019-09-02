@@ -38,6 +38,23 @@ function find_bench_scripts_branch() {
   fi
 }
 
+function build_gatling_patch() {
+  local build_dir="$HERE/bin/.build/gatling"
+  if [ ! -d ${build_dir} ]; then
+    echo "Building Gatling 3.2.1 with tcp keepalive support"
+    mkdir -p ${build_dir}
+    pushd ${build_dir}
+    git clone https://github.com/bdelbosc/gatling.git
+    git checkout feature-tcp-keepalive
+    # install sbt
+    curl -Ls https://git.io/sbt > /tmp/sbt
+    chmod 0755 /tmp/sbt
+    # build and local deploy
+    cd gatling
+    /tmp/sbt compile publishM2
+    popd
+  fi
+}
 
 function optimized_clone_bench_scripts() {
   echo "Cloning bench script using $SCRIPT_BRANCH"
@@ -259,6 +276,7 @@ function clean() {
 # main
 #
 find_nuxeo_version
+build_gatling_patch
 clean
 clone_or_update_bench_scripts
 load_data_into_redis
