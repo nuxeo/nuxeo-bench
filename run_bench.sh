@@ -45,12 +45,12 @@ function build_gatling_patch() {
     mkdir -p ${build_dir}
     pushd ${build_dir}
     git clone https://github.com/bdelbosc/gatling.git
+    cd gatling
     git checkout feature-tcp-keepalive
     # install sbt
     curl -Ls https://git.io/sbt > /tmp/sbt
     chmod 0755 /tmp/sbt
     # build and local deploy
-    cd gatling
     /tmp/sbt compile publishM2
     popd
   fi
