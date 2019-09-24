@@ -35,17 +35,7 @@ The job has parameters that impact the target Nuxeo setup:
 |parameter| default | description |
 | --- | ---: | --- |
 | `dbprofile` | `pgsql` | The backend used for the document repository |
-| `distribution` | `laststapshot` | The Nuxeo distribution to use (must be >= 8.1):|
-| | | - lastbuild: the last build from nuxeo-distribution-master |
-| | | - lastitbuild: the last IT build distribution |
-| | | - lastitsuccess the last successful IT build distribution |
-| | | - lastlts: the latest LTS from cdn.nuxeo.com |
-| | | - lastft: the latest FastTrack from cdn.nuxeo.com |
-| | | - lastsnapshot: the latest published snapshot from community.nuxeo.com |
-| | | - VERSION: that version from community.nuxeo.com SNAPSHOT) or cdn.nuxeo.com release) |
-| | | - URL: downloads that URL, no resolving done |
-| | | - FILE: uses that local file |
-| | | - BRANCH: build a distrib from source using this branch - BRANCH/FALLBACK: build a distrib from source using this branch fallback on FALLBACK branch - BRANCH@DATE: build a distrib from source using a branch as it was at the DATE, for instance master@2017-04-24 |
+| `distribution` | `laststapshot` | The Nuxeo distribution to use (must be >= 10.10):<br> - lastbuild: the last build from nuxeo-distribution-master<br> - lastitbuild: the last IT build distribution <br> - lastitsuccess the last successful IT build distribution <br> - lastlts: the latest LTS from cdn.nuxeo.com <br> - lastft: the latest FastTrack from cdn.nuxeo.com <br> - lastsnapshot: the latest published snapshot from community.nuxeo.com <br> - VERSION: that version from community.nuxeo.com SNAPSHOT) or cdn.nuxeo.com release) <br> - URL: downloads that URL, no resolving done <br> - FILE: uses that local file <br> - BRANCH: build a distrib from source using this branch - BRANCH/FALLBACK: build a distrib from source using this branch fallback on FALLBACK branch - BRANCH@DATE: build a distrib from source using a branch as it was at the DATE, for instance master@2017-04-24 |
 | `nbnodes` | 2 | Number of Nuxeo nodes |
 | `esnode` | 3 | Number of Elasticsearch nodes |
 | `kafka` | false | Use kafka |
@@ -59,12 +49,7 @@ There are parameters that help to categorize the benchmarks results:
 | --- | ---: | --- |
 | `benchsuite` | `Current snapshot` | The name used to mark a serie of benchmark on a Nuxeo build. This field is used to group benchmark results on the benchmark reference site. To get a good ordering of reports it is a good idea to prefix with a date formated like '17w03' for 2017 week number 3. You should also add a NXP reference, ex: '17w10 NXP-12345 Evaluate Foo refactoring |
 | `classifier` | | An additional classifier for the benchmark when something other than dbprofile or nbnodes has changed. You can use 'reference' to get a baseline benchmark.|
-| `category` | `workbench` | The results category where the result is added: |
-|   |   |  - milestone: for official Nuxeo release |
-|   |   |  - misc: to demonstrate new feature performance |
-|   |   |  - continuous: the weekly benchmark on master |
-|   |   |  - workbench: temporary tests |
-|   |   |  - custom: custom benchmarks |
+| `category` | `workbench` | The results category where the result is added: <br>  - milestone: for official Nuxeo release <br>  - misc: to demonstrate new feature performance <br>  - continuous: the weekly benchmark on master <br>  - workbench: temporary tests <br>  - custom: custom benchmarks |
 
 The build result (the run) is then published on the https://benchmarks.nuxeo.com/ site 
 under the `category` section.
