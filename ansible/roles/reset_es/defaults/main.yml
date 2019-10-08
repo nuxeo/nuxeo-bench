@@ -2,8 +2,8 @@
 aws_region: eu-west-1
 security_group: RefBench
 es_major_version: "6.x"
-es_version: "6.4.2"
-ec2_plugin_version: "6.4.2"
+es_version: "6.8.3"
+ec2_plugin_version: "6.8.3"
 es_cluster: nuxeo
-java_version: 8
+java_version: 11
 
