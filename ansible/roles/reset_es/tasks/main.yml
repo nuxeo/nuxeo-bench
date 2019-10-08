@@ -30,7 +30,7 @@
 - name: Set default JVM
   alternatives:
     name: java
-    path: "/usr/lib/jvm/java-{{ java_version }}-openjdk-amd64/jre/bin/java"
+    path: "/usr/lib/jvm/java-{{ java_version }}-openjdk-amd64/bin/java"
   when: not stes.stat.exists
 
 # Set better hostname
