@@ -276,7 +276,7 @@ function clean() {
 # main
 #
 find_nuxeo_version
-build_gatling_patch
+#build_gatling_patch
 clean
 clone_or_update_bench_scripts
 load_data_into_redis
