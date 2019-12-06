@@ -73,10 +73,6 @@ function optimized_clone_bench_scripts() {
   git remote add origin ${NUXEO_GIT}
   git pull --depth 10 origin ${SCRIPT_BRANCH}
   popd
-  if [ -r "$ADMINS_CSV" ]; then
-    echo "Override admins.csv credentials"
-    /bin/cp ${ADMINS_CSV} ${ADMINS_CSV_PATH}
-  fi
 }
 
 function optimized_update_bench_scripts() {
@@ -130,6 +126,10 @@ function clone_or_update_bench_scripts() {
     clone_bench_scripts
   fi
   pushd ${SCRIPT_ROOT}
+  if [ -r "$ADMINS_CSV" ]; then
+    echo "Override admins.csv credentials"
+    /bin/cp ${ADMINS_CSV} ${ADMINS_CSV_PATH}
+  fi
   mvn -nsu install -N
   popd
 }
