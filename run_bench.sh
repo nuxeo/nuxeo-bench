@@ -17,6 +17,7 @@ GAT_REPORT_JAR=${GAT_REPORT_JAR:-"$HOME/.m2/repository/org/nuxeo/tools/gatling-r
 GRAPHITE_DASH=${GRAPHITE_DASH:-"http://bench-mgmt.nuxeo.org/dashboard/#nuxeo-bench"}
 WITH_MONITORING=${WITH_MONITORING:-true}
 MUSTACHE_TEMPLATE=${MUSTACHE_TEMPLATE:-"./report-templates/data.mustache"}
+ADMINS_CSV=${ADMINS_CSV:-""}
 
 # fail on any command error
 set -e
@@ -25,10 +26,12 @@ function find_nuxeo_version() {
   if [ "$NUXEO_10" == "true" ]; then
     echo "Nuxeo 10.10 detected"
     SCRIPT_BRANCH=10.10
-    SCRIPT_PATH="$SCRIPT_ROOT/$SCRIPT_DIR_10"
+    SCRIPT_PATH="${SCRIPT_ROOT}/${SCRIPT_DIR_10}"
+    ADMINS_CSV_PATH="${SCRIPT_ROOT}/nuxeo-distribution/nuxeo-jsf-ui-gatling-tests/src/test/resources/data/admins.csv"
   else
     SCRIPT_BRANCH=master
-    SCRIPT_PATH="$SCRIPT_ROOT/$SCRIPT_DIR"
+    SCRIPT_PATH="${SCRIPT_ROOT}/${SCRIPT_DIR}"
+    ADMINS_CSV_PATH="${SCRIPT_ROOT}/nuxeo-distribution/nuxeo-server-gatling-tests/src/test/resources/data/admins.csv"
   fi
 }
 
@@ -70,6 +73,10 @@ function optimized_clone_bench_scripts() {
   git remote add origin ${NUXEO_GIT}
   git pull --depth 10 origin ${SCRIPT_BRANCH}
   popd
+  if [ -r "$ADMINS_CSV" ]; then
+    echo "Override admins.csv credentials"
+    /bin/cp ${ADMINS_CSV} ${ADMINS_CSV_PATH}
+  fi
 }
 
 function optimized_update_bench_scripts() {
