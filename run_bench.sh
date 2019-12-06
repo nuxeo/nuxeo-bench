@@ -18,6 +18,7 @@ GRAPHITE_DASH=${GRAPHITE_DASH:-"http://bench-mgmt.nuxeo.org/dashboard/#nuxeo-ben
 WITH_MONITORING=${WITH_MONITORING:-true}
 MUSTACHE_TEMPLATE=${MUSTACHE_TEMPLATE:-"./report-templates/data.mustache"}
 ADMINS_CSV=${ADMINS_CSV:-""}
+NB_DOCS=${NB_DOCS:-100000}
 
 # fail on any command error
 set -e
@@ -181,7 +182,7 @@ function run_simulations() {
   gatling "org.nuxeo.cap.bench.Sim00Setup"
   # init user ws and give some chance to graphite to init all metrics before mass import
   # gatling "org.nuxeo.cap.bench.Sim25WarmUsersJsf"
-  gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=100000
+  gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=${NB_DOCS}
   gatling "org.nuxeo.cap.bench.Sim20CSVExport"
   gatling "org.nuxeo.cap.bench.Sim15BulkUpdateDocuments"
   #gatling "org.nuxeo.cap.bench.Sim10MassImport" -DnbNodes=1000000 -Dusers=32
