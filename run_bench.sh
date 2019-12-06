@@ -27,11 +27,11 @@ function find_nuxeo_version() {
     echo "Nuxeo 10.10 detected"
     SCRIPT_BRANCH=10.10
     SCRIPT_PATH="${SCRIPT_ROOT}/${SCRIPT_DIR_10}"
-    ADMINS_CSV_PATH="${SCRIPT_ROOT}/nuxeo-distribution/nuxeo-jsf-ui-gatling-tests/src/test/resources/data/admins.csv"
+    ADMINS_CSV_PATH="./nuxeo-distribution/nuxeo-jsf-ui-gatling-tests/src/test/resources/data/admins.csv"
   else
     SCRIPT_BRANCH=master
     SCRIPT_PATH="${SCRIPT_ROOT}/${SCRIPT_DIR}"
-    ADMINS_CSV_PATH="${SCRIPT_ROOT}/nuxeo-distribution/nuxeo-server-gatling-tests/src/test/resources/data/admins.csv"
+    ADMINS_CSV_PATH="./nuxeo-distribution/nuxeo-server-gatling-tests/src/test/resources/data/admins.csv"
   fi
 }
 
