@@ -271,6 +271,7 @@ function build_stat() {
   echo "distribution: \"$distribution\"" >> ${REPORT_PATH}/data.yml
   echo "default_category: \"$category\"" >> ${REPORT_PATH}/data.yml
   echo "kafka: $kafka" >> ${REPORT_PATH}/data.yml
+  echo "import_docs: $NB_DOCS" >> ${REPORT_PATH}/data.yml
   # Calculate benchmark duration between import and reindex
   d1=$(grep import_date ${REPORT_PATH}/data.yml| sed -e 's,^[a-z\_]*\:\s,,g')
   d2=$(grep reindex_date ${REPORT_PATH}/data.yml | sed -e 's,^[a-z\_]*\:\s,,g')
