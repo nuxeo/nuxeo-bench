@@ -152,6 +152,7 @@ https://qa.nuxeo.org/jenkins/job/Misc/job/nuxeo-reference-site-add/
 The update of the [site git repository](https://github.com/nuxeo/nuxeo-bench-site) triggers the static site build and publish the results in another s3 bucket:  
 https://qa.nuxeo.org/jenkins/job/Misc/job/nuxeo-reference-site/
 
+Note that there is also the `deploy-nuxeo.com-benchmarks` job to deploy the final version on https://benchmarks.nuxeo.com/.
 
 
 # About Nuxeo
