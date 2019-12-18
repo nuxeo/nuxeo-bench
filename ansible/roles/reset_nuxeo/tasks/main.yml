@@ -3,6 +3,9 @@
   shell: "while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 1; done;"
 
 # need python2 not setup on 16.04
+- name: Remove deprecated ffmpeg ppa that break apt update
+  file: path=/etc/apt/sources.list.d/jonathonf-ubuntu-ffmpeg-3-xenial.list state=absent
+
 - name: install python 2
   raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal jq)
 
