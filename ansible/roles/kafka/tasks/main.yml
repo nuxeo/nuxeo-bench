@@ -20,9 +20,9 @@
     line: "127.0.0.1 localhost kafka1"
 
 # try to bypass dpkg lock pb
-- name: Wait for sudo
+- name: Wait for dpkg lock
   become: yes
-  shell:  while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+  shell:  while sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do sleep 5; done;
 
 # install java 8
 - name: Install add-apt-repostory
