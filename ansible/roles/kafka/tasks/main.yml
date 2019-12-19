@@ -20,15 +20,9 @@
     line: "127.0.0.1 localhost kafka1"
 
 # try to bypass dpkg lock pb
-- name: Update APT Cache
-  apt:
-    update_cache: yes
-    force_apt_get: yes
-
-- name: Remove apt lock file
-  file:
-    state: absent
-    path: "/var/lib/dpkg/lock"
+- name: Wait for sudo
+  become: yes
+  shell:  while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
 
 # install java 8
 - name: Install add-apt-repostory
