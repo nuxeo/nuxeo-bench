@@ -3,8 +3,11 @@
   shell: "while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 1; done;"
 
 # need python2 not setup on 16.04
-- name: Remove deprecated ffmpeg ppa that break apt update
-  file: path=/etc/apt/sources.list.d/jonathonf-ubuntu-ffmpeg-3-xenial.list state=absent
+- name: Remove deprecated PPA that breaks apt update
+  file: path=/etc/apt/sources.list.d/{{item}} state=absent
+  with_items:
+    - jonathonf-ubuntu-ffmpeg-3-xenial.list
+    - mongodb-org-3.4.list
 
 - name: remove deprecated mongodb 3.4 apt key
   raw: apt-key del A15703C6
