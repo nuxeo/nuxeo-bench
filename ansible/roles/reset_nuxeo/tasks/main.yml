@@ -6,6 +6,9 @@
 - name: Remove deprecated ffmpeg ppa that break apt update
   file: path=/etc/apt/sources.list.d/jonathonf-ubuntu-ffmpeg-3-xenial.list state=absent
 
+- name: remove deprecated mongodb 3.4 apt key
+  raw: apt-key del A15703C6
+
 - name: install python 2
   raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal jq)
 
