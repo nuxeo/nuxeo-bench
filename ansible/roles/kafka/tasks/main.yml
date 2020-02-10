@@ -110,7 +110,7 @@
   when: not stkafka.stat.exists
 
 - name: Download mx4j to get jmx exposed as http
-  get_url: url=http://central.maven.org/maven2/mx4j/mx4j-tools/3.0.1/mx4j-tools-3.0.1.jar dest=/opt/kafka/libs
+  get_url: url=https://repo1.maven.org/maven2/mx4j/mx4j-tools/3.0.1/mx4j-tools-3.0.1.jar dest=/opt/kafka/libs
   when: not stkafka.stat.exists
 
 - name: Create a kafka user
