@@ -7,7 +7,7 @@ TARGET=${TARGET:-"http://nuxeo-bench.nuxeo.org/nuxeo"}
 NUXEO_GIT=${NUXEO_GIT:-"https://github.com/nuxeo/nuxeo.git"}
 SCRIPT_ROOT=${SCRIPT_ROOT:-"./bench-scripts"}
 SCRIPT_DIR_10=${SCRIPT_DIR_10:-"nuxeo-distribution/nuxeo-jsf-ui-gatling-tests"}
-SCRIPT_DIR=${SCRIPT_DIR:-"nuxeo-distribution/nuxeo-server-gatling-tests"}
+SCRIPT_DIR=${SCRIPT_DIR:-"./ftests/nuxeo-server-gatling-tests"}
 REDIS_DB=${REDIS_DB:-"7"}
 REDIS_HOST=${REDIS_HOST:-"127.0.0.1"}
 REDIS_PORT=${REDIS_PORT:-"6379"}
@@ -32,7 +32,7 @@ function find_nuxeo_version() {
   else
     SCRIPT_BRANCH=master
     SCRIPT_PATH="${SCRIPT_ROOT}/${SCRIPT_DIR}"
-    ADMINS_CSV_PATH="./nuxeo-distribution/nuxeo-server-gatling-tests/src/test/resources/data/admins.csv"
+    ADMINS_CSV_PATH="./ftests/nuxeo-server-gatling-tests/src/test/resources/data/admins.csv"
   fi
 }
 
