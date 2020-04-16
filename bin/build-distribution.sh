@@ -83,6 +83,11 @@ function clone_src {
     if [ ! -z $BRANCH_DATE ]; then
       git_checkout_at_date $BRANCH $BRANCH_DATE
     fi
+    if [ -f ./modules/pom.xml ]; then
+      export SERVER_DIRECTORY=server
+    else
+      export SERVER_DIRECTORY=nuxeo-distribution
+    fi
     popd
     }
   echo "### Clone done"
@@ -93,7 +98,7 @@ function build_nuxeo {
   time {
     pushd "$TMP/nuxeo"
     # exclude npm build that fails randomly
-    time MAVEN_OPTS="-Xms2g -Xmx4g -XX:MaxPermSize=2g -XX:+TieredCompilation -XX:TieredStopAtLevel=1" mvn -Dmaven.repo.local="$TMP/m2" -nsu -am -pl nuxeo-distribution/nuxeo-server-tomcat -Paddons,distrib,qa -DskipTests=true -DexcludeGroupIds=org.nuxeo  -T16 install || true
+    time MAVEN_OPTS="-Xms2g -Xmx4g -XX:MaxPermSize=2g -XX:+TieredCompilation -XX:TieredStopAtLevel=1" mvn -Dmaven.repo.local="$TMP/m2" -nsu -am -pl ${SERVER_DIRECTORY}/nuxeo-server-tomcat -Paddons,distrib,qa -DskipTests=true -DexcludeGroupIds=org.nuxeo  -T16 install || true
     #time MAVEN_OPTS="-Xms1024m -Xmx4096m -XX:MaxPermSize=2048m" mvn -Dmaven.repo.local="$TMP/m2" -nsu -am -pl nuxeo-distribution/nuxeo-server-tomcat,-addons/nuxeo-review-workflows-dashboards,-addons/nuxeo-salesforce,-addons/nuxeo-salesforce,-nuxeo-features/nuxeo-admin-center/nuxeo-admin-center-analytics,-addons/nuxeo-platform-spreadsheet,-addons/nuxeo-travel-expenses,-addons/nuxeo-salesforce/nuxeo-salesforce-web,-addons/nuxeo-salesforce/nuxeo-salesforce-core -Paddons,distrib,qa -DskipTests=true -DexcludeGroupIds=org.nuxeo  -T16 install || true
     popd
   }
@@ -101,7 +106,7 @@ function build_nuxeo {
 }
 
 function copy_zip {
-    cp $TMP/nuxeo/nuxeo-distribution/nuxeo-server-tomcat/target/nuxeo-server-tomcat-*.zip $OUTPUT
+    cp $TMP/nuxeo/${SERVER_DIRECTORY}/nuxeo-server-tomcat/target/nuxeo-server-tomcat-*.zip $OUTPUT
     echo "### zip ready: $OUTPUT"
 }
 
