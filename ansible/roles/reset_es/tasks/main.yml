@@ -24,6 +24,9 @@
   shell: curl -XDELETE "http://{{private_ip}}:9200/nuxeo*"
   when: stes.stat.exists
 
+- name: Wait for automatic system updates from synaptic
+  shell: "while fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do sleep 1; done;"
+
 # install open jdk
 - name: Add Open JDK Repository
   apt_repository: repo='ppa:openjdk-r/ppa'
