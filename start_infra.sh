@@ -104,7 +104,7 @@ sudo apt-get update
 sudo apt-get -q -y install python-lxml python-requests
 ./bin/get-nuxeo-distribution.py -v $distrib -o $HERE/deploy/nuxeo-distribution.zip -j $jdk
 cp /opt/build/hudson/instance.clid $HERE/deploy/
-echo "nuxeo-jsf-ui" > $HERE/deploy/mp-list
+# echo "nuxeo-jsf-ui" > $HERE/deploy/mp-list
 echo "nuxeo-platform-importer" >> $HERE/deploy/mp-list
 for addon in $(echo $addons | tr "," "\n")
 do
