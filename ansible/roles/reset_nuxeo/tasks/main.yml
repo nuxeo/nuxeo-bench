@@ -130,6 +130,12 @@
   shell: cp /deploy/instance.clid /opt/nuxeo/data/
   when: instanceclid.stat.exists
 
+- name: Config - connect url
+  lineinfile:
+    dest: /opt/nuxeo/conf/nuxeo.conf
+    regexp: '^#?org\.nuxeo\.connect\.url\s*='
+    line: "org.nuxeo.connect.url={{connect_url}}"
+
 # Add fixed paths
 - name: Config - nuxeo.data.dir
   lineinfile:
