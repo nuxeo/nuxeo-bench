@@ -3,8 +3,8 @@ aws_region: eu-west-1
 elb_name: bench-elb
 redis_host: bench.yjr8h8.0001.euw1.cache.amazonaws.com
 bucket: nuxeo-devtools-bench
-connect_url: https://nos-preprod-connect.nuxeocloud.com/nuxeo/site/
-#connect_url: https://connect.nuxeo.com/nuxeo/site/
+#connect_url: https://nos-preprod-connect.nuxeocloud.com/nuxeo/site/
+connect_url: https://connect.nuxeo.com/nuxeo/site/
 
 # do not change the bench tag or update stop/terminate scripts
 bench: test
