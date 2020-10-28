@@ -81,7 +81,7 @@
 #  sudo: yes
 
 - name: Download elastic oss
-  shell: wget -qO /tmp/elastic.deb https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-oss-{{ es_version }}.deb
+  shell: wget -qO /tmp/elastic.deb https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-oss-{{ es_version }}-amd64.deb
   when: not stes.stat.exists
 
 - name: Install elastic oss
