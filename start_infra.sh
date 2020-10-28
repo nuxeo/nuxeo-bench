@@ -102,6 +102,15 @@ fi
 mkdir $HERE/deploy
 sudo apt-get update
 sudo apt-get -q -y install python-lxml python-requests python-urllib3
+
+# Setup virtualenv
+if [ ! -d venv ]; then
+    virtualenv venv
+fi
+. venv/bin/activate
+pip install --upgrade setuptools
+pip install 'urllib3==1.23' --force-reinstall
+
 ./bin/get-nuxeo-distribution.py -v $distrib -o $HERE/deploy/nuxeo-distribution.zip -j $jdk
 cp /opt/build/hudson/instance.clid $HERE/deploy/
 # echo "nuxeo-jsf-ui" > $HERE/deploy/mp-list
@@ -122,12 +131,6 @@ echo "kafkaflag: $kafka" >> ansible/group_vars/all/custom.yml
 # Set nb of Nuxeo and elastic nodes
 perl -pi -e "s,counts\:\n\s+nuxeo\:[^\n]+\n\s+es\:[^\n]+\n,counts\:\n  nuxeo: ${nbnodes}\n  es: ${esnodes}\n,igs" -0777 ansible/group_vars/all/main.yml
 
-# Setup virtualenv
-if [ ! -d venv ]; then
-    virtualenv venv
-fi
-. venv/bin/activate
-pip install --upgrade setuptools
 pip install -r ansible/requirements.txt
 
 # Run ansible scripts
