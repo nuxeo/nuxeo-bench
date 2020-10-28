@@ -3,7 +3,10 @@ path.data: /opt/es/data
 path.logs: /opt/es/log
 
 network.host: _ec2:privateIp_
-discovery.zen.hosts_provider: ec2
+
+discovery.seed_providers: ec2
+
+# discovery.zen.hosts_provider: ec2
 discovery.ec2.groups: {{security_group}}
 discovery.ec2.endpoint: ec2.{{aws_region}}.amazonaws.com
 
