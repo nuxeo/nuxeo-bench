@@ -110,6 +110,8 @@ fi
 . venv/bin/activate
 pip install --upgrade setuptools
 pip install 'urllib3==1.23' --force-reinstall
+pip install 'lxml'
+pip install 'requests'
 
 ./bin/get-nuxeo-distribution.py -v $distrib -o $HERE/deploy/nuxeo-distribution.zip -j $jdk
 cp /opt/build/hudson/instance.clid $HERE/deploy/
