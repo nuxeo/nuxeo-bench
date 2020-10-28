@@ -101,7 +101,7 @@ if [ -d $HERE/deploy ]; then
 fi
 mkdir $HERE/deploy
 sudo apt-get update
-sudo apt-get -q -y install python-lxml python-requests
+sudo apt-get -q -y install python-lxml python-requests python-urllib3
 ./bin/get-nuxeo-distribution.py -v $distrib -o $HERE/deploy/nuxeo-distribution.zip -j $jdk
 cp /opt/build/hudson/instance.clid $HERE/deploy/
 # echo "nuxeo-jsf-ui" > $HERE/deploy/mp-list
