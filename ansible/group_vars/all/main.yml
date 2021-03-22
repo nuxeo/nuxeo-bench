@@ -68,3 +68,5 @@ dbparams:
     template: marklogic
 
 use_oracle_jdk: false
+
+use_zulu_jdk: true

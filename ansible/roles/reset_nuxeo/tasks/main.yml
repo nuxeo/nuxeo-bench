@@ -17,16 +17,45 @@
 
 - name: Add Open JDK Repository
   apt_repository: repo='ppa:openjdk-r/ppa'
+  when: not use_zulu_jdk
 - name: Install Open JDK 11
   apt:
     name={{item}}
     state=latest
   with_items:
     - openjdk-11-jdk
-- name: Set default JVM to JAVA11
+  when: not use_zulu_jdk
+- name: Set default JVM to Open JDK 11
   alternatives:
     name: java
     path: "/usr/lib/jvm/java-11-openjdk-amd64/bin/java"
+  when: not use_zulu_jdk
+
+- name: Add Zulu Repository key
+  raw: apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xB1998361219BD9C9
+  when: use_zulu_jdk
+
+- name: Add Zulu Repository
+  raw: apt-add-repository 'deb http://repos.azulsystems.com/ubuntu stable main'
+  when: use_zulu_jdk
+
+- name: Add Zulu Repository Update
+  raw: apt update
+  when: use_zulu_jdk
+
+- name: Install Zulu JDK 11
+  apt:
+    name={{item}}
+    state=latest
+  with_items:
+    - zulu-11
+  when: use_zulu_jdk
+
+- name: Set default JVM to Zulu JDK 11
+  alternatives:
+    name: java
+    path: "/usr/lib/jvm/zulu-11-amd64/bin/java"
+  when: use_zulu_jdk
 
 - name: Add screen conf
   copy: src=screenrc dest=/home/ubuntu/.screenrc owner=ubuntu force=no
