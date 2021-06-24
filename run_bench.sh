@@ -174,11 +174,6 @@ function run_simulations() {
   pushd ${SCRIPT_PATH} || exit 2
   mvn -nsu clean
   find_gatling_version
-  if [ "$DEBUG_MODE" == "true" ]; then
-    echo "### DEBUG mode sleeping 1h for manual intervention ...."
-    # just kill the sleep to continue
-    sleep 3600 || true
-  fi
   gatling "org.nuxeo.cap.bench.Sim00Setup"
   # init user ws and give some chance to graphite to init all metrics before mass import
   # gatling "org.nuxeo.cap.bench.Sim25WarmUsersJsf"
@@ -200,6 +195,11 @@ function run_simulations() {
   gatling "org.nuxeo.cap.bench.Sim50CRUD" -Dusers=32 -Dduration=120
   gatling "org.nuxeo.cap.bench.Sim55WaitForAsync"
   gatling "org.nuxeo.cap.bench.Sim80ReindexAll"
+  if [ "$DEBUG_MODE" == "true" ]; then
+    echo "### DEBUG mode sleeping 1h for manual intervention ...."
+    # just kill the sleep to continue
+    sleep 3600 || true
+  fi
   # gatling "org.nuxeo.cap.bench.Sim30Navigation" -Dusers=100 -Dduration=120 -Dramp=50
   popd
 }
