@@ -66,6 +66,7 @@ exportcsv_error: {{exportcsv.simStat.errorCount}}
 {{#exportcsv.requests}}
 exportcsv_{{requestId}}_name: "{{request}}"
 exportcsv_{{requestId}}_avg: {{average}}
+exportcsv_{{requestId}}_end: {{end}}
 {{/exportcsv.requests}}
 
 create_avg: {{create.simStat.average}}
@@ -99,6 +100,7 @@ createasync_duration: {{createasync.simStat.duration}}
 createasync_count: {{createasync.simStat.count}}
 createasync_percentError: {{createasync.simStat.percentError}}
 createasync_error: {{createasync.simStat.errorCount}}
+createasync_end: {{createasync.simStat.end}}
 
 nav_avg: {{nav.simStat.average}}
 nav_rps: {{nav.simStat.throughput}}
@@ -268,6 +270,7 @@ crudasync_duration: {{crudasync.simStat.duration}}
 crudasync_count: {{crudasync.simStat.count}}
 crudasync_percentError: {{crudasync.simStat.percentError}}
 crudasync_error: {{crudasync.simStat.errorCount}}
+crudasync_end: {{crudasync.simStat.end}}
 
 reindex_avg: {{reindex.simStat.average}}
 reindex_rps: {{reindex.simStat.throughput}}
@@ -284,4 +287,5 @@ reindex_{{requestId}}_name: "{{request}}"
 reindex_{{requestId}}_avg: {{average}}
 reindex_{{requestId}}_std: {{stddev}}
 reindex_{{requestId}}_rps: {{throughput}}
+reindex_{{requestId}}_end: {{end}}
 {{/reindex.requests}}
