@@ -289,3 +289,39 @@ reindex_{{requestId}}_std: {{stddev}}
 reindex_{{requestId}}_rps: {{throughput}}
 reindex_{{requestId}}_end: {{end}}
 {{/reindex.requests}}
+
+cleanup_avg: {{cleanup.simStat.average}}
+cleanup_rps: {{cleanup.simStat.throughput}}
+cleanup_user: {{cleanup.simStat.maxUsers}}
+cleanup_date: {{cleanup.simStat.startDate}}
+cleanup_start: {{cleanup.simStat.start}}
+cleanup_end: {{cleanup.simStat.end}}
+cleanup_duration: {{cleanup.simStat.duration}}
+cleanup_count: {{cleanup.simStat.count}}
+cleanup_percentError: {{cleanup.simStat.percentError}}
+cleanup_error: {{cleanup.simStat.errorCount}}
+{{#cleanup.requests}}
+cleanup_{{requestId}}_name: "{{request}}"
+cleanup_{{requestId}}_avg: {{average}}
+cleanup_{{requestId}}_std: {{stddev}}
+cleanup_{{requestId}}_rps: {{throughput}}
+cleanup_{{requestId}}_end: {{end}}
+{{/cleanup.requests}}
+
+fullgc_avg: {{fullgc.simStat.average}}
+fullgc_rps: {{fullgc.simStat.throughput}}
+fullgc_user: {{fullgc.simStat.maxUsers}}
+fullgc_date: {{fullgc.simStat.startDate}}
+fullgc_start: {{fullgc.simStat.start}}
+fullgc_end: {{fullgc.simStat.end}}
+fullgc_duration: {{fullgc.simStat.duration}}
+fullgc_count: {{fullgc.simStat.count}}
+fullgc_percentError: {{fullgc.simStat.percentError}}
+fullgc_error: {{fullgc.simStat.errorCount}}
+{{#fullgc.requests}}
+fullgc_{{requestId}}_name: "{{request}}"
+fullgc_{{requestId}}_avg: {{average}}
+fullgc_{{requestId}}_std: {{stddev}}
+fullgc_{{requestId}}_rps: {{throughput}}
+fullgc_{{requestId}}_end: {{end}}
+{{/fullgc.requests}}
