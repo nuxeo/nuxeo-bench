@@ -14,6 +14,24 @@ import_{{requestId}}_name: "{{request}}"
 import_{{requestId}}_avg: {{average}}
 {{/import.requests}}
 
+move_avg: {{move.simStat.average}}
+move_rps: {{move.simStat.throughput}}
+move_user: {{move.simStat.maxUsers}}
+move_date: {{move.simStat.startDate}}
+move_start: {{move.simStat.start}}
+move_end: {{move.simStat.end}}
+move_duration: {{move.simStat.duration}}
+move_count: {{move.simStat.count}}
+move_percentError: {{move.simStat.percentError}}
+move_error: {{move.simStat.errorCount}}
+{{#move.requests}}
+move_{{requestId}}_name: "{{request}}"
+move_{{requestId}}_avg: {{average}}
+move_{{requestId}}_std: {{stddev}}
+move_{{requestId}}_rps: {{throughput}}
+move_{{requestId}}_end: {{end}}
+{{/move.requests}}
+
 bulk_duration: {{bulk.simStat.duration}}
 bulk_avg: {{bulk.simStat.average}}
 bulk_rps: {{bulk.simStat.throughput}}
