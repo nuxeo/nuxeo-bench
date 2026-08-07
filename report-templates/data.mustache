@@ -120,6 +120,32 @@ createasync_percentError: {{createasync.simStat.percentError}}
 createasync_error: {{createasync.simStat.errorCount}}
 createasync_end: {{createasync.simStat.end}}
 
+setpref_avg: {{setpref.simStat.average}}
+setpref_rps: {{setpref.simStat.throughput}}
+setpref_std: {{setpref.simStat.stddev}}
+setpref_min: {{setpref.simStat.min}}
+setpref_p50: {{setpref.simStat.p50}}
+setpref_p95: {{setpref.simStat.p95}}
+setpref_max: {{setpref.simStat.max}}
+setpref_user: {{setpref.simStat.maxUsers}}
+setpref_date: {{setpref.simStat.startDate}}
+setpref_start: {{setpref.simStat.start}}
+setpref_end: {{setpref.simStat.end}}
+setpref_duration: {{setpref.simStat.duration}}
+setpref_count: {{setpref.simStat.count}}
+setpref_percentError: {{setpref.simStat.percentError}}
+setpref_error: {{setpref.simStat.errorCount}}
+{{#setpref.requests}}
+setpref_{{requestId}}_name: "{{request}}"
+setpref_{{requestId}}_avg: {{average}}
+setpref_{{requestId}}_std: {{stddev}}
+setpref_{{requestId}}_min: {{min}}
+setpref_{{requestId}}_p50: {{p50}}
+setpref_{{requestId}}_p95: {{p95}}
+setpref_{{requestId}}_max: {{max}}
+setpref_{{requestId}}_rps: {{throughput}}
+{{/setpref.requests}}
+
 nav_avg: {{nav.simStat.average}}
 nav_rps: {{nav.simStat.throughput}}
 nav_std: {{nav.simStat.stddev}}
